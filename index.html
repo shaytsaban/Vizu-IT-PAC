@@ -83,6 +83,31 @@
             transform: scale(1.05);
             box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
         }
+        .nav-btn {
+            display: inline-block;
+            padding: 1.5rem 2rem;
+            font-size: 1.4rem;
+            margin: 0.5rem;
+            background: linear-gradient(45deg, #2c3e50, #3498db);
+            color: #fff;
+            text-align: center;
+            max-width: 200px;
+            white-space: normal;
+            line-height: 1.2;
+        }
+        .nav-btn:hover {
+            background: linear-gradient(45deg, #1a252f, #2980b9);
+        }
+        .small-nav-btn {
+            padding: 0.8rem 1.5rem;
+            font-size: 1rem;
+            margin: 0.5rem;
+            max-width: 150px;
+            background: linear-gradient(45deg, #2c3e50, #3498db);
+        }
+        .small-nav-btn:hover {
+            background: linear-gradient(45deg, #1a252f, #2980b9);
+        }
         .emoji {
             font-size: 1.8rem;
             margin: 0 0.5rem;
@@ -98,6 +123,17 @@
         b {
             color: #3333ff;
         }
+        .group-nav {
+            text-align: center;
+            padding: 1rem;
+            background: #fff;
+            border-bottom: 3px solid #ffd700;
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+            align-items: center;
+        }
     </style>
 </head>
 <body>
@@ -107,6 +143,11 @@
             <span class="subtitle">Dr. Shay Tsaban</span>
         </h1>
     </header>
+
+    <div class="group-nav">
+        <a href="group1.html" class="gradient-btn nav-btn">Early Risers - Group 1 (8:15) - Click Here!</a>
+        <a href="group2.html" class="gradient-btn nav-btn">Late Risers - Group 2 (11:00) - Click Here!</a>
+    </div>
 
     <section>
         <h2>Tableau Unleashed! 📊🔥</h2>
@@ -125,13 +166,12 @@
     </section>
 
     <section>
-        <h2>Data Files for Practice 📈🛠️</h2>
-        <p><b>To be continued</b> / updated later, stay tuned! ⏳ More goodies coming your way soon! 🎉</p>
-    </section>
-
-    <section>
-        <h2>Recordings Hub 🎥✨</h2>
-        <p><b>Coming soon!</b> 🎬 Here, you’ll find all the dazzling recordings of course chapters to guide you through Tableau mastery step-by-step. Keep your eyes peeled! 👀</p>
+        <h2>Where are the Recordings and All the Files? 🎥🤔</h2>
+        <p>Oh, you want the good stuff? 👀 Peek up at the top of the page, and voilà—those snazzy buttons hold all the juicy details for your group! Enjoy the show, you data rockstars! 🌟🍿 For your convenience, I’ve even tossed mini versions of those buttons right here! 😎</p>
+        <div style="text-align: center;">
+            <a href="group1.html" class="gradient-btn small-nav-btn">Early Risers - Group 1 (8:15) - Click Here!</a>
+            <a href="group2.html" class="gradient-btn small-nav-btn">Late Risers - Group 2 (11:00) - Click Here!</a>
+        </div>
     </section>
 
     <section class="note">
