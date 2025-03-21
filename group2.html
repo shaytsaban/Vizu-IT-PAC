@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Group 2 - Late Risers | Tableau Basics - Dr. Shay Tsaban</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f0f4f8;
+            color: #333;
+            line-height: 1.6;
+        }
+        header {
+            background: linear-gradient(135deg, #ff00cc, #3333ff);
+            color: white;
+            text-align: center;
+            padding: 2.5rem 1rem;
+            border-bottom: 8px solid #ffd700;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+            position: relative;
+            overflow: hidden;
+        }
+        header h1 {
+            font-size: 2.8rem;
+            margin: 0;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.5);
+            animation: glow 2s infinite alternate;
+        }
+        header .title {
+            display: block;
+        }
+        header .subtitle {
+            font-size: 1.8rem;
+            margin-top: 0.5rem;
+            text-transform: none;
+            letter-spacing: 1px;
+        }
+        @keyframes glow {
+            0% { text-shadow: 3px 3px 6px rgba(255, 215, 0, 0.7); }
+            100% { text-shadow: 3px 3px 10px rgba(255, 0, 204, 0.9); }
+        }
+        section {
+            max-width: 900px;
+            margin: 2rem auto;
+            padding: 1.5rem;
+            background: #fff;
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+            border: 3px solid #ffd700;
+        }
+        h2 {
+            color: #ff00cc;
+            font-size: 1.9rem;
+            margin-bottom: 1rem;
+            border-bottom: 3px dashed #3333ff;
+            padding-bottom: 0.5rem;
+            font-weight: bold;
+        }
+        h3 {
+            color: #3333ff;
+            font-size: 1.5rem;
+            margin: 1rem 0;
+            font-weight: bold;
+        }
+        p {
+            font-size: 1.1rem;
+        }
+        .gradient-btn {
+            display: inline-block;
+            padding: 1rem 2rem;
+            font-size: 1.2rem;
+            color: white;
+            text-decoration: none;
+            border-radius: 30px;
+            background: linear-gradient(45deg, #ff6b6b, #ffcc00);
+            border: 2px solid #fff;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            transition: transform 0.3s, box-shadow 0.3s;
+            margin: 1rem 0;
+            font-weight: bold;
+        }
+        .gradient-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+        }
+        .small-btn {
+            padding: 0.8rem 1.5rem;
+            font-size: 1rem;
+        }
+        .big-btn {
+            padding: 1.5rem 3rem;
+            font-size: 1.6rem;
+            background: linear-gradient(45deg, #ff00cc, #3333ff);
+        }
+        .big-btn:hover {
+            background: linear-gradient(45deg, #e600b3, #1a1aff);
+        }
+        .emoji {
+            font-size: 1.8rem;
+            margin: 0 0.5rem;
+        }
+        .note {
+            background: linear-gradient(135deg, #fff7e6, #fff);
+            padding: 2rem;
+            border-radius: 20px;
+            border: 3px dashed #ff6b6b;
+            box-shadow: 0 5px 25px rgba(0, 0, 0, 0.15);
+            margin-top: 2rem;
+        }
+        b {
+            color: #3333ff;
+        }
+        .video-container {
+            position: relative;
+            padding-bottom: 56.25%; /* 16:9 aspect ratio */
+            height: 0;
+            overflow: hidden;
+            margin: 1rem 0;
+        }
+        .video-container iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: 2px solid #ffd700;
+            border-radius: 10px;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>
+            <span class="title">Tableau Basics - Group 2</span>
+            <span class="subtitle">Dr. Shay Tsaban</span>
+        </h1>
+    </header>
+
+    <section>
+        <h2>Welcome Sleepyheads! 😴</h2>
+        <p>So, you’re a glorious late riser who’d rather snooze till noon than tackle Tableau at <b>11:00 every Friday</b>? We get it—beds are cozy! 😂 But props to you for dragging yourself out to master data anyway, you brave souls! 🌟 Dr. Tsaban’s here to make it worth your while! 😎</p>
+    </section>
+
+    <section>
+        <h2>Why You’re Still Pretty Cool 😏</h2>
+        <p>You late risers might miss the sunrise, but you’re still catching the Tableau train! 🚂 While Group 1’s already wired on coffee, you’re here mastering dashboards with bedhead and a yawn—and that’s some serious dedication! 👏</p>
+    </section>
+
+    <section>
+        <h2>Course Notes 📝✨</h2>
+        <p>Want the golden treasure chest of class summaries? 💰 Look no further! Smash this massive, glorious button below to grab all the juicy material we’ve covered. It’s so epic, you’ll feel like you’re stealing the answers from the teacher’s desk—except it’s totally legal! 😂</p>
+        <div style="text-align: center;">
+            <a href="Vizu IT - Coursebook 2025 B.docx" class="gradient-btn big-btn">Get the Goodies Now! 🚀</a>
+        </div>
+    </section>
+
+    <section>
+        <h2>Course Recordings 🎥</h2>
+        <p>Looking for every single dazzling moment from our Tableau adventures? 🎉 You’ve hit the jackpot—everything you ever wanted in course recordings is right here, waiting to blow your mind! 🤯 Happy binge-watching, you data wizards! 🧙‍♂️</p>
+        
+        <h3>Lecture 1 - Installation and Tableau Basics - 7.3.2025</h3>
+        <p>Oh boy, we wrestled with installing Tableau Public like it was a wild beast, whipped up our first graphs (some looked like modern art 🎨), and—Lord help us—finally got the hang of columns, rows, and marks! 😂 Want the data we used in this madness? Just click here, mate! 👇</p>
+        <div style="text-align: center;">
+            <a href="vgsales.csv" class="gradient-btn small-btn">Grab the Data! 📊</a>
+        </div>
+        <div class="video-container">
+            <iframe src="https://www.youtube.com/embed/3Y0AxheYy0g" frameborder="0" allowfullscreen></iframe>
+        </div>
+
+        <h3>Lecture 2 - Dashboards, Creating Data and Tableau Cloud - 21.3.2025</h3>
+        <p>Alright, buckle up—it’s dashboard time! 🎨 We conjured up some slick dashboards, roped ChatGPT into whipping up wild data for us to analyze, and sent it all soaring into the Tableau Public cloud. Who knew data could be this much of a party? 🥳 Want the tasty sausage data from this sesh? Click below, you legend! 👇</p>
+        <div style="text-align: center;">
+            <a href="Sausage Database - Lecture 2 - 21.3.2025.xlsx" class="gradient-btn small-btn">Grab the Sausage Data! 🌭</a>
+        </div>
+        <div class="video-container">
+            <iframe src="https://www.youtube.com/embed/UXjWA9MusRo" frameborder="0" allowfullscreen></iframe>
+        </div>
+    </section>
+
+    <section class="note">
+        <h2>Late Riser Survival Tip 🌙</h2>
+        <p>Keep that coffee flowing, because <b>Tableau mastery</b> at 11:00 takes grit and a good nap beforehand! ☕ You’re the rockstars of the late morning—keep rocking, and don’t let the early birds steal your spotlight! ⚡</p>
+    </section>
+
+    <script>
+        // Header animation with bounce
+        window.onload = function() {
+            const header = document.querySelector('header h1');
+            header.style.opacity = 0;
+            header.style.transform = 'translateY(-20px)';
+            setTimeout(() => {
+                header.style.transition = 'all 0.8s ease-out';
+                header.style.opacity = 1;
+                header.style.transform = 'translateY(0)';
+            }, 100);
+        };
+    </script>
+</body>
+</html>
