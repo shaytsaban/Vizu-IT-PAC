@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tableau Basics for IT Students - Dr. Shay Tsaban</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f0f4f8;
+            color: #333;
+            line-height: 1.6;
+        }
+        header {
+            background: linear-gradient(135deg, #ff00cc, #3333ff);
+            color: white;
+            text-align: center;
+            padding: 2.5rem 1rem;
+            border-bottom: 8px solid #ffd700;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+            position: relative;
+            overflow: hidden;
+        }
+        header h1 {
+            font-size: 2.8rem;
+            margin: 0;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.5);
+            animation: glow 2s infinite alternate;
+        }
+        header .title {
+            display: block;
+        }
+        header .subtitle {
+            font-size: 1.8rem;
+            margin-top: 0.5rem;
+            text-transform: none;
+            letter-spacing: 1px;
+        }
+        @keyframes glow {
+            0% { text-shadow: 3px 3px 6px rgba(255, 215, 0, 0.7); }
+            100% { text-shadow: 3px 3px 10px rgba(255, 0, 204, 0.9); }
+        }
+        section {
+            max-width: 900px;
+            margin: 2rem auto;
+            padding: 1.5rem;
+            background: #fff;
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+            border: 3px solid #ffd700;
+        }
+        h2 {
+            color: #ff00cc;
+            font-size: 1.9rem;
+            margin-bottom: 1rem;
+            border-bottom: 3px dashed #3333ff;
+            padding-bottom: 0.5rem;
+            font-weight: bold;
+        }
+        p {
+            font-size: 1.1rem;
+        }
+        .gradient-btn {
+            display: inline-block;
+            padding: 1rem 2rem;
+            font-size: 1.2rem;
+            color: white;
+            text-decoration: none;
+            border-radius: 30px;
+            background: linear-gradient(45deg, #ff6b6b, #ffcc00);
+            border: 2px solid #fff;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            transition: transform 0.3s, box-shadow 0.3s;
+            margin: 1rem 0;
+            font-weight: bold;
+        }
+        .gradient-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+        }
+        .emoji {
+            font-size: 1.8rem;
+            margin: 0 0.5rem;
+        }
+        .note {
+            background: linear-gradient(135deg, #fff7e6, #fff);
+            padding: 2rem;
+            border-radius: 20px;
+            border: 3px dashed #ff6b6b;
+            box-shadow: 0 5px 25px rgba(0, 0, 0, 0.15);
+            margin-top: 2rem;
+        }
+        b {
+            color: #3333ff;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>
+            <span class="title">Tableau Basics</span>
+            <span class="subtitle">Dr. Shay Tsaban</span>
+        </h1>
+    </header>
+
+    <section>
+        <h2>Tableau Unleashed! 📊🔥</h2>
+        <p>Welcome to the dazzling world of data visualization! <b>Tableau</b> is your magic wand 🪄 to turn raw data into stunning insights effortlessly! Perfect for IT students ready to shine! 🌟</p>
+    </section>
+
+    <section>
+        <h2>Why Tableau Rocks Over Power BI 🎯💼</h2>
+        <p><b>Tableau</b> dazzles with its drag-and-drop ease, jaw-dropping visuals, and a thriving community 🌍. It beats Power BI in flexibility and speed ⚡ for on-the-fly analysis. With a huge market share and high demand in the workforce, mastering Tableau is your golden ticket 🎫 to success!</p>
+    </section>
+
+    <section>
+        <h2>Grab Tableau Public Now! ⬇️🚀</h2>
+        <p>Dive in with the free <b>Tableau Public</b> and start crafting your data masterpieces today! 🎨</p>
+        <a href="https://public.tableau.com/en-us/s/download" target="_blank" class="gradient-btn">Download Now! 🌟</a>
+    </section>
+
+    <section>
+        <h2>Data Files for Practice 📈🛠️</h2>
+        <p><b>To be continued</b> / updated later, stay tuned! ⏳ More goodies coming your way soon! 🎉</p>
+    </section>
+
+    <section>
+        <h2>Recordings Hub 🎥✨</h2>
+        <p><b>Coming soon!</b> 🎬 Here, you’ll find all the dazzling recordings of course chapters to guide you through Tableau mastery step-by-step. Keep your eyes peeled! 👀</p>
+    </section>
+
+    <section class="note">
+        <h2>About Dr. Shay Tsaban 👨‍🏫🌟</h2>
+        <p><b>Dr. Shay Tsaban</b> is a Senior Lecturer at Peres Academic Center, armed with a PhD from Ariel University on the economics of happiness 😊. A CPA in Israel, he blends finance, social responsibility, and strategy into his teaching. With an MBA from The Open University and a Master’s from Ben-Gurion University on gender wage gaps, he’s your data visualization guru inspiring IT students to soar! 🚀</p>
+        <a href="mailto:shay.tsaban@gmail.com" class="gradient-btn">Email Me! ✉️💬</a>
+    </section>
+
+    <script>
+        // Header animation with bounce
+        window.onload = function() {
+            const header = document.querySelector('header h1');
+            header.style.opacity = 0;
+            header.style.transform = 'translateY(-20px)';
+            setTimeout(() => {
+                header.style.transition = 'all 0.8s ease-out';
+                header.style.opacity = 1;
+                header.style.transform = 'translateY(0)';
+            }, 100);
+        };
+    </script>
+</body>
+</html>
