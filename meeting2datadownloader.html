@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Download Tableau Training Dataset</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body {
+            background-color: #f3f4f6;
+            font-family: 'Inter', sans-serif;
+        }
+        .card {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
+        }
+    </style>
+</head>
+<body class="flex items-center justify-center min-h-screen p-4">
+
+    <div class="card max-w-lg w-full p-8 text-center">
+        <div class="mb-6 flex justify-center">
+            <div class="bg-blue-100 p-4 rounded-full">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17v-2a4 4 0 014-4h1m2 4v2a2 2 0 01-2 2H5a2 2 0 01-2-2v-7a2 2 0 012-2h2m3 9V9a2 2 0 00-2-2M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                </svg>
+            </div>
+        </div>
+        
+        <h1 class="text-2xl font-bold text-gray-800 mb-2">Tableau Training Dataset</h1>
+        <p class="text-gray-600 mb-8">
+            This file contains 1,000 rows of retail, logistics, and financial data designed specifically for Tableau analysis.
+        </p>
+
+        <div class="space-y-4">
+            <button id="downloadBtn" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-6 rounded-lg transition-colors flex items-center justify-center gap-2 shadow-lg">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                    <path fill-rule="evenodd" d="M3 17a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm3.293-7.707a1 1 0 011.414 0L9 10.586V3a1 1 0 112 0v7.586l1.293-1.293a1 1 0 111.414 1.414l-3 3a1 1 0 01-1.414 0l-3-3a1 1 0 010-1.414z" clip-rule="evenodd" />
+                </svg>
+                Download CSV for Tableau
+            </button>
+            
+            <p class="text-xs text-gray-400">File size: ~150KB | Format: CSV (UTF-8)</p>
+        </div>
+
+        <div class="mt-8 pt-6 border-t border-gray-100 text-left">
+            <h3 class="text-sm font-semibold text-gray-700 mb-2">Quick Exercises:</h3>
+            <ul class="text-xs text-gray-500 space-y-1 list-disc ml-4">
+                <li>Create a <strong>Profitability Map</strong> using the State and Country fields.</li>
+                <li>Analyze <strong>Sales Seasonality</strong> with the Order Date.</li>
+                <li>Compare <strong>Shipping Costs vs Sales</strong> using a Scatter Plot.</li>
+            </ul>
+        </div>
+    </div>
+
+    <script>
+        const csvContent = `Order_ID,Order_Date,Ship_Date,Ship_Mode,Customer_Segment,Country,State,Region,Category,Sub_Category,Product_Name,Sales,Quantity,Discount,Profit,Shipping_Cost,Order_Priority
+${generateData(1000)}`;
+
+        function generateData(rows) {
+            const segments = ['Consumer', 'Corporate', 'Home Office'];
+            const countries = {
+                'United States': ['California', 'Texas', 'New York', 'Florida', 'Illinois'],
+                'United Kingdom': ['London', 'Manchester', 'Birmingham', 'Glasgow'],
+                'Germany': ['Berlin', 'Munich', 'Hamburg', 'Frankfurt'],
+                'France': ['Paris', 'Marseille', 'Lyon', 'Toulouse'],
+                'Australia': ['New South Wales', 'Victoria', 'Queensland', 'Western Australia']
+            };
+            const categories = {
+                'Furniture': ['Chairs', 'Tables', 'Bookcases', 'Furnishings'],
+                'Electronics': ['Phones', 'Accessories', 'Machines', 'Copiers'],
+                'Office Supplies': ['Paper', 'Binders', 'Storage', 'Art', 'Envelopes']
+            };
+            const shipModes = ['Standard Class', 'Second Class', 'First Class', 'Same Day'];
+            const priorities = ['Low', 'Medium', 'High', 'Critical'];
+            
+            let data = [];
+            let startDate = new Date(2023, 0, 1);
+
+            for (let i = 1; i <= rows; i++) {
+                let oDate = new Date(startDate.getTime() + Math.random() * (new Date(2025, 11, 31).getTime() - startDate.getTime()));
+                let sDate = new Date(oDate.getTime() + (Math.floor(Math.random() * 7) + 1) * 24 * 60 * 60 * 1000);
+                
+                let countryKeys = Object.keys(countries);
+                let country = countryKeys[Math.floor(Math.random() * countryKeys.length)];
+                let state = countries[country][Math.floor(Math.random() * countries[country].length)];
+                
+                let catKeys = Object.keys(categories);
+                let cat = catKeys[Math.floor(Math.random() * catKeys.length)];
+                let subCat = categories[cat][Math.floor(Math.random() * categories[cat].length)];
+                
+                let qty = Math.floor(Math.random() * 10) + 1;
+                let basePrice = (Math.random() * 490) + 10;
+                let sales = (basePrice * qty).toFixed(2);
+                let discount = [0, 0.1, 0.2, 0.4, 0.5][Math.floor(Math.random() * 5)];
+                let shipCost = (sales * (Math.random() * 0.1 + 0.05)).toFixed(2);
+                let margin = (Math.random() * 0.7 - 0.2);
+                let profit = ((sales * margin) - (sales * discount)).toFixed(2);
+
+                data.push([
+                    `CA-2026-${100000 + i}`,
+                    oDate.toISOString().split('T')[0],
+                    sDate.toISOString().split('T')[0],
+                    shipModes[Math.floor(Math.random() * shipModes.length)],
+                    segments[Math.floor(Math.random() * segments.length)],
+                    country,
+                    state,
+                    `Global-${country.substring(0,3).toUpperCase()}`,
+                    cat,
+                    subCat,
+                    `${subCat} Item #${Math.floor(Math.random() * 899) + 100}`,
+                    sales,
+                    qty,
+                    discount,
+                    profit,
+                    shipCost,
+                    priorities[Math.floor(Math.random() * priorities.length)]
+                ].join(','));
+            }
+            return data.join('\n');
+        }
+
+        document.getElementById('downloadBtn').addEventListener('click', function() {
+            const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+            const url = URL.createObjectURL(blob);
+            const link = document.createElement("a");
+            link.setAttribute("href", url);
+            link.setAttribute("download", "Tableau_Training_Data.csv");
+            link.style.visibility = 'hidden';
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        });
+    </script>
+</body>
+</html>
