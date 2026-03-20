@@ -1,63 +1,191 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="he" dir="rtl">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Download Tableau Training Dataset</title>
+    <title>מדריך Tableau מקיף: ניתוח נתוני GlobalMart</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Assistant:wght@300;400;700&display=swap" rel="stylesheet">
     <style>
         body {
-            background-color: #f3f4f6;
-            font-family: 'Inter', sans-serif;
+            background-color: #f1f5f9;
+            font-family: 'Assistant', sans-serif;
+            scroll-behavior: smooth;
         }
-        .card {
+        .instruction-card {
             background: white;
-            border-radius: 12px;
-            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
+            border-right: 6px solid #2563eb;
+            transition: transform 0.2s;
+        }
+        .instruction-card:hover {
+            transform: translateY(-2px);
+        }
+        .step-number {
+            background: #2563eb;
+            color: white;
+            width: 32px;
+            height: 32px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            font-weight: bold;
+            margin-left: 12px;
+        }
+        .shelf-tag {
+            background: #e2e8f0;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-weight: bold;
+            color: #1e293b;
+        }
+        .rationale-box {
+            background-color: #fdf2f2;
+            border-left: 4px solid #ef4444;
+            padding: 10px;
+            margin-top: 10px;
+            font-size: 0.875rem;
         }
     </style>
 </head>
-<body class="flex items-center justify-center min-h-screen p-4">
+<body class="p-4 md:p-10 text-right">
 
-    <div class="card max-w-lg w-full p-8 text-center">
-        <div class="mb-6 flex justify-center">
-            <div class="bg-blue-100 p-4 rounded-full">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17v-2a4 4 0 014-4h1m2 4v2a2 2 0 01-2 2H5a2 2 0 01-2-2v-7a2 2 0 012-2h2m3 9V9a2 2 0 00-2-2M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+    <div class="max-w-5xl mx-auto">
+        <!-- Header & Background -->
+        <header class="text-center mb-12">
+            <h1 class="text-4xl font-extrabold text-gray-900 mb-6 text-center">מרכז הלמידה: ניתוח נתוני GlobalMart ב-Tableau</h1>
+            
+            <div class="bg-white p-8 rounded-2xl shadow-sm border border-gray-200">
+                <h2 class="text-2xl font-bold text-blue-800 mb-4 text-right">רקע על הנתונים</h2>
+                <p class="text-gray-700 leading-relaxed mb-4 text-right">
+                    חברת <strong>GlobalMart</strong> היא רשת קמעונאית בינלאומית. הקובץ מכיל 1,000 עסקאות שבוצעו בשנים האחרונות בתחומי הריהוט, האלקטרוניקה והציוד המשרדי. 
+                    בניתוח זה נחקור את הקשר בין זמן, קטגוריות מוצרים ורווחיות.
+                </p>
+                <div class="bg-blue-50 p-4 rounded-lg border-r-4 border-blue-500 text-right">
+                    <h3 class="font-bold text-blue-900 mb-2">עקרונות בחירת תרשים:</h3>
+                    <ul class="list-disc list-inside text-sm space-y-1">
+                        <li><strong>תרשים קו (Line Chart):</strong> מעולה לזיהוי <strong>מגמות</strong> לאורך זמן (האם אנחנו בשיפור או נסיגה?).</li>
+                        <li><strong>תרשים עמודות (Bar Chart):</strong> הכלי הטוב ביותר לביצוע <strong>השוואות</strong> ודירוג בין קטגוריות שונות.</li>
+                    </ul>
+                </div>
+            </div>
+        </header>
+
+        <!-- Download Button -->
+        <div class="flex justify-center mb-16">
+            <button id="downloadBtn" class="flex items-center gap-3 bg-blue-600 hover:bg-blue-700 text-white text-xl font-bold py-4 px-12 rounded-2xl shadow-xl transition-all hover:scale-105">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
                 </svg>
+                שלב 1: הורד את קובץ הנתונים
+            </button>
+        </div>
+
+        <!-- Task Section -->
+        <h2 class="text-3xl font-bold text-gray-800 mb-8 border-b-4 border-blue-500 inline-block pb-2 text-right">שלב 2: בניית הניתוח (5 גיליונות עבודה)</h2>
+
+        <div class="space-y-10">
+            
+            <!-- Sheet 1 -->
+            <div class="instruction-card p-8 rounded-xl shadow-md">
+                <h3 class="text-xl font-bold text-gray-900 mb-4 flex items-center">
+                    <span class="step-number">1</span>
+                    Sheet 1: זיהוי מגמות מכירות (Line Chart)
+                </h3>
+                <div class="bg-gray-50 p-5 rounded-lg border border-gray-200 text-gray-800 space-y-3">
+                    <p>1. גרור את המשתנה <span class="shelf-tag">Order Date</span> אל מדף ה-<strong>Columns</strong>. שנה אותו ל-<strong>Month</strong> (חודש רציף).</p>
+                    <p>2. גרור את המשתנה <span class="shelf-tag">Sales</span> אל מדף ה-<strong>Rows</strong>.</p>
+                    <p>3. <strong>שימוש ב-Color:</strong> גרור את <span class="shelf-tag">Category</span> אל תוך אזור ה-<strong>Marks</strong> ושחרר אותו מעל כפתור ה-<strong>Color</strong>. הצבעים יתעדכנו אוטומטית לפי ברירת המחדל.</p>
+                </div>
+                <div class="rationale-box">
+                    <strong>הרציונל:</strong> תרשים קו מאפשר לנו לראות "רצף". הוספת הצבע לפי קטגוריה עוזרת לנו להבין איזו מחלקה מובילה את הצמיחה ואיזו נשארת מאחור.
+                </div>
+            </div>
+
+            <!-- Sheet 2 -->
+            <div class="instruction-card p-8 rounded-xl shadow-md">
+                <h3 class="text-xl font-bold text-gray-900 mb-4 flex items-center">
+                    <span class="step-number">2</span>
+                    Sheet 2: דירוג רווחיות (Bar Chart)
+                </h3>
+                <div class="bg-gray-50 p-5 rounded-lg border border-gray-200 text-gray-800 space-y-3">
+                    <p>1. גרור את <span class="shelf-tag">Sub-Category</span> אל ה-<strong>Rows</strong>.</p>
+                    <p>2. גרור את <span class="shelf-tag">Profit</span> אל ה-<strong>Columns</strong>.</p>
+                    <p>3. <strong>הוספת תוויות (Labels):</strong> גרור את המשתנה <span class="shelf-tag">Profit</span> אל תוך אזור ה-<strong>Marks</strong> ושחרר אותו מעל כפתור ה-<strong>Label</strong>. כעת יופיעו הערכים המספריים ליד כל עמודה.</p>
+                    <p>4. <strong>צביעה לפי ערך:</strong> גרור את <span class="shelf-tag">Profit</span> שוב אל תוך אזור ה-Marks ושחרר מעל <strong>Color</strong>.</p>
+                </div>
+                <div class="rationale-box">
+                    <strong>הרציונל:</strong> תרשים עמודות הוא הכלי האידיאלי לדירוג. הצביעה האוטומטית לפי רווח מדגישה מיד את המוצרים הבעייתיים (אלו שנצבעים בכתום/אדום כברירת מחדל).
+                </div>
+            </div>
+
+            <!-- Sheet 3 -->
+            <div class="instruction-card p-8 rounded-xl shadow-md">
+                <h3 class="text-xl font-bold text-gray-900 mb-4 flex items-center">
+                    <span class="step-number">3</span>
+                    Sheet 3: פילוח מכירות אזורי (Stacked Bar)
+                </h3>
+                <div class="bg-gray-50 p-5 rounded-lg border border-gray-200 text-gray-800 space-y-3">
+                    <p>1. גרור את <span class="shelf-tag">Region</span> אל ה-<strong>Rows</strong>.</p>
+                    <p>2. גרור את <span class="shelf-tag">Sales</span> אל ה-<strong>Columns</strong>.</p>
+                    <p>3. גרור את <span class="shelf-tag">Customer Segment</span> אל אזור ה-Marks ושחרר מעל <strong>Color</strong>.</p>
+                    <p>4. <strong>תוויות לכל פלח:</strong> גרור את המשתנה <span class="shelf-tag">Sales</span> אל אזור ה-Marks ושחרר מעל <strong>Label</strong>.</p>
+                </div>
+                <div class="rationale-box">
+                    <strong>הרציונל:</strong> עמודות נערמות עוזרות לנו להבין את "הרכב" המכירות. האם באזור מסוים הלקוחות העסקיים הם הדומיננטיים? התרשים הזה יענה על כך.
+                </div>
+            </div>
+
+            <!-- Sheet 4 -->
+            <div class="instruction-card p-8 rounded-xl shadow-md">
+                <h3 class="text-xl font-bold text-gray-900 mb-4 flex items-center">
+                    <span class="step-number">4</span>
+                    Sheet 4: השפעת ההנחה על הרווח (Scatter Plot)
+                </h3>
+                <div class="bg-gray-50 p-5 rounded-lg border border-gray-200 text-gray-800 space-y-3">
+                    <p>1. גרור את <span class="shelf-tag">Discount</span> אל ה-<strong>Columns</strong>.</p>
+                    <p>2. גרור את <span class="shelf-tag">Profit</span> אל ה-<strong>Rows</strong>.</p>
+                    <p>3. כדי לראות כל עסקה בנפרד, גרור את <span class="shelf-tag">Order_ID</span> אל תיבת ה-<strong>Detail</strong> ב-Marks.</p>
+                </div>
+                <div class="rationale-box">
+                    <strong>הרציונל:</strong> תרשים פיזור משמש למציאת קשר בין שני משתנים מספריים. כאן נוכל לראות האם הנחות גבוהות באמת גורמות להפסדים כבדים כפי שאנחנו חושדים.
+                </div>
+            </div>
+
+            <!-- Sheet 5 -->
+            <div class="instruction-card p-8 rounded-xl shadow-md">
+                <h3 class="text-xl font-bold text-gray-900 mb-4 flex items-center">
+                    <span class="step-number">5</span>
+                    Sheet 5: שימוש ב-Pages ובסינון (Filters)
+                </h3>
+                <div class="bg-gray-50 p-5 rounded-lg border border-gray-200 text-gray-800 space-y-3">
+                    <p>1. צור תרשים פשוט: <span class="shelf-tag">Category</span> ב-Rows ו-<span class="shelf-tag">Quantity</span> ב-Columns.</p>
+                    <p>2. גרור את <span class="shelf-tag">Order Date</span> אל מדף ה-<strong>Pages</strong> ושנה אותו ל-Year.</p>
+                    <p>3. גרור את <span class="shelf-tag">Region</span> אל מדף ה-<strong>Filters</strong>, בחר הכל, ולחץ קליק ימני על השדה כדי לבחור ב-<strong>Show Filter</strong>.</p>
+                </div>
+                <div class="rationale-box">
+                    <strong>הרציונל:</strong> מדף ה-Pages מאפשר לנו "להריץ" את הנתונים בזמן כמו סרט, בעוד שהפילטרים מאפשרים לנו להתמקד באזור ספציפי של העסק.
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Dashboard Section -->
+        <div class="mt-16 bg-blue-900 text-white p-10 rounded-2xl shadow-2xl text-right">
+            <h3 class="text-2xl font-bold mb-6">סיכום: בניית הדשבורד</h3>
+            <p class="mb-6 opacity-90 text-lg">לאחר יצירת הגיליונות, צור דשבורד חדש וגרור אליו את הגיליונות. זכור להפוך את הפילטרים ל-"Interactive" על ידי לחיצה על "Use as Filter" בתרשימים המובילים.</p>
+            <div class="bg-blue-800 p-4 rounded text-sm italic">
+                הערה: נסה להשתמש בלוח ה-"Show Me" כדי להפוך את תרשימי העמודות לתרשימים אחרים כמו Treemaps או Packed Bubbles ולהתרשם מההבדלים הוויזואליים.
             </div>
         </div>
-        
-        <h1 class="text-2xl font-bold text-gray-800 mb-2">Tableau Training Dataset</h1>
-        <p class="text-gray-600 mb-8">
-            This file contains 1,000 rows of retail, logistics, and financial data designed specifically for Tableau analysis.
-        </p>
 
-        <div class="space-y-4">
-            <button id="downloadBtn" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-6 rounded-lg transition-colors flex items-center justify-center gap-2 shadow-lg">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-                    <path fill-rule="evenodd" d="M3 17a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm3.293-7.707a1 1 0 011.414 0L9 10.586V3a1 1 0 112 0v7.586l1.293-1.293a1 1 0 111.414 1.414l-3 3a1 1 0 01-1.414 0l-3-3a1 1 0 010-1.414z" clip-rule="evenodd" />
-                </svg>
-                Download CSV for Tableau
-            </button>
-            
-            <p class="text-xs text-gray-400">File size: ~150KB | Format: CSV (UTF-8)</p>
-        </div>
-
-        <div class="mt-8 pt-6 border-t border-gray-100 text-left">
-            <h3 class="text-sm font-semibold text-gray-700 mb-2">Quick Exercises:</h3>
-            <ul class="text-xs text-gray-500 space-y-1 list-disc ml-4">
-                <li>Create a <strong>Profitability Map</strong> using the State and Country fields.</li>
-                <li>Analyze <strong>Sales Seasonality</strong> with the Order Date.</li>
-                <li>Compare <strong>Shipping Costs vs Sales</strong> using a Scatter Plot.</li>
-            </ul>
-        </div>
+        <footer class="mt-20 py-10 text-center border-t border-gray-200">
+            <p class="text-gray-500 italic">"גרפים טובים לא רק מראים נתונים - הם מעוררים שאלות חדשות."</p>
+        </footer>
     </div>
 
     <script>
-        const csvContent = `Order_ID,Order_Date,Ship_Date,Ship_Mode,Customer_Segment,Country,State,Region,Category,Sub_Category,Product_Name,Sales,Quantity,Discount,Profit,Shipping_Cost,Order_Priority
-${generateData(1000)}`;
-
+        // Data generation logic (1000 detailed rows)
         function generateData(rows) {
             const segments = ['Consumer', 'Corporate', 'Home Office'];
             const countries = {
@@ -80,7 +208,7 @@ ${generateData(1000)}`;
 
             for (let i = 1; i <= rows; i++) {
                 let oDate = new Date(startDate.getTime() + Math.random() * (new Date(2025, 11, 31).getTime() - startDate.getTime()));
-                let sDate = new Date(oDate.getTime() + (Math.floor(Math.random() * 7) + 1) * 24 * 60 * 60 * 1000);
+                let sDate = new Date(oDate.getTime() + (Math.floor(Math.random() * 5) + 2) * 24 * 60 * 60 * 1000);
                 
                 let countryKeys = Object.keys(countries);
                 let country = countryKeys[Math.floor(Math.random() * countryKeys.length)];
@@ -90,26 +218,27 @@ ${generateData(1000)}`;
                 let cat = catKeys[Math.floor(Math.random() * catKeys.length)];
                 let subCat = categories[cat][Math.floor(Math.random() * categories[cat].length)];
                 
-                let qty = Math.floor(Math.random() * 10) + 1;
-                let basePrice = (Math.random() * 490) + 10;
+                let qty = Math.floor(Math.random() * 8) + 1;
+                let basePrice = (Math.random() * 400) + 20;
                 let sales = (basePrice * qty).toFixed(2);
-                let discount = [0, 0.1, 0.2, 0.4, 0.5][Math.floor(Math.random() * 5)];
-                let shipCost = (sales * (Math.random() * 0.1 + 0.05)).toFixed(2);
-                let margin = (Math.random() * 0.7 - 0.2);
-                let profit = ((sales * margin) - (sales * discount)).toFixed(2);
+                let discount = [0, 0, 0, 0.1, 0.2, 0.5][Math.floor(Math.random() * 6)];
+                
+                let costFactor = (Math.random() * 0.4 + 0.45); 
+                let profit = (sales * (1 - costFactor) - (sales * discount)).toFixed(2);
+                let shipCost = (sales * 0.08).toFixed(2);
 
                 data.push([
-                    `CA-2026-${100000 + i}`,
+                    `GM-${2024}-${1000 + i}`,
                     oDate.toISOString().split('T')[0],
                     sDate.toISOString().split('T')[0],
                     shipModes[Math.floor(Math.random() * shipModes.length)],
                     segments[Math.floor(Math.random() * segments.length)],
                     country,
                     state,
-                    `Global-${country.substring(0,3).toUpperCase()}`,
+                    `${country.substring(0,3).toUpperCase()}-Zone`,
                     cat,
                     subCat,
-                    `${subCat} Item #${Math.floor(Math.random() * 899) + 100}`,
+                    `${subCat} Model X-${Math.floor(Math.random() * 900) + 100}`,
                     sales,
                     qty,
                     discount,
@@ -122,11 +251,15 @@ ${generateData(1000)}`;
         }
 
         document.getElementById('downloadBtn').addEventListener('click', function() {
+            const header = "Order_ID,Order_Date,Ship_Date,Ship_Mode,Customer_Segment,Country,State,Region,Category,Sub_Category,Product_Name,Sales,Quantity,Discount,Profit,Shipping_Cost,Order_Priority\n";
+            const body = generateData(1000);
+            const csvContent = header + body;
+            
             const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
             const url = URL.createObjectURL(blob);
             const link = document.createElement("a");
             link.setAttribute("href", url);
-            link.setAttribute("download", "Tableau_Training_Data.csv");
+            link.setAttribute("download", "GlobalMart_Sales_Data_Full.csv");
             link.style.visibility = 'hidden';
             document.body.appendChild(link);
             link.click();
