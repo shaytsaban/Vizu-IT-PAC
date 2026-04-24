@@ -1,0 +1,459 @@
+<!DOCTYPE html>
+<html dir="rtl" lang="he">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>מבחן מסכם: מערכת איסוף נתונים פיננסיים | ד"ר שי צבאן</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Assistant:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Assistant', sans-serif;
+            background-color: #f8fafc;
+            background-image: 
+                radial-gradient(at 0% 0%, hsla(217, 100%, 76%, 0.15) 0, transparent 50%), 
+                radial-gradient(at 50% 0%, hsla(225, 39%, 30%, 0.05) 0, transparent 50%), 
+                radial-gradient(at 100% 0%, hsla(160, 100%, 76%, 0.1) 0, transparent 50%);
+            color: #1e293b;
+            scroll-behavior: smooth;
+            padding-bottom: 50px;
+        }
+        
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.6);
+            box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.08);
+        }
+
+        .question-card {
+            transition: all 0.3s ease;
+        }
+        .question-card:hover {
+            box-shadow: 0 15px 35px -5px rgba(0, 0, 0, 0.1);
+            transform: translateY(-2px);
+        }
+
+        /* Custom Radio Button Styling */
+        input[type="radio"] {
+            appearance: none;
+            width: 1.25rem;
+            height: 1.25rem;
+            border: 2px solid #94a3b8;
+            border-radius: 50%;
+            outline: none;
+            cursor: pointer;
+            position: relative;
+            margin-left: 0.75rem;
+            flex-shrink: 0;
+            transition: border-color 0.2s ease;
+        }
+        input[type="radio"]:checked {
+            border-color: #3b82f6;
+        }
+        input[type="radio"]:checked::before {
+            content: "";
+            width: 0.625rem;
+            height: 0.625rem;
+            background-color: #3b82f6;
+            border-radius: 50%;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+        input[type="radio"]:disabled {
+            background-color: #e2e8f0;
+            cursor: not-allowed;
+            border-color: #cbd5e1;
+        }
+
+        .hint-box, .reveal-box {
+            display: none;
+            animation: slideDown 0.3s ease forwards;
+        }
+
+        @keyframes slideDown {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .logic-btn {
+            background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+            box-shadow: 0 4px 15px rgba(37, 99, 235, 0.35);
+            transition: all 0.2s;
+        }
+        .logic-btn:hover:not(:disabled) {
+            box-shadow: 0 6px 20px rgba(37, 99, 235, 0.5);
+            transform: translateY(-2px);
+        }
+        .logic-btn:disabled {
+            background: #94a3b8;
+            box-shadow: none;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        /* Modal styling */
+        #result-modal {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(15, 23, 42, 0.8);
+            backdrop-filter: blur(5px);
+            z-index: 50;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .loader {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #3b82f6;
+            border-radius: 50%;
+            width: 24px;
+            height: 24px;
+            animation: spin 1s linear infinite;
+            display: inline-block;
+            vertical-align: middle;
+            margin-right: 10px;
+        }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+    </style>
+</head>
+<body>
+
+    <div class="max-w-4xl mx-auto pt-10 px-4">
+        
+        <header class="glass-panel rounded-[2rem] p-8 text-center mb-10 border-b-8 border-blue-600 relative overflow-hidden">
+            <h1 class="text-3xl md:text-5xl font-black mb-4 text-slate-800 tracking-tight">
+                מבחן מסכם: <span class="text-transparent bg-clip-text bg-gradient-to-l from-blue-600 to-indigo-500">מערכת פיננסית צד-לקוח ושרת</span>
+            </h1>
+            <p class="text-lg text-slate-600 mb-2">מרצה: ד"ר שי צבאן</p>
+            <div class="bg-indigo-50 border border-indigo-100 p-4 rounded-xl mt-4 inline-block shadow-sm">
+                <p class="text-md text-indigo-900 font-medium">
+                    🔒 מבחן זה מאובטח. התשובות מחושבות בזמן אמת בשרת ה-Backend.<br>
+                    עליכם לענות נכונה על <strong>לפחות 13 שאלות</strong> כדי לקבל את קוד האישור להגשה במטלה. 
+                </p>
+            </div>
+        </header>
+
+        <form id="quiz-form" class="space-y-8">
+            <div id="questions-container" class="space-y-8"></div>
+
+            <div class="text-center pt-8 pb-12">
+                <button type="button" id="submit-btn" onclick="evaluateQuiz()" class="logic-btn text-white text-2xl font-black px-12 py-5 rounded-2xl w-full md:w-auto flex items-center justify-center mx-auto gap-3">
+                    הגש שאלון ובדוק תוצאה מול השרת 🚀
+                </button>
+            </div>
+        </form>
+
+    </div>
+
+    <div id="result-modal" class="flex">
+        <div class="glass-panel w-[90%] max-w-lg rounded-3xl p-10 text-center relative animate-[slideDown_0.4s_ease]">
+            <div id="modal-icon" class="text-6xl mb-4"></div>
+            <h2 id="modal-title" class="text-3xl font-black mb-4 text-slate-800"></h2>
+            <p id="modal-text" class="text-lg text-slate-600 mb-6"></p>
+            
+            <div id="code-container" class="hidden bg-slate-100 border-2 border-dashed border-slate-300 p-6 rounded-2xl mb-8">
+                <p class="text-sm text-slate-500 mb-2 font-bold">העתק את הקוד הבא לקובץ ה-WORD שלך:</p>
+                <div id="success-code" class="text-4xl font-mono font-black text-indigo-600 tracking-widest select-all"></div>
+            </div>
+
+            <button onclick="closeModal()" class="bg-slate-200 hover:bg-slate-300 text-slate-800 font-bold py-3 px-8 rounded-xl transition-colors">
+                סגור חלונית
+            </button>
+        </div>
+    </div>
+
+    <script>
+        // המערך ללא מפתח התשובות - מאובטח לחלוטין בצד הלקוח
+        const questions = [
+            {
+                q: "מהי המטרה המרכזית של המערכת שנבנית במדריך?",
+                options: ["לשלוח אימיילים מותאמים אישית ללקוחות", "לשלוף שערי סגירה למספר מניות במקביל ולהשוות ביניהן בסדרת-זמן", "לבנות מחשבון משכנתא פשוט", "ליצור אלגוריתם שסוחר בבורסה אוטומטית"],
+                hint: "תחשבו על הפלט הסופי של המערכת, כפי שמתואר בפסקת הפתיחה."
+            },
+            {
+                q: "היכן נכתב ומאוחסן קוד השרת (Backend) של המערכת?",
+                options: ["GitHub Pages", "בשרת מקומי על המחשב האישי", "Google Apps Script", "Microsoft Azure"],
+                hint: "הקוד הזה מתחיל בפונקציות כמו doGet ו-doPost, והשתמשנו ב-script.google.com."
+            },
+            {
+                q: "באיזו פלטפורמה מאוחסן ומוצג ממשק הלקוח (Frontend) שלנו לאוויר העולם?",
+                options: ["Google Apps Script", "GitHub Pages", "Wix", "WordPress"],
+                hint: "העלינו לשם קובץ והמתנו שנקודה צהובה תהפוך ל-V ירוק."
+            },
+            {
+                q: "מהו השם המדויק שחובה לתת לקובץ שיצרנו ב-GitHub כדי שהאתר יעבוד?",
+                options: ["main.js", "app.html", "index.html", "server.js"],
+                hint: "זהו שמו של קובץ השורש הסטנדרטי בכל אתר אינטרנט."
+            },
+            {
+                q: "איזה כלי משמש אותנו בדפדפן כדי לאתר שגיאות ולבצע דיבאגינג (Debugging)?",
+                options: ["מקש F5 (רענון)", "מקש F12 (ולשונית Console)", "מקש Esc", "הגדרות הדפדפן -> היסטוריה"],
+                hint: "מצוין במפורש בחלק הרביעי של המדריך תחת 'משהו נשבר או נתקע?'."
+            },
+            {
+                q: "מה קורה בשרת כאשר ספק הנתונים הראשי (Yahoo Finance) קורס או נכשל במשיכת המידע?",
+                options: ["המערכת מחזירה הודעת שגיאה והתהליך עוצר מיד", "השרת שולח אימייל אזהרה למפתח", "מופעלת לוגיקת נפילה חכמה שיוצרת גיליון זמני עם פונקציית GOOGLEFINANCE", "המערכת מחכה דקה ומנסה שוב את אותו הספק"],
+                hint: "חפשו את המונח 'Fallback' בלוגיקה של השרת."
+            },
+            {
+                q: "מדוע אנו מבצעים 'בקרות (Validations) צד-לקוח' רגע לפני לחיצה על כפתור הטעינה?",
+                options: ["כדי למנוע שליחת בקשות שגויות לשרת ולתת פידבק מהיר וידידותי למשתמש", "כדי לחסוך מקום באחסון של GitHub", "כי השרת לא יודע להתמודד עם שגיאות בכלל", "כדי לגרום לאנימציה להיראות טוב יותר"],
+                hint: "חשבו מה קורה אם משתמש מכניס תאריך שגוי - עדיף לעצור אותו לפני שהמידע נוסע עד לשרת של גוגל."
+            },
+            {
+                q: "בהגדרות הפריסה (Deployment) של השרת, למי חובה לתת גישה (Who has access) כדי שהמערכת לא תיחסם?",
+                options: ["רק לי (Only myself)", "למשתמשי גוגל בלבד (Anyone with Google account)", "לכל אחד (Anyone)", "למנהלי המערכת בלבד"],
+                hint: "ראו את ההתראה האדומה תחת 'הגדרות חובה למניעת חסימות אבטחה'."
+            },
+            {
+                q: "מהו תפקידה של 'מפת תאריכים' (Date Map) באלגוריתם השרת?",
+                options: ["לצייר גרף ויזואלי של המניות", "להמיר תאריכים מפורמט אמריקאי לישראלי", "לסנכרן שערי סגירה של מספר מניות שונות לאותה שורת תאריך בדיוק (מבנה Pivot)", "למחוק תאריכים שבהם הבורסה סגורה"],
+                hint: "זהו השלב שבו המערכת אוספת מניה אחר מניה ומשבצת אותן לפי התאריך המתאים."
+            },
+            {
+                q: "כאשר אנו מתקנים באג בקוד השרת (Apps Script), מהו השלב הקריטי הבא שחייבים לעשות כדי שהתיקון יחול?",
+                options: ["רק ללחוץ על סמל השמירה", "ללחוץ על New Deployment, להעתיק את ה-URL החדש ולעדכן אותו ב-HTML", "לרענן את GitHub", "למחוק את הפרויקט ולהתחיל מחדש"],
+                hint: "איך צד הלקוח יודע שהקוד בשרת התעדכן? הוא צריך כתובת מעודכנת."
+            },
+            {
+                q: "מדוע השרת משתמש בפקודת `JSON.parse(e.postData.contents)` כצעד ראשון עם קבלת הבקשה?",
+                options: ["כי הוא מוריד קובץ CSV מהאינטרנט", "מכיוון שצד הלקוח שולח את הבקשה כ-text/plain ויש להמיר את הטקסט בחזרה לאובייקט מתורגם (JSON)", "כדי לתרגם את הטקסט לעברית", "כי זו הדרך היחידה למחוק גיליונות מגוגל"],
+                hint: "מערכת צד הלקוח שולחת מחרוזת (String) כדי לעקוף חסימות דפדפן, השרת צריך להפוך את המחרוזת חזרה למבנה נתונים."
+            },
+            {
+                q: "איזה מהפרמטרים הבאים מועבר בתוך ה-Payload (החבילה) מצד הלקוח לשרת?",
+                options: ["password", "frequency", "colorTheme", "apiKey"],
+                hint: "הסתכלו על המבנה המחייב של ה-Payload בפרומפט של ה-Frontend. מה מוגדר שם פרט למניות, תאריך התחלה ותאריך סיום?"
+            },
+            {
+                q: "מדוע הפרומפט לממשק המשתמש דרש במפורש לוודא ש-`mode: 'no-cors'` מושמט (Omitted)?",
+                options: ["כי זה גורם לאתר להיות איטי", "כי הוא מונע קריאת נתונים מהשרת (מחזיר תשובה אטומה - Opaque Response) ובכך המערכת לא תוכל להציג את הטבלה", "כי GitHub לא תומך בו", "כי זו פקודה שרלוונטית רק לתמונות"],
+                hint: "CORS היא הגנת אבטחה. שימוש ב-no-cors אמנם שולח את הבקשה, אבל אוסר על הדפדפן לקרוא את מה שחזר."
+            },
+            {
+                q: "אחרי שינוי קוד ב-GitHub Pages, מה הדרך הנכונה לוודא שאתם רואים את הגרסה העדכנית ביותר בדפדפן?",
+                options: ["סגירת המחשב והדלקתו מחדש", "המתנה ל-V הירוק ב-GitHub ואז רענון עמוק עם Ctrl + F5 באתר", "לחיצה על 'Run' בגוגל Apps Script", "שינוי שם הקובץ ל-index2.html"],
+                hint: "הדפדפן נוטה לשמור זיכרון מטמון (Cache). צירוף מקשים מסוים מכריח אותו לטעון מחדש."
+            },
+            {
+                q: "מה עושה השרת כשהוא מקבל בקשה שבה הפרמטר `action === 'sheet'`?",
+                options: ["הוא מוחק את כל הגיליונות בחשבון גוגל", "הוא מוריד קובץ PDF למחשב", "הוא יוצר גיליון גוגל (Google Sheet) חדש, כותב לתוכו את הנתונים, ומחזיר ללקוח כתובת (URL) לגיליון", "הוא מבצע Validation לתאריכים"],
+                hint: "חפשו את לוגיקת ה-Action Handling בחלק הראשון של המדריך."
+            },
+            {
+                q: "משתמש הזין תאריך התחלה: 01/05/2026 ותאריך סיום: 01/04/2026. הוא לחץ על כפתור 'טען נתונים'. מה יקרה בפועל בארכיטקטורה שבנינו?",
+                options: ["השרת יקרוס ויחזיר שגיאת 500", "המערכת תעצור מיד בצד הלקוח בגלל Validation ותציג למשתמש התראת שגיאה ידידותית - שום בקשה לא תצא לשרת", "השרת יחזיר טבלה ריקה לגמרי", "השרת יהפוך את התאריכים אוטומטית וימשוך נתונים"],
+                hint: "תאריך ההתחלה מאוחר מתאריך הסיום. איפה בודקים את זה במערכת שלנו, לפני או אחרי השליחה לשרת?"
+            },
+            {
+                q: "בזרימת הנתונים המלאה (Infographic), מהו הצעד האחרון בשרשרת לפני שהנתונים מוצגים למשתמש?",
+                options: ["בקרת קלט צד-לקוח", "יצירת סדרות זמן (Time-Series) תצוגתיות", "פנייה למקורות מידע (Yahoo Finance)", "עיבוד ומיזוג מניות בשרת (GAS)"],
+                hint: "הביטו בתרשים 4 השלבים במדריך. מהו השלב הרביעי והאחרון?"
+            },
+            {
+                q: "נניח ש-Yahoo Finance החזיר נתונים עבור מניית AAPL, אך עבור MSFT באותו תאריך בדיוק לא התקיים מסחר. כיצד השרת ירכיב את השורה באותו תאריך במערך המשולב (combinedData)?",
+                options: ["הוא ימחק את כל השורה ולא יציג את AAPL באותו תאריך", "הוא יכניס את התאריך, לידו את המחיר של AAPL, ויעתיק את המחיר של אתמול עבור MSFT", "הוא יכניס את התאריך, לידו את המחיר של AAPL, ותא ריק (\"\") עבור MSFT", "הוא ישים אפס (0) במקום התאריך"],
+                hint: "לפי הפרומפט, מה קורה אם מחיר למניה מסוימת חסר בתאריך ספציפי לאחר בניית מפת התאריכים?"
+            },
+            {
+                q: "שאלה מכשילה: האם ממשק הלקוח (ה-HTML שלנו) פונה ישירות ל-Yahoo Finance כדי להוריד את קובץ ה-CSV?",
+                options: ["כן, ה-JavaScript בדפדפן פונה ל-Yahoo", "לא, ממשק הלקוח פונה אך ורק לשרת שלנו (Google Apps Script), והשרת הוא זה שפונה ל-Yahoo Finance", "רק אם המשתמש לוחץ על כפתור 'הורד כ-CSV'", "כן, אבל רק אם גוגל נכשל"],
+                hint: "מי מתווך בין הלקוח למקורות המידע החיצוניים כדי לעקוף מגבלות דפדפן?"
+            },
+            {
+                q: "אם הדבקנו את הפרומפט של ה-Frontend ל-AI ושכחנו להחליף את ה-`[!!! REPLACE_WITH_YOUR_DEPLOYED_WEB_APP_URL !!!]` לכתובת האמיתית משלב 2, מה תהיה התוצאה כנלחץ על 'טען נתונים' באתר החי?",
+                options: ["האתר יקרוס ויימחק מ-GitHub", "הבקשה תישלח לכתובת פיקטיבית ותיכשל (הפרומיס יידחה או שתחזור שגיאה 404), והמשתמש יראה ככל הנראה אנימציית טעינה תקועה או שגיאת רשת ב-Console", "ה-AI ידע אוטומטית למצוא את הכתובת של השרת בגוגל", "הבקשה תישלח בחזרה למחשב המקומי (Localhost)"],
+                hint: "הדפדפן טיפש - הוא מבצע פנייה לכתובת שרשומה לו בקוד בדיוק. אם רשום שם טקסט שהוא לא URL תקין, הבקשה פשוט נופלת לאוויר."
+            }
+        ];
+
+        let revealedQuestions = new Set();
+
+        function renderQuestions() {
+            const container = document.getElementById('questions-container');
+            
+            questions.forEach((qObj, index) => {
+                const qNum = index + 1;
+                
+                const card = document.createElement('div');
+                card.className = "glass-panel p-6 md:p-8 rounded-3xl border-r-8 border-blue-500 question-card relative";
+                card.id = `question-card-${index}`;
+                
+                const qTitle = document.createElement('h3');
+                qTitle.className = "text-xl font-bold text-slate-800 mb-6";
+                qTitle.innerHTML = `<span class="inline-block bg-blue-100 text-blue-800 rounded-lg px-3 py-1 mr-[-0.5rem] ml-2 text-sm">שאלה ${qNum}</span> ${qObj.q}`;
+                card.appendChild(qTitle);
+
+                const optionsDiv = document.createElement('div');
+                optionsDiv.className = "space-y-3 mb-6";
+                qObj.options.forEach((optText, optIndex) => {
+                    const label = document.createElement('label');
+                    label.className = "flex items-start p-3 rounded-xl hover:bg-blue-50/50 cursor-pointer transition-colors border border-transparent hover:border-blue-100";
+                    label.id = `label-q${index}-o${optIndex}`;
+                    
+                    const input = document.createElement('input');
+                    input.type = "radio";
+                    input.name = `q${index}`;
+                    input.value = optIndex;
+                    
+                    const span = document.createElement('span');
+                    span.className = "text-slate-700 font-medium leading-relaxed mt-0.5";
+                    span.innerText = optText;
+
+                    label.appendChild(input);
+                    label.appendChild(span);
+                    optionsDiv.appendChild(label);
+                });
+                card.appendChild(optionsDiv);
+
+                const actionDiv = document.createElement('div');
+                actionDiv.className = "flex flex-wrap gap-3 mt-4 border-t border-slate-100 pt-4";
+                
+                const hintBtn = document.createElement('button');
+                hintBtn.type = "button";
+                hintBtn.className = "text-sm bg-indigo-50 hover:bg-indigo-100 text-indigo-700 font-bold py-2 px-4 rounded-lg transition-colors flex items-center gap-1";
+                hintBtn.innerHTML = "💡 תרמוז לי";
+                hintBtn.onclick = () => toggleHint(index);
+                
+                const skipBtn = document.createElement('button');
+                skipBtn.type = "button";
+                skipBtn.className = "text-sm bg-rose-50 hover:bg-rose-100 text-rose-700 font-bold py-2 px-4 rounded-lg transition-colors flex items-center gap-1";
+                skipBtn.innerHTML = "🏳️ אוותר ואדלג על השאלה";
+                skipBtn.onclick = () => skipQuestion(index);
+
+                actionDiv.appendChild(hintBtn);
+                actionDiv.appendChild(skipBtn);
+                card.appendChild(actionDiv);
+
+                const hintBox = document.createElement('div');
+                hintBox.id = `hint-${index}`;
+                hintBox.className = "hint-box mt-4 bg-indigo-50/80 border border-indigo-200 p-4 rounded-xl text-indigo-800 text-sm font-medium";
+                hintBox.innerHTML = `<strong>רמז:</strong> ${qObj.hint}`;
+                card.appendChild(hintBox);
+
+                const revealBox = document.createElement('div');
+                revealBox.id = `reveal-${index}`;
+                revealBox.className = "reveal-box mt-4 bg-rose-50/80 border border-rose-200 p-4 rounded-xl text-rose-800 text-sm font-medium";
+                revealBox.innerHTML = `ויתרת על השאלה. השרת לא יעניק עליה נקודות בחישוב הסופי.`;
+                card.appendChild(revealBox);
+
+                container.appendChild(card);
+            });
+        }
+
+        function toggleHint(index) {
+            const hintBox = document.getElementById(`hint-${index}`);
+            hintBox.style.display = hintBox.style.display === 'block' ? 'none' : 'block';
+        }
+
+        function skipQuestion(index) {
+            revealedQuestions.add(index);
+            document.getElementById(`reveal-${index}`).style.display = 'block';
+            
+            // מנטרל את כפתורי הרדיו כדי לסמן ויתור
+            const radios = document.getElementsByName(`q${index}`);
+            radios.forEach(radio => {
+                radio.checked = false;
+                radio.disabled = true;
+            });
+
+            const card = document.getElementById(`question-card-${index}`);
+            const buttons = card.querySelectorAll('button');
+            buttons.forEach(btn => btn.disabled = true);
+        }
+
+        async function evaluateQuiz() {
+            let studentAnswers = [];
+            questions.forEach((qObj, index) => {
+                const radios = document.getElementsByName(`q${index}`);
+                let selectedVal = -1; // -1 אומר שלא סומן כלום
+                for(let radio of radios) {
+                    if(radio.checked) {
+                        selectedVal = parseInt(radio.value);
+                        break;
+                    }
+                }
+                studentAnswers.push(selectedVal);
+            });
+
+            const payload = {
+                answers: studentAnswers,
+                revealed: Array.from(revealedQuestions)
+            };
+
+            const submitBtn = document.getElementById('submit-btn');
+            const originalContent = submitBtn.innerHTML;
+            submitBtn.innerHTML = "<span class='loader'></span> משדר לשרת לבדיקה...";
+            submitBtn.disabled = true;
+
+            try {
+                // ==========================================
+                // הכתובת הייחודית של השרת שלך מוגדרת כאן:
+                // ==========================================
+                const GAS_URL = "https://script.google.com/macros/s/AKfycbxbkRQVhI0AByqMJNZT6LRWTVwd_sMfqmShDPorFV-J8E0KuWxoqZc37Ctv6M_eAFhm0A/exec"; 
+                
+                const response = await fetch(GAS_URL, {
+                    method: 'POST',
+                    headers: {'Content-Type': 'text/plain;charset=utf-8'},
+                    body: JSON.stringify(payload)
+                });
+                
+                if(!response.ok) throw new Error("Network response was not ok");
+                
+                const result = await response.json();
+                
+                if(result.error) {
+                    alert("השרת החזיר שגיאה: " + result.error);
+                } else {
+                    showResultsModal(result.score, result.total, result.passed, result.passCode);
+                }
+
+            } catch (error) {
+                console.error("Fetch error:", error);
+                alert("אופס! חלה שגיאה בתקשורת עם השרת. וודא שהזנת את ה-URL הנכון בקוד ושעשית פריסה (Deploy) ל-Apps Script.");
+            } finally {
+                submitBtn.innerHTML = originalContent;
+                submitBtn.disabled = false;
+            }
+        }
+
+        function showResultsModal(score, total, passed, passCode) {
+            const modal = document.getElementById('result-modal');
+            const icon = document.getElementById('modal-icon');
+            const title = document.getElementById('modal-title');
+            const text = document.getElementById('modal-text');
+            const codeContainer = document.getElementById('code-container');
+            const successCode = document.getElementById('success-code');
+
+            codeContainer.classList.add('hidden');
+            
+            if(passed) {
+                icon.innerHTML = "🏆";
+                title.innerHTML = `כל הכבוד! עברת בהצלחה.`;
+                title.className = "text-3xl font-black mb-4 text-emerald-600";
+                text.innerHTML = `ענית נכונה על <strong>${score}</strong> מתוך ${total} שאלות.<br>הוכחת הבנה מעמיקה בארכיטקטורת המערכת והלוגיקה שלה.`;
+                successCode.innerText = passCode;
+                codeContainer.classList.remove('hidden');
+            } else {
+                icon.innerHTML = "💪";
+                title.innerHTML = `כמעט שם...`;
+                title.className = "text-3xl font-black mb-4 text-rose-600";
+                text.innerHTML = `ענית נכונה על <strong>${score}</strong> מתוך ${total} שאלות.<br>כדי לקבל את קוד המעבר, עליך לענות נכונה על לפחות 13 שאלות (מבלי לוותר עליהן).<br>מומלץ לחזור למדריך, לרענן את החומר ולנסות שוב!`;
+            }
+
+            modal.style.display = 'flex';
+        }
+
+        function closeModal() {
+            document.getElementById('result-modal').style.display = 'none';
+        }
+
+        window.onload = renderQuestions;
+    </script>
+</body>
+</html>
