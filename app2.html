@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html dir="rtl" lang="he">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>מערכת איסוף נתונים פיננסיים מתקדמת | ד"ר שי צבאן</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Assistant:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        body { background-color: #f8fafc; color: #1e293b; font-family: 'Assistant', sans-serif; scroll-behavior: smooth; }
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.98);
+            backdrop-filter: blur(12px);
+            border: 1px solid #e2e8f0;
+            box-shadow: 0 15px 25px -5px rgba(0, 0, 0, 0.05);
+        }
+        .step-hidden { display: none; opacity: 0; transform: translateY(30px); transition: all 0.6s ease-out; }
+        .step-visible { display: block; opacity: 1; transform: translateY(0); }
+        
+        .prompt-box {
+            background: #0f172a;
+            color: #f1f5f9;
+            border-right: 8px solid #3b82f6;
+        }
+        
+        .critical-alert {
+            background: #fff1f2;
+            border: 3px solid #ef4444;
+            color: #991b1b;
+            box-shadow: 0 0 20px rgba(239, 68, 68, 0.1);
+        }
+
+        /* אנימציית חץ זורם שמאלה (RTL Logic) */
+        .flow-line {
+            stroke-dasharray: 10;
+            animation: flow-left 2s linear infinite;
+        }
+        @keyframes flow-left {
+            from { stroke-dashoffset: 0; }
+            to { stroke-dashoffset: -20; }
+        }
+        
+        .pulse-node { animation: node-glow 3s infinite ease-in-out; }
+        @keyframes node-glow {
+            0%, 100% { box-shadow: 0 0 0 0 rgba(59, 130, 246, 0.1); transform: scale(1); }
+            50% { box-shadow: 0 0 20px 5px rgba(59, 130, 246, 0.2); transform: scale(1.03); }
+        }
+
+        .logic-btn {
+            background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+            box-shadow: 0 4px 10px rgba(37, 99, 235, 0.3);
+        }
+    </style>
+</head>
+<body class="antialiased p-4 md:p-12 selection:bg-blue-200">
+
+<div class="max-w-6xl mx-auto">
+    <header class="glass-panel rounded-[2rem] p-12 text-center mb-10 border-b-8 border-blue-600 relative overflow-hidden">
+        <div class="absolute top-0 right-0 w-32 h-32 bg-blue-500/5 rounded-full -mr-16 -mt-16"></div>
+        <h1 class="text-4xl md:text-6xl font-black mb-4 text-slate-900 tracking-tight leading-tight">
+            ארכיטקטורת <span class="text-blue-600">מערכות מידע</span> פיננסיות
+        </h1>
+        <p class="text-xl text-slate-600 max-w-3xl mx-auto font-light leading-relaxed">
+            מדריך אינטראקטיבי לבניית מערכת ETL אוטונומית (Extract, Transform, Load).
+            <br><span class="font-bold text-slate-800 text-lg">אנחנו בונים את התשתית - הויזואליזציה בטבלו תגיע במפגש הבא!</span>
+        </p>
+    </header>
+
+    <section class="glass-panel rounded-3xl p-10 mb-10 border-r-8 border-emerald-500 relative">
+        <div class="absolute top-4 left-4 opacity-10 text-6xl">💡</div>
+        <h2 class="text-3xl font-black text-emerald-900 mb-6">מדוע ללמוד Scraping ואוטומציה?</h2>
+        <div class="grid md:grid-cols-2 gap-10 text-slate-700 leading-relaxed">
+            <div class="space-y-4">
+                <p>במערכות פיננסיות, הנתונים הם "הדלק" של כל החלטה. כיום, רוב המידע נמצא בפורמטים לא נגישים (אתרי אינטרנט, קבצי PDF, APIs נעולים). <strong>סקרייפינג (Scraping)</strong> הוא הכוח להפוך את המידע הזה למסד נתונים (Dataset) מובנה.</p>
+                <p class="font-bold">זכרו: באגים הם חלק מהחיים. קוד שנשבר הוא בסך הכל חידה שמחכה לפתרון. אנחנו נלמד איך להשתמש ב-Console של הדפדפן ובכלי בינה מלאכותית כדי לנצח כל שגיאה.</p>
+            </div>
+            <div class="bg-emerald-50/50 p-6 rounded-2xl border border-emerald-200 shadow-sm">
+                <h4 class="font-bold text-emerald-900 mb-4 flex items-center italic">
+                    <span class="ml-2">📖</span> אנלוגיית המסעדה המורחבת:
+                </h4>
+                <p class="text-sm space-y-3">
+                    <strong>הממשק (HTML):</strong> זהו ה"תפריט" והמלצר. המשתמש בוחר מנה (טיקר) ותוספות (תאריכים).<br>
+                    <strong>השרת (Google Script):</strong> זה ה"שף". הוא המתווך היחיד שיכול להיכנס למטבח, לחתוך את הנתונים ולסדר אותם בצלחת.<br>
+                    <strong>ה-API (המחסן):</strong> יאהו פייננס היא הספקית. הנתונים שם גולמיים ומלוכלכים, והשף שלנו דואג לנקות אותם עבורנו.
+                </p>
+                <p class="mt-4 text-xs font-black text-emerald-700 bg-white p-2 rounded-lg border border-emerald-100">
+                    *הערה: את "הגשת המנה" (ויזואליזציה) נבצע בטבלו במפגש הבא.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <div class="glass-panel rounded-3xl p-10 mb-12 overflow-hidden relative">
+        <h3 class="text-2xl font-bold text-center mb-12 text-slate-800 underline decoration-blue-500 decoration-4 underline-offset-8">זרימת הנתונים במערכת (RTL Flow)</h3>
+        
+        <div class="relative flex flex-col md:flex-row justify-between items-center gap-8 md:gap-2">
+             <div class="hidden md:block absolute top-1/2 left-10 right-10 -translate-y-1/2 h-1 z-0">
+                <svg width="100%" height="100%" preserveAspectRatio="none">
+                    <line x1="100%" y1="50%" x2="0%" y2="50%" stroke="#e2e8f0" stroke-width="4"></line>
+                    <line x1="100%" y1="50%" x2="0%" y2="50%" stroke="#3b82f6" stroke-width="4" class="flow-line"></line>
+                </svg>
+             </div>
+             
+             <div class="z-10 flex flex-col items-center w-36">
+                <div class="w-20 h-20 bg-white border-4 border-blue-500 rounded-2xl flex items-center justify-center text-3xl mb-3 shadow-xl pulse-node">💻</div>
+                <span class="text-xs font-black text-center text-slate-800">1. האפליקציה<br>(Input)</span>
+             </div>
+             <div class="z-10 flex flex-col items-center w-36">
+                <div class="w-20 h-20 bg-white border-4 border-indigo-500 rounded-2xl flex items-center justify-center text-3xl mb-3 shadow-xl pulse-node">🤖</div>
+                <span class="text-xs font-black text-center text-slate-800">2. שרת גוגל<br>(Process)</span>
+             </div>
+             <div class="z-10 flex flex-col items-center w-36">
+                <div class="w-20 h-20 bg-white border-4 border-purple-500 rounded-full flex items-center justify-center text-3xl mb-3 shadow-xl pulse-node">🌐</div>
+                <span class="text-xs font-black text-center text-slate-800">3. Yahoo API<br>(Extract)</span>
+             </div>
+             <div class="z-10 flex flex-col items-center w-36">
+                <div class="w-20 h-20 bg-white border-4 border-emerald-500 rounded-2xl flex items-center justify-center text-3xl mb-3 shadow-xl pulse-node">📊</div>
+                <span class="text-xs font-black text-center text-slate-800">4. גיליון חדש<br>(Output)</span>
+             </div>
+        </div>
+    </div>
+
+    <div id="steps-container">
+        
+        <div id="step-1" class="step-visible space-y-6 mb-16">
+            <div class="flex items-center">
+                <div class="w-14 h-14 bg-blue-600 text-white rounded-2xl flex items-center justify-center font-black text-2xl ml-5 shadow-lg shadow-blue-200">1</div>
+                <h2 class="text-3xl font-extrabold text-slate-800">שלב א': הקמת המוח הפיננסי (Backend)</h2>
+            </div>
+            
+            <div class="glass-panel p-10 rounded-3xl border-r-8 border-blue-600">
+                <p class="text-lg mb-6 leading-relaxed">
+                    אנחנו בונים שרת <strong>Standalone</strong>. הוא לא "עבד" של קובץ אקסל, אלא יחידת מחשוב עצמאית שמייצרת קבצים. זהו הלב של ה-Automation.
+                </p>
+
+                <div class="flex flex-wrap gap-4 mb-8">
+                    <div class="bg-blue-50 p-6 rounded-2xl border border-blue-100 flex-1 min-w-[300px] shadow-sm text-slate-800">
+                        <h4 class="font-bold text-blue-900 mb-2">איך מתחילים?</h4>
+                        <ul class="text-sm list-disc list-inside space-y-1">
+                            <li>היכנסו ל-script.google.com.</li>
+                            <li>לחצו על <strong>New project</strong>.</li>
+                            <li>שנו את השם ל-"Finance_Data_Engine".</li>
+                        </ul>
+                    </div>
+                    <div class="flex items-center">
+                        <button onclick="toggleInfo('info-1')" class="logic-btn text-white px-8 py-3 rounded-2xl text-sm font-black transition-all hover:scale-105">מה הלוגיקה כאן?</button>
+                    </div>
+                </div>
+
+                <div id="info-1" class="hidden bg-slate-50 p-8 rounded-2xl mb-8 text-sm italic border-r-4 border-blue-400 leading-loose shadow-inner text-slate-800">
+                    <strong>עומק טכנולוגי:</strong> מדוע השרת הכרחי? Yahoo Finance חוסמת בוטים. הקוד שלנו מבצע "ריקוד אבטחה": הוא פונה קודם כל לקבלת Cookie (זהות) ואז ל-Crumb (אסימון אישור). בנוסף, השרת מבצע **Data Transformation**: הוא לוקח CSV גולמי (שהוא טקסט ארוך), מפרק אותו, ובורר מתוכו רק את עמודת התאריך וה-Adj Close. שאר הנתונים הם "רעש" לצרכי השוואת ביצועים.
+                </div>
+
+                <div class="prompt-box p-8 rounded-2xl shadow-2xl relative overflow-hidden">
+                    <div class="absolute top-0 left-0 w-1 h-full bg-blue-400"></div>
+                    <span class="text-xs text-blue-300 font-bold uppercase block mb-4 tracking-widest text-blue-400">🤖 פרומפט להעתקה לבינה מלאכותית (ChatGPT/Gemini):</span>
+                    <p class="text-sm md:text-base font-mono leading-relaxed bg-slate-900 p-6 rounded-xl mb-6 shadow-inner text-slate-300" dir="rtl">
+אני בונה שרת ב-Google Apps Script. כתוב לי קוד הכולל פונקציית doGet(e) פשוטה שמחזירה "Server is running", ופונקציית doPost(e) שמבצעת:
+1. קבלת JSON עם tickers (מערך), startDate, endDate ו-frequency.
+2. מנגנון Cookie/Crumb מלא למשיכת CSV מ-Yahoo Finance לכל טיקר.
+3. איחוד (Merge): חילוץ עמודות Date ו-Adj Close בלבד, ואיחוד כל המניות לטבלה אחת גדולה (Data Merging).
+4. שימוש ב-SpreadsheetApp.create ליצירת גיליון גוגל חדש, כתיבת הטבלה אליו, והגדרת הרשאות Anyone with link.
+5. החזרת ה-URL של הגיליון בתגובה כ-JSON (sheetUrl).
+הוסף הערות הסבר מפורטות בעברית לכל שלב בקוד.</p>
+                    <button onclick="copyPrompt(this)" class="bg-blue-500 hover:bg-blue-400 text-white px-10 py-4 rounded-2xl font-black transition-all shadow-xl mr-auto flex items-center gap-2">
+                        <span>העתק פרומפט וצא לדרך</span>
+                    </button>
+                </div>
+
+                <button onclick="nextStep(2)" class="mt-12 w-full bg-emerald-600 hover:bg-emerald-500 text-white py-6 rounded-3xl font-black text-2xl transition-all shadow-2xl">סיימתי להדביק, אני מוכן לשלב הבא</button>
+            </div>
+        </div>
+
+        <div id="step-2" class="step-hidden space-y-6 mb-16">
+            <div class="flex items-center">
+                <div class="w-14 h-14 bg-indigo-600 text-white rounded-2xl flex items-center justify-center font-black text-2xl ml-5 shadow-lg shadow-indigo-200">2</div>
+                <h2 class="text-3xl font-extrabold text-slate-800">שלב ב': פריסה (Deployment) וטסטים</h2>
+            </div>
+            
+            <div class="glass-panel p-10 rounded-3xl border-r-8 border-indigo-600">
+                <div class="critical-alert p-8 rounded-3xl mb-10 shadow-lg">
+                    <h4 class="font-black text-xl mb-3 underline italic">🛑 חשיבות האבטחה (אל תבהלו!):</h4>
+                    <p class="leading-relaxed">בזמן האישור, גוגל תזהיר אתכם שהאפליקציה אינה מאומתת. זכרו: <strong>זה הקוד שלכם!</strong> 
+                    לחצו על <strong>Advanced</strong> -> <strong>Go to Project (unsafe)</strong>. זהו שלב הכרחי בכל פיתוח של Web App פנימית.</p>
+                </div>
+
+                <div class="bg-slate-50 p-8 rounded-3xl border border-slate-200 mb-10 shadow-inner">
+                    <h4 class="font-bold text-slate-900 mb-6 underline">ה-Deployment Test (כאן בודקים שאין באגים בשרת):</h4>
+                    <p class="mb-6">לאחר שתקבלו את ה-Web App URL, העתיקו אותו ופתחו אותו בדפדפן.</p>
+                    <div class="grid md:grid-cols-2 gap-6">
+                        <div class="bg-green-100/50 p-6 rounded-2xl border border-green-200 shadow-sm relative">
+                            <span class="absolute -top-3 -right-3 bg-green-500 text-white rounded-full w-8 h-8 flex items-center justify-center shadow font-bold">✓</span>
+                            <p class="font-black text-green-900 mb-2 underline">תרחיש הצלחה:</p>
+                            <p class="text-sm text-green-800">מופיע הכיתוב "Server is running". המשמעות: ה-doGet עובד, והשרת מוכן לקבל פקודות.</p>
+                        </div>
+                        <div class="bg-red-100/50 p-6 rounded-2xl border border-red-200 shadow-sm relative text-red-900">
+                            <span class="absolute -top-3 -right-3 bg-red-500 text-white rounded-full w-8 h-8 flex items-center justify-center shadow font-bold">!</span>
+                            <p class="font-black mb-2 underline">תרחיש כישלון:</p>
+                            <p class="text-sm">שגיאת 401/404 או בקשת התחברות. המשמעות: שכחתם להגדיר "Anyone" בפריסה. ה-HTML שלכם לא יצליח לדבר עם השרת.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <button onclick="nextStep(3)" class="w-full bg-emerald-600 hover:bg-emerald-500 text-white py-6 rounded-3xl font-black text-2xl transition-all shadow-2xl">הטסט עבר בהצלחה! בואו נבנה את הממשק</button>
+            </div>
+        </div>
+
+        <div id="step-3" class="step-hidden space-y-6 mb-16">
+            <div class="flex items-center">
+                <div class="w-14 h-14 bg-purple-600 text-white rounded-2xl flex items-center justify-center font-black text-2xl ml-5 shadow-lg shadow-purple-200">3</div>
+                <h2 class="text-3xl font-extrabold text-slate-800">שלב ג': GitHub Pages - האתר שלכם באוויר</h2>
+            </div>
+            
+            <div class="glass-panel p-10 rounded-3xl border-r-8 border-purple-600">
+                <h3 class="text-2xl font-bold text-purple-900 mb-8 flex items-center">
+                    <span class="ml-3">🏗️</span> מדריך GitHub מפורט (צעד-אחר-צעד)
+                </h3>
+                
+                <div class="grid md:grid-cols-2 gap-8 mb-10 text-slate-700">
+                    <div class="space-y-6">
+                        <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200 transform transition hover:scale-105">
+                            <h5 class="font-black text-purple-700 mb-2">1. ה-Repository</h5>
+                            <p class="text-sm leading-relaxed">היכנסו ל-GitHub וצרו "מאגר" חדש. תנו לו שם כמו `my-finance-portal`. ודאו שהוא מוגדר כ-<strong>Public</strong>. מאגר ציבורי הוא תנאי הכרחי לשימוש ב-GitHub Pages בגרסה החינמית.</p>
+                        </div>
+                        <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200 transform transition hover:scale-105">
+                            <h5 class="font-black text-purple-700 mb-2">2. הקובץ index.html</h5>
+                            <p class="text-sm leading-relaxed">בתוך המאגר, לחצו על `Add file` -> `Create new file`. קראו לו בדיוק <strong>index.html</strong>. השם הזה קריטי כי השרת של גיטהאב מחפש אותו כנקודת הכניסה לאתר.</p>
+                        </div>
+                    </div>
+                    <div class="space-y-6">
+                        <div class="bg-rose-50 p-6 rounded-2xl shadow-sm border border-rose-200 transform transition hover:scale-105 text-rose-900">
+                            <h5 class="font-black mb-2 underline">3. החלפת ה-URL (חשוב!)</h5>
+                            <p class="text-sm leading-relaxed font-bold italic">בתוך הקוד שקיבלתם מה-AI, אתרו את המחרוזת `YOUR_WEB_APP_URL`. מחקו אותה והדביקו את הלינק שקיבלתם מגוגל בשלב הקודם (זה שעבר את הטסט).</p>
+                        </div>
+                        <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200 transform transition hover:scale-105">
+                            <h5 class="font-black text-purple-700 mb-2">4. הפעלת ה-Hosting</h5>
+                            <p class="text-sm leading-relaxed">עברו ללשונית <strong>Settings</strong> -> <strong>Pages</strong>. תחת `Branch` בחרו ב-<strong>main</strong> ולחצו <strong>Save</strong>. המתינו דקה, רעננו, והלינק לאתר החי שלכם יופיע בראש הדף!</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="prompt-box p-8 rounded-2xl shadow-2xl relative">
+                    <span class="text-xs text-blue-300 font-bold uppercase block mb-4 tracking-widest text-blue-400">🤖 פרומפט לממשק המשתמש (The Web App):</span>
+                    <p class="text-sm font-mono leading-relaxed bg-slate-900 p-6 rounded-xl mb-6 shadow-inner text-slate-300" dir="rtl">
+כתוב לי קוד HTML/JS מלא בקובץ אחד המיועד לאחסון ב-GitHub Pages.
+עיצוב: מודרני, נקי, מבוסס Tailwind CSS, עם צבעים מעולמות הפיננסים (כחול כהה, אפור סלייט).
+פונקציונליות:
+1. טופס המקבל רשימת סימולי מניות (מופרדים בפסיק, למשל TSLA, AAPL, AMZN).
+2. שדות תאריכים ותפריט בחירת תדירות (Daily/Weekly/Monthly).
+3. שליחה ב-fetch בשיטת POST לכתובת 'YOUR_WEB_APP_URL'.
+4. הגדרת Headers כ-'text/plain;charset=utf-8' (למניעת שגיאות CORS).
+5. לוגיקת טעינה: הראה "טוען נתונים..." על הכפתור בזמן השליחה.
+6. לאחר ההצלחה: הצגת כפתור גדול שפותח את הלינק שחוזר מהשרת (sheetUrl) בטאב חדש.
+הוסף הערות הסבר בעברית.</p>
+                    <button onclick="copyPrompt(this)" class="bg-blue-500 hover:bg-blue-400 text-white px-10 py-4 rounded-2xl font-black transition-all shadow-xl flex items-center gap-2 mr-auto">
+                        <span>העתק פרומפט HTML</span>
+                    </button>
+                </div>
+
+                <div class="mt-8 p-6 bg-amber-50 border border-amber-200 rounded-2xl text-amber-900">
+                    <h4 class="font-bold mb-2">🛠️ כלי עזר לפתרון באגים:</h4>
+                    <p class="text-sm leading-relaxed">
+                        אם לחצתם על הכפתור ושום דבר לא קרה: לחצו על <strong>F12</strong> במקלדת, עברו ללשונית <strong>Network</strong> ונסו שוב. שם תוכלו לראות את הבקשה יוצאת לגוגל ואם היא נחסמה (שגיאה אדומה). זהו הכלי הכי חשוב של מפתח מערכות מידע!
+                    </p>
+                </div>
+
+                <button onclick="nextStep(4)" class="mt-12 w-full bg-emerald-600 hover:bg-emerald-500 text-white py-6 rounded-3xl font-black text-2xl transition-all shadow-2xl">המערכת עובדת! בואו נראה את התוצאה</button>
+            </div>
+        </div>
+
+        <div id="step-4" class="step-hidden space-y-6 mb-16 text-slate-800">
+            <div class="flex items-center">
+                <div class="w-14 h-14 bg-teal-600 text-white rounded-2xl flex items-center justify-center font-black text-2xl ml-5 shadow-lg shadow-teal-200">4</div>
+                <h2 class="text-3xl font-extrabold">העתיד: ויזואליזציה והפקת תובנות</h2>
+            </div>
+            
+            <div class="glass-panel p-10 rounded-3xl border-r-8 border-teal-600 bg-teal-50/30">
+                <h3 class="text-2xl font-bold text-teal-900 mb-6 underline">מזל טוב! בניתם מערכת ETL מלאה.</h3>
+                <p class="leading-relaxed text-lg mb-8">
+                    יצרתם "מפעל נתונים". האפליקציה שלכם יודעת לחלץ (Extract), לעבד (Transform) ולאחסן (Load) נתונים פיננסיים בצורה אוטונומית לחלוטין.
+                    <br><br>
+                    <strong>למה השקענו כל כך הרבה בצינור?</strong> כי הנתונים שיצרתם כרגע בגיליון הם נתונים "נקיים". הם מסוננים, מאוחדים ומיושרים לפי תאריכים. זהו המצע המושלם לניתוח נתונים.
+                    <br><br>
+                    <strong>במפגש הבא (אל דאגה, נפתור באגים יחד!):</strong> נתחבר עם ה-Tableau לגיליונות הללו. נלמד איך ליצור גרפים השוואתיים שמראים ביצועי יתר (Alpha) בין מניות, ואיך להפוך את המערכת שבניתם למרכז בקרה (Dashboard) פיננסי מקצועי.
+                </p>
+                
+                <div class="text-center">
+                    <span class="text-6xl animate-bounce inline-block">🚀</span>
+                    <p class="font-black text-2xl text-teal-900 mt-6 underline decoration-wavy decoration-teal-300">ניפגש במפגש הבא - מתחילים ויזואליזציה!</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer class="mt-12 text-center text-slate-400 text-sm pb-20 border-t border-slate-200 pt-10">
+        <p class="font-bold text-slate-600">נוצר על ידי ד"ר שי צבאן עבור קורס מערכות מידע פיננסיות</p>
+        <p>טכנולוגיה • פיננסים • ניתוח נתונים • 2026</p>
+    </footer>
+</div>
+
+<script>
+    function nextStep(stepNum) {
+        const nextStep = document.getElementById('step-' + stepNum);
+        nextStep.classList.remove('step-hidden');
+        nextStep.classList.add('step-visible');
+        nextStep.scrollIntoView({ behavior: 'smooth' });
+    }
+
+    function toggleInfo(id) {
+        const info = document.getElementById(id);
+        info.classList.toggle('hidden');
+    }
+
+    function copyPrompt(btn) {
+        const text = btn.previousElementSibling.innerText;
+        const temp = document.createElement('textarea');
+        temp.value = text;
+        document.body.appendChild(temp);
+        temp.select();
+        document.execCommand('copy');
+        document.body.removeChild(temp);
+        
+        const orig = btn.innerHTML;
+        btn.innerHTML = "✓ הפרומפט הועתק!";
+        btn.classList.add('bg-green-600');
+        setTimeout(() => {
+            btn.innerHTML = orig;
+            btn.classList.remove('bg-green-600');
+        }, 2500);
+    }
+</script>
+
+</body>
+</html>
