@@ -4,9 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>מדריך: מערכת איסוף נתוני מניות</title>
-    <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Assistant:wght@300;400;600;700&display=swap" rel="stylesheet">
     <style>
         body {
@@ -18,15 +16,35 @@
             color: #e2e8f0;
             border-right: 4px solid #3b82f6;
         }
-        /* Custom styling for details summary */
-        details > summary {
-            list-style: none;
+        .alert-box {
+            background-color: #fee2e2;
+            border-right: 4px solid #ef4444;
+            color: #991b1b;
         }
-        details > summary::-webkit-details-marker {
-            display: none;
+        
+        /* אנימציות לתרשים הזרימה (אינפוגרפיקה) */
+        .flow-line {
+            stroke-dasharray: 10;
+            animation: flow 1.5s linear infinite;
         }
+        @keyframes flow {
+            to { stroke-dashoffset: -20; }
+        }
+        .pulse-node {
+            animation: gentle-pulse 3s infinite;
+        }
+        @keyframes gentle-pulse {
+            0% { box-shadow: 0 0 0 0 rgba(59, 130, 246, 0.4); }
+            70% { box-shadow: 0 0 0 15px rgba(59, 130, 246, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(59, 130, 246, 0); }
+        }
+        .delay-1 { animation-delay: 0.5s; }
+        .delay-2 { animation-delay: 1s; }
+        .delay-3 { animation-delay: 1.5s; }
+        .delay-4 { animation-delay: 2s; }
     </style>
     <script>
+        // פונקציה להעתקת הפרומפטים ללוח
         function copyPrompt(buttonElement) {
             const promptText = buttonElement.previousElementSibling.innerText;
             const textarea = document.createElement('textarea');
@@ -35,12 +53,10 @@
             textarea.select();
             document.execCommand('copy');
             document.body.removeChild(textarea);
-            
             const originalText = buttonElement.innerText;
             buttonElement.innerText = 'הועתק!';
             buttonElement.classList.add('bg-green-500');
             buttonElement.classList.remove('bg-blue-600');
-            
             setTimeout(() => {
                 buttonElement.innerText = originalText;
                 buttonElement.classList.remove('bg-green-500');
@@ -51,289 +67,225 @@
 </head>
 <body class="text-gray-800 antialiased p-4 md:p-8">
 
-    <div class="max-w-4xl mx-auto bg-white rounded-2xl shadow-xl overflow-hidden">
-        
-        <!-- Header -->
-        <div class="bg-blue-700 text-white p-8 text-center">
-            <h1 class="text-3xl md:text-4xl font-bold mb-4">בניית מערכת לחילוץ נתוני שוק ההון</h1>
-            <p class="text-lg opacity-90">מדריך לסטודנטים: מ-HTML, דרך Google Sheets, ועד ל-Tableau – בעזרת בינה מלאכותית.</p>
-        </div>
+<div class="max-w-5xl mx-auto bg-white rounded-2xl shadow-xl overflow-hidden">
+    <div class="bg-blue-800 text-white p-8 text-center">
+        <h1 class="text-3xl md:text-4xl font-bold mb-4">בניית מערכת לחילוץ נתוני שוק ההון</h1>
+        <p class="text-lg opacity-90">מדריך פרקטי: מ-HTML, דרך Google Sheets, ועד לויזואליזציה ב-Tableau.</p>
+    </div>
 
-        <!-- Intro -->
-        <div class="p-8 border-b border-gray-100 bg-blue-50/50">
-            <h2 class="text-2xl font-semibold mb-3 text-blue-800">איך לומדים עם המדריך הזה?</h2>
-            <p class="mb-4 leading-relaxed">
-                במטלה זו אנו לא מצפים מכם להיות מתכנתים מדופלמים, אלא <strong>ארכיטקטי מידע</strong>. תפקידכם להבין את "התמונה הגדולה", את המושגים ואת השלבים. 
-                כדי לכתוב את הקוד בפועל, אתם תשתמשו בכלי בינה מלאכותית (כמו <a href="https://chatgpt.com" target="_blank" class="text-blue-600 underline hover:text-blue-800 font-semibold">ChatGPT</a>, <a href="https://claude.ai" target="_blank" class="text-blue-600 underline hover:text-blue-800 font-semibold">Claude</a> או <a href="https://gemini.google.com" target="_blank" class="text-blue-600 underline hover:text-blue-800 font-semibold">Gemini</a>). המדריך יסביר לכם מה קורה בכל שלב, ויספק לכם את ה"פקודה" (Prompt) המדויקת שעליכם לבקש מה-AI כדי להתקדם.
-            </p>
-            <div class="bg-white p-4 rounded-lg border-l-4 border-yellow-400 shadow-sm">
-                <p class="text-gray-700 font-semibold">💡 זכרו: תכנות הוא 80% פתרון תקלות ו-20% כתיבת קוד. אם אתם נתקלים בשגיאה – הכל בסדר! זה חלק בלתי נפרד מתהליך הלמידה. למטה תמצאו מדריך לפתרון התקלות הנפוצות ביותר.</p>
-            </div>
-        </div>
+    <div class="p-8 border-b border-gray-100 bg-blue-50/50">
+        <h2 class="text-2xl font-semibold mb-3 text-blue-900">מטרת המטלה</h2>
+        <p class="leading-relaxed">
+            במטלה זו אנו לא מצפים מכם להיות מתכנתים מדופלמים, אלא <strong>ארכיטקטי מידע</strong>. 
+            תפקידכם להבין את זרימת המידע, את בניית המערכת ואת הטיפול בתקלות. כדי לכתוב את הקוד בפועל, 
+            תשתמשו בכלי בינה מלאכותית (כמו ChatGPT, Claude או Gemini). 
+            המדריך מספק לכם את ה"פקודות" (Prompts) המדויקות – כולל מעקפי אבטחה מתקדמים – שעליכם לבקש מה-AI כדי לייצר מערכת חסינה.
+        </p>
+    </div>
 
-        <!-- Steps Container -->
-        <div class="p-8 space-y-12">
-
-            <!-- Step 1 -->
-            <div class="relative pl-4 md:pl-0">
-                <div class="flex items-center mb-4">
-                    <div class="w-10 h-10 bg-blue-100 text-blue-700 rounded-full flex items-center justify-center font-bold text-xl ml-4 shrink-0 border-2 border-blue-500">1</div>
-                    <h3 class="text-2xl font-bold text-gray-800">הבנת הארכיטקטורה: מי מדבר עם מי?</h3>
-                </div>
-                <div class="mr-14 bg-gray-50 p-6 rounded-lg border border-gray-200">
-                    <h4 class="font-semibold text-lg mb-2 text-indigo-700">מה אנחנו הולכים לבנות?</h4>
-                    <p class="text-gray-700 mb-4">
-                        לפני שמתחילים ללחוץ על כפתורים, בואו נבין את המבנה. דמיינו שאתם יושבים במסעדה. אתם לא יכולים פשוט להיכנס למטבח ולקחת אוכל. במערכת שלנו יש שלושה שחקנים מרכזיים:
-                    </p>
-                    
-                    <div class="bg-white p-4 rounded border border-blue-100 mb-4 shadow-sm">
-                        <ul class="list-disc list-inside space-y-2 text-gray-700">
-                            <li><strong>צד הלקוח (התפריט והמלצר):</strong> זהו דף ה-HTML שניצור. המשתמש פותח אותו בדפדפן, מקליד איזה נתונים הוא רוצה ולוחץ "שלח".</li>
-                            <li><strong>צד השרת (המטבח והשף):</strong> ה-Google Apps Script שלנו. הוא מקבל את ההזמנה, מבין מה לעשות ומתחיל לעבוד.</li>
-                            <li><strong>API (ספק חומרי הגלם):</strong> השף מבקש נתוני מניות מספק חיצוני (כמו <a href="https://finance.yahoo.com/" target="_blank" class="text-blue-600 underline hover:text-blue-800">Yahoo Finance</a>) דרך "צינור" API, ומגיש אותם לגיליון שלכם.</li>
-                        </ul>
-                    </div>
-
-                    <details class="group bg-blue-50 rounded-lg border border-blue-200 cursor-pointer overflow-hidden transition-all duration-300">
-                        <summary class="p-4 font-bold text-blue-800 outline-none flex justify-between items-center">
-                            <span>🤔 למה אנחנו מתחילים דווקא מ-Google Sheets?</span>
-                            <span class="text-blue-500 group-open:rotate-180 transition-transform">▼</span>
-                        </summary>
-                        <div class="p-4 pt-0 text-gray-700 bg-white border-t border-blue-100">
-                            <strong>הערה חשובה:</strong> באופן כללי, אפשר לייצר סקריפט (GAS) לגמרי לבד, כפרויקט עצמאי ב-Google Drive, מבלי לפתוח גיליון לפני כן. אנו בוחרים ליצור את הסקריפט <em>מתוך</em> הגיליון כרגע רק לשם הנוחות – זה מאפשר לסקריפט להכיר את הגיליון באופן אוטומטי (מה שנקרא "Bound Script"). בהמשך הקורס נכיר גם טכניקות של סקריפטים עצמאיים!
-                        </div>
-                    </details>
-                </div>
+    <div class="px-4 md:px-8 py-8 border-b border-gray-100 bg-white">
+        <div class="bg-slate-900 rounded-3xl p-8 md:p-12 shadow-2xl relative overflow-hidden text-white">
+            <div class="text-center mb-12 relative z-10">
+                <h3 class="text-2xl md:text-3xl font-bold text-blue-400 mb-2">מפת הדרכים של הנתונים</h3>
+                <p class="text-slate-400 text-lg">כך המידע זורם מרגע לחיצת הכפתור ועד לגרף הסופי</p>
             </div>
 
-            <!-- Step 2 -->
-            <div class="relative pl-4 md:pl-0">
-                <div class="flex items-center mb-4">
-                    <div class="w-10 h-10 bg-blue-100 text-blue-700 rounded-full flex items-center justify-center font-bold text-xl ml-4 shrink-0 border-2 border-blue-500">2</div>
-                    <h3 class="text-2xl font-bold text-gray-800">הכנת מסד הנתונים והרובוט שלנו</h3>
+            <div class="relative flex flex-col md:flex-row justify-between items-center z-10 gap-8 md:gap-4">
+                
+                <div class="hidden md:block absolute top-1/2 left-10 right-10 -translate-y-1/2 h-1 z-0">
+                    <svg width="100%" height="100%" preserveAspectRatio="none">
+                        <line x1="100%" y1="50%" x2="0%" y2="50%" stroke="#334155" stroke-width="4"></line>
+                        <line x1="100%" y1="50%" x2="0%" y2="50%" stroke="#3b82f6" stroke-width="4" class="flow-line"></line>
+                    </svg>
                 </div>
-                <div class="mr-14 bg-gray-50 p-6 rounded-lg border border-gray-200">
-                    <h4 class="font-semibold text-lg mb-2 text-indigo-700">מה צריך לעשות בפועל?</h4>
-                    <ol class="list-decimal list-inside space-y-2 text-gray-700 mb-6">
-                        <li>היכנסו ל-Drive וצרו גיליון <strong>Google Sheets</strong> חדש (<a href="https://sheets.new" target="_blank" class="font-bold text-blue-600 underline hover:text-blue-800">לחצו כאן לפתיחה מהירה</a>). קראו לו "נתוני מניות".</li>
-                        <li>בתפריט העליון לחצו על <strong>הרחבות (Extensions)</strong> -> <strong>Apps Script</strong>. ייפתח עורך הקוד.</li>
-                        <li>מחקו את מה שכתוב שם, העתיקו את הפרומפט הבא ל-AI, ואת הקוד שתקבלו הדביקו ושמרו (💾).</li>
-                    </ol>
 
-                    <details class="group mb-6 bg-blue-50 rounded-lg border border-blue-200 cursor-pointer overflow-hidden transition-all duration-300">
-                        <summary class="p-4 font-bold text-blue-800 outline-none flex justify-between items-center">
-                            <span>🤔 מה בעצם ביקשנו מה-AI לכתוב?</span>
-                            <span class="text-blue-500 group-open:rotate-180 transition-transform">▼</span>
-                        </summary>
-                        <div class="p-4 pt-0 text-gray-700 bg-white border-t border-blue-100 text-sm">
-                            ביקשנו פונקציה בשם <code>doPost</code>. זו פונקציה מיוחדת של גוגל שתפקידה להיות "תיבת דואר" שמאזינה לבקשות מחוץ לגוגל. כשהיא מקבלת בקשה (למשל מניית טסלה מתאריך X ל-Y), היא משתמשת בפקודת רשת (UrlFetchApp) כדי לשאוב את המידע מאתר פיננסי, מסדרת את הטקסט, ומדפיסה אותו תא-אחר-תא בגיליון שלנו.
-                        </div>
-                    </details>
-                    
-                    <div class="prompt-box p-4 rounded-md relative flex flex-col items-start shadow-inner">
-                        <span class="text-sm text-blue-300 font-bold mb-2 uppercase tracking-wide">🤖 פרומפט להעתקה לבינה מלאכותית:</span>
-                        <p class="text-base font-mono mb-4 leading-relaxed" dir="rtl">
-אני סטודנט שבונה מערכת נתונים ואין לי ידע מקדים בתכנות.
-כתוב לי קוד Google Apps Script המכיל פונקציית doPost(e). 
-הפונקציה צריכה:
-1. לקבל מה-request (מתוך e.postData.contents שמגיע כ-JSON) פרמטרים: ticker (סימול מניה), startDate, endDate.
-2. להשתמש ב-UrlFetchApp כדי להוריד נתוני מניות היסטוריים מ-Yahoo Finance API בפורמט CSV (לפי התאריכים והטיקר שהתקבלו).
-3. לפרסר את ה-CSV באמצעות Utilities.parseCsv().
-4. לנקות את הגיליון הפעיל (clearContents) ולכתוב את כל הנתונים החדשים (הכותרות והשורות) לתוך הגיליון הפעיל (Active Sheet).
-5. להחזיר JSON response עם סטטוס 'success' או הודעת שגיאה ברורה אם משהו נכשל.
-אנא הוסף הערות מפורטות בעברית מעל כל שורת קוד, כדי שאבין בדיוק מה היא עושה.
-                        </p>
-                        <button onclick="copyPrompt(this)" class="bg-blue-600 hover:bg-blue-500 text-white px-4 py-2 rounded text-sm font-semibold transition-colors shadow self-end">העתק פרומפט</button>
+                <div class="block md:hidden absolute left-1/2 top-10 bottom-10 -translate-x-1/2 w-1 z-0">
+                    <svg width="100%" height="100%" preserveAspectRatio="none">
+                        <line x1="50%" y1="0%" x2="50%" y2="100%" stroke="#334155" stroke-width="4"></line>
+                        <line x1="50%" y1="0%" x2="50%" y2="100%" stroke="#3b82f6" stroke-width="4" class="flow-line"></line>
+                    </svg>
+                </div>
+
+                <div class="relative z-10 flex flex-col items-center group w-40">
+                    <div class="w-20 h-20 bg-slate-800 border-4 border-blue-500 rounded-2xl flex items-center justify-center text-3xl mb-4 pulse-node shadow-lg transform transition group-hover:scale-110 group-hover:-translate-y-2 cursor-default">
+                        💻
                     </div>
+                    <h4 class="font-bold text-blue-300 text-center">1. ממשק הלקוח</h4>
+                    <p class="text-xs text-slate-400 text-center mt-1">HTML/JS: המשתמש מזין מניה ומבקש נתונים</p>
                 </div>
-            </div>
 
-            <!-- Step 3 -->
-            <div class="relative pl-4 md:pl-0">
-                <div class="flex items-center mb-4">
-                    <div class="w-10 h-10 bg-blue-100 text-blue-700 rounded-full flex items-center justify-center font-bold text-xl ml-4 shrink-0 border-2 border-blue-500">3</div>
-                    <h3 class="text-2xl font-bold text-gray-800">פריסה (Deployment) ויצירת כתובת ציבורית</h3>
-                </div>
-                <div class="mr-14 bg-gray-50 p-6 rounded-lg border border-gray-200">
-                    <p class="text-gray-700 mb-4">
-                        כדי שהאתר שניצור יוכל לתקשר עם הסקריפט בגוגל, אנחנו חייבים להפוך אותו לשירות אינטרנטי ציבורי ולקבל עבורו כתובת URL.
-                    </p>
-
-                    <div class="bg-yellow-50 border-r-4 border-yellow-500 p-4 mb-6 rounded shadow-sm">
-                        <h4 class="font-bold text-yellow-800 mb-2">🚦 שלב קריטי מקדים: פריסת ניסיון (Test Deployment)</h4>
-                        <p class="text-sm text-gray-700 mb-2">לפני שמשחררים קוד לציבור, מתכנתים תמיד בודקים אותו בסביבת "ארגז חול". זה מוודא שאין שגיאות קריטיות.</p>
-                        <ol class="list-decimal list-inside text-sm text-gray-700 space-y-1">
-                            <li>לחצו על הכפתור הכחול למעלה <strong>פריסה (Deploy)</strong> -> בחרו <strong>פריסות ניסיון (Test deployments)</strong>.</li>
-                            <li>לחצו על סמל גלגל השיניים ⚙️ ובחרו <strong>אפליקציית אינטרנט (Web app)</strong>.</li>
-                            <li>גוגל יבקש מכם לאשר הרשאות (כי הסקריפט מנסה לגשת לגיליון ולרשת). אשרו הכל. (לחצו על Advanced -> Go to script).</li>
-                            <li>אם זה עבר בהצלחה וקיבלתם V ירוק, סימן שהקוד תקין ואפשר להמשיך לפריסה האמיתית!</li>
-                        </ol>
+                <div class="relative z-10 flex flex-col items-center group w-40">
+                    <div class="w-20 h-20 bg-slate-800 border-4 border-indigo-500 rounded-2xl flex items-center justify-center text-3xl mb-4 pulse-node delay-1 shadow-lg transform transition group-hover:scale-110 group-hover:-translate-y-2 cursor-default">
+                        🤖
                     </div>
-
-                    <h4 class="font-semibold text-lg mb-2 text-indigo-700">יצירת הכתובת הסופית:</h4>
-                    <ol class="list-decimal list-inside space-y-3 text-gray-700">
-                        <li>שוב לחצו על <strong>פריסה (Deploy)</strong> -> והפעם <strong>פריסה חדשה (New deployment)</strong>.</li>
-                        <li class="p-3 bg-red-50 border border-red-200 rounded">
-                            <strong>הגדרות חובה:</strong>
-                            <ul class="list-disc list-inside mt-2 space-y-1 text-sm font-semibold text-red-800">
-                                <li>הפעלה כ- (Execute as): <strong>Me (אני)</strong>.</li>
-                                <li>למי יש גישה (Who has access): <strong>Anyone (כל אחד)</strong>. (בלי זה – התקשורת תיחסם!)</li>
-                            </ul>
-                        </li>
-                        <li>לחצו על <strong>Deploy (פריסה)</strong>.</li>
-                        <li><strong>העתיקו את הכתובת שנוצרה (Web app URL) ושמרו אותה בפנקס רשימות!</strong></li>
-                    </ol>
+                    <h4 class="font-bold text-indigo-300 text-center">2. שרת גוגל</h4>
+                    <p class="text-xs text-slate-400 text-center mt-1">Apps Script: מקבל בקשה ומנהל את התהליך</p>
                 </div>
-            </div>
 
-            <!-- Step 4 -->
-            <div class="relative pl-4 md:pl-0">
-                <div class="flex items-center mb-4">
-                    <div class="w-10 h-10 bg-blue-100 text-blue-700 rounded-full flex items-center justify-center font-bold text-xl ml-4 shrink-0 border-2 border-blue-500">4</div>
-                    <h3 class="text-2xl font-bold text-gray-800">בניית הדף ואירוח ב-GitHub Pages</h3>
-                </div>
-                <div class="mr-14 bg-gray-50 p-6 rounded-lg border border-gray-200">
-                    <p class="text-gray-700 mb-4">
-                        עכשיו נבנה את "התפריט" ללקוח (HTML) ונעלה אותו כאתר חי באמצעות GitHub Pages. 
-                    </p>
-
-                    <div class="bg-gradient-to-l from-indigo-100 to-white border-r-4 border-indigo-500 p-4 mb-6 rounded shadow-sm">
-                        <p class="font-bold text-indigo-800">💎 טיפ של אלופים (Prompt Optimization):</p>
-                        <p class="text-sm text-gray-700">
-                            במקום לחפש שורות קוד ולהחליף משתנים ידנית (מקור להרבה טעויות), <strong>אפשר לשתול את הכתובת של הרובוט שהעתקתם בשלב הקודם ישירות בתוך הפרומפט!</strong> כך הבינה המלאכותית תייצר עבורכם קוד HTML מוכן שניתן להעתיק כפי שהוא מבלי לשנות בו אפילו פסיק.
-                        </p>
+                <div class="relative z-10 flex flex-col items-center group w-40">
+                    <div class="w-20 h-20 bg-slate-800 border-4 border-purple-500 rounded-full flex items-center justify-center text-3xl mb-4 pulse-node delay-2 shadow-lg transform transition group-hover:scale-110 group-hover:-translate-y-2 cursor-default">
+                        🌐
                     </div>
+                    <h4 class="font-bold text-purple-300 text-center">3. ספק מידע</h4>
+                    <p class="text-xs text-slate-400 text-center mt-1">Yahoo Finance / GOOGLEFINANCE</p>
+                </div>
 
-                    <details class="group mb-6 bg-purple-50 rounded-lg border border-purple-200 cursor-pointer overflow-hidden transition-all duration-300">
-                        <summary class="p-4 font-bold text-purple-800 outline-none flex justify-between items-center">
-                            <span>🤷🏽‍♂️ אין לי גיטהאב בכלל! מה זה ואיך נרשמים? (לחצו למדריך בסיסי)</span>
-                            <span class="text-purple-500 group-open:rotate-180 transition-transform">▼</span>
-                        </summary>
-                        <div class="p-4 pt-0 text-gray-700 bg-white border-t border-purple-100 space-y-3 text-sm">
-                            <p><strong>גיטהאב (GitHub)</strong> היא הרשת החברתית וה"גוגל דרייב" של המתכנתים. כל הקוד הפתוח בעולם יושב שם. בשבילנו, זה שירות חינמי נהדר לאחסן את הקוד שלנו ולהציג אותו כאתר אינטרנט חי לכל דבר.</p>
-                            <ol class="list-decimal list-inside space-y-2 mt-2">
-                                <li>היכנסו לאתר <a href="https://github.com/" target="_blank" class="text-purple-600 underline font-semibold">GitHub.com</a> ולחצו על הכפתור <strong>Sign up</strong> (הרשמה) בצד ימין למעלה.</li>
-                                <li>הזינו כתובת אימייל, בחרו סיסמה חזקה, ובחרו שם משתמש (Username) באנגלית בלי רווחים. אשרו את כתובת המייל שלכם (תקבלו קוד אימות למייל).</li>
-                                <li>לאחר ההתחברות, תראו במסך הראשי כפתור ירוק <strong>New</strong> או סימן פלוס (<strong>+</strong>) למעלה בצד ימין -> ואז <strong>New repository</strong>. (ריפו/מאגר הוא פשוט התיקייה של הפרויקט שלכם).</li>
-                                <li>תחת <em>Repository name</em>, הקלידו שם קצר לאתר שלכם, למשל <code>stock-dashboard</code>.</li>
-                                <li><strong>חשוב:</strong> ודאו שהמאגר מוגדר כ-<strong>Public</strong> (ציבורי), אחרת לא נוכל לארח אותו בחינם כאתר פתוח.</li>
-                                <li>גללו למטה ולחצו על הכפתור הירוק <strong>Create repository</strong>. זהו, יצרתם את הכספת שלכם! אפשר לחזור למדריך הראשי.</li>
-                            </ol>
-                        </div>
-                    </details>
-
-                    <h4 class="font-semibold text-lg mb-2 text-indigo-700">איך מפרסמים את האתר?</h4>
-                    <ol class="list-decimal list-inside space-y-3 text-gray-700 mb-6">
-                        <li>פתחו משתמש ב-GitHub, וצרו מאגר (Repository) חדש כ-Public (<strong>היעזרו במדריך הסגול למעלה אם אתם מסתבכים</strong>).</li>
-                        <li>לחצו על <strong>Add file</strong> ואז <strong>Create new file</strong>. קראו לקובץ בשם המדויק <code>index.html</code>.</li>
-                        <li>העתיקו את הפרומפט למטה ל-AI (אל תשכחו להכניס אליו את ה-URL שלכם לפני השליחה!).</li>
-                        <li>הדביקו את קוד ה-HTML שקיבלתם לתוך גיטהאב ולחצו למעלה על הכפתור הירוק <strong>Commit changes</strong> (המשמעות: שמירת הגרסה בקוד).</li>
-                    </ol>
-
-                    <details class="group mb-6 bg-blue-50 rounded-lg border border-blue-200 cursor-pointer overflow-hidden transition-all duration-300">
-                        <summary class="p-4 font-bold text-blue-800 outline-none flex justify-between items-center">
-                            <span>🚀 הסבר מפורט: איך מדליקים את האתר ב-GitHub? (לחצו לפירוט)</span>
-                            <span class="text-blue-500 group-open:rotate-180 transition-transform">▼</span>
-                        </summary>
-                        <div class="p-4 pt-0 text-gray-700 bg-white border-t border-blue-100 space-y-3 text-sm">
-                            <p>כברירת מחדל, גיטהאב משמש רק כ"כספת" לאחסון קוד. כדי להפוך את הכספת הזו לאתר חי שכולם יכולים לגלוש אליו, צריך להדליק את שירות ה-Pages.</p>
-                            <ol class="list-decimal list-inside space-y-2">
-                                <li>היכנסו ללשונית <strong>Settings (הגדרות)</strong> בסרגל העליון של המאגר שלכם.</li>
-                                <li>בתפריט השמאלי, גללו מטה ולחצו על <strong>Pages</strong>.</li>
-                                <li>תחת הכותרת <em>Build and deployment</em>, חפשו את <em>Branch (ענף)</em>. שנו את הערך מ-None ל-<strong>main</strong> (זה אומר לגיטהאב: "קח את הקבצים מהענף הראשי שלי ותציג אותם כאתר").</li>
-                                <li>לחצו על <strong>Save</strong>.</li>
-                                <li><strong>עכשיו צריך סבלנות:</strong> המתינו כ-2 דקות ורעננו את הדף. אתם תראו הודעה המכילה קישור ירוק/כחול שאומר "Your site is live at...". זה הלינק הרשמי לאתר שלכם!</li>
-                            </ol>
-                            <div class="mt-4 p-2 bg-gray-100 rounded text-center text-gray-500 border border-dashed border-gray-300">
-                                
-                                <br>
-                                <span class="text-xs">כך נראה הקישור לאחר שהאתר באוויר.</span>
-                            </div>
-                        </div>
-                    </details>
-
-                    <div class="prompt-box p-4 rounded-md relative flex flex-col items-start shadow-inner">
-                        <span class="text-sm text-blue-300 font-bold mb-2 uppercase tracking-wide">🤖 פרומפט להעתקה לבינה מלאכותית:</span>
-                        <p class="text-base font-mono mb-4 leading-relaxed" dir="rtl">
-אני צריך קובץ HTML אחד בלבד שמהווה לוח בקרה פיננסי למשתמש (אני הולך לארח אותו ב-GitHub Pages). 
-הקובץ צריך לכלול:
-1. עיצוב נקי, מקצועי ומודרני באמצעות Tailwind CSS.
-2. טופס מרכזי עם 3 שדות קלט (Inputs): 'סימול מניה (Ticker)', 'תאריך התחלה', ו-'תאריך סיום'. בנוסף כפתור 'משוך נתונים לגיליון'.
-3. קוד JavaScript שישדר את הנתונים מהטופס במבנה JSON באמצעות הפקודה fetch() בשיטת POST.
-4. **קריטי:** כתובת ה-URL שאליה יש לשלוח את בקשת ה-fetch היא הכתובת הזו:
-[הדביקו לכאן את ה-URL הארוך שקיבלתם מגוגל בשלב 3 !!!]
-5. הראה למשתמש ספינר טעינה בזמן ההמתנה, והודעת הצלחה/שגיאה בסיום.
-אנא ספק לי קוד HTML מוכן ושלם להעתקה, ללא צורך בעריכה נוספת מצדי.
-                        </p>
-                        <button onclick="copyPrompt(this)" class="bg-blue-600 hover:bg-blue-500 text-white px-4 py-2 rounded text-sm font-semibold transition-colors shadow self-end">העתק פרומפט</button>
+                <div class="relative z-10 flex flex-col items-center group w-40">
+                    <div class="w-20 h-20 bg-slate-800 border-4 border-emerald-500 rounded-2xl flex items-center justify-center text-3xl mb-4 pulse-node delay-3 shadow-lg transform transition group-hover:scale-110 group-hover:-translate-y-2 cursor-default">
+                        📊
                     </div>
+                    <h4 class="font-bold text-emerald-300 text-center">4. מסד נתונים</h4>
+                    <p class="text-xs text-slate-400 text-center mt-1">הנתונים נכתבים מסודר בגיליון Sheets</p>
                 </div>
-            </div>
 
-             <!-- Step 5 -->
-             <div class="relative pl-4 md:pl-0">
-                <div class="flex items-center mb-4">
-                    <div class="w-10 h-10 bg-green-100 text-green-700 rounded-full flex items-center justify-center font-bold text-xl ml-4 shrink-0 border-2 border-green-500">5</div>
-                    <h3 class="text-2xl font-bold text-gray-800">הקסם מתחיל: ניתוח ויזואלי ב-Tableau</h3>
-                </div>
-                <div class="mr-14 bg-green-50 p-6 rounded-lg border border-green-200">
-                    <p class="text-gray-700 mb-4">
-                        הגענו ליעד! הנתונים בגיליון. כעת נשתמש בתוכנת <strong>Tableau</strong> כדי להפוך שורות ועמודות משעממות לגרפים דינמיים.
-                    </p>
-                    <ol class="list-decimal list-inside space-y-2 text-gray-700">
-                        <li>פתחו את תוכנת <strong>Tableau Desktop</strong> (<a href="https://www.tableau.com/academic/students" target="_blank" class="text-blue-600 underline">קבלת רשיון סטודנט חינם לשנה</a>).</li>
-                        <li>במסך הפתיחה, תחת <strong>To a Server</strong>, לחצו על <strong>Google Drive</strong>.</li>
-                        <li>אשרו את החיבור דרך הדפדפן (פעולה זו מאפשרת לטבלו לקרוא את המסמכים שלכם בזמן אמת).</li>
-                        <li>בחרו את הגיליון "נתוני מניות" שלכם. זהו! גררו את שדה התאריך לציר ה-X, ושער סגירה לציר ה-Y. מדהים, לא?</li>
-                    </ol>
+                <div class="relative z-10 flex flex-col items-center group w-40">
+                    <div class="w-20 h-20 bg-slate-800 border-4 border-teal-400 rounded-2xl flex items-center justify-center text-3xl mb-4 pulse-node delay-4 shadow-lg transform transition group-hover:scale-110 group-hover:-translate-y-2 cursor-default">
+                        📈
+                    </div>
+                    <h4 class="font-bold text-teal-300 text-center">5. ויזואליזציה</h4>
+                    <p class="text-xs text-slate-400 text-center mt-1">Tableau מציג את הנתונים כדאשבורד מרשים</p>
                 </div>
             </div>
             
-            <!-- Troubleshooting Section -->
-            <div class="mt-12 border-t-2 border-dashed border-gray-300 pt-8">
-                <div class="bg-red-50 rounded-xl p-6 border border-red-200">
-                    <h3 class="text-2xl font-bold text-red-800 mb-4 flex items-center">
-                        <span class="mr-2">🛠️</span> נתקעתם? מדריך שגיאות נפוצות
-                    </h3>
-                    <p class="text-gray-700 mb-6">אין מתכנת שלא חווה שגיאות. הנה הפתרונות לדברים הנפוצים ביותר שיכולים להשתבש:</p>
-                    
-                    <div class="space-y-4">
-                        <details class="bg-white p-4 rounded shadow-sm cursor-pointer group">
-                            <summary class="font-semibold text-red-700 outline-none">❌ לחצתי "Run" בסקריפט של גוגל וקיבלתי שגיאה: Cannot read property 'postData'</summary>
-                            <div class="mt-2 text-sm text-gray-700 pl-4 border-r-2 border-red-300">
-                                <strong>הכל בסדר! כך זה אמור להיות.</strong> הפונקציה <code>doPost(e)</code> מצפה לקבל את האות 'e' (כלומר Event - נתונים שמגיעים מבחוץ, מהטופס שבאתר). כשאתם לוחצים Run בתוך העורך, אין שום נתונים שמגיעים, ולכן הסקריפט קורס. הבדיקה האמיתית היא דרך האתר שבניתם.
-                            </div>
-                        </details>
-                        
-                        <details class="bg-white p-4 rounded shadow-sm cursor-pointer group">
-                            <summary class="font-semibold text-red-700 outline-none">❌ שגיאת CORS מופיעה בקונסול של הדפדפן (F12)</summary>
-                            <div class="mt-2 text-sm text-gray-700 pl-4 border-r-2 border-red-300">
-                                זו השגיאה הנפוצה ביותר! היא אומרת שגוגל חוסם את הבקשה. זה קורה משתי סיבות:
-                                <ol class="list-decimal list-inside mt-1">
-                                    <li>בשלב 3 שכחתם לשנות את <em>Who has access</em> ל-<strong>Anyone</strong>.</li>
-                                    <li>עשיתם שינוי בקוד הסקריפט אבל לחצתם רק "שמור". <strong>חובה לעשות New Deployment בכל פעם שמשנים קוד בשרת!</strong> ואז לעדכן את ה-URL החדש בקוד ה-HTML שלכם.</li>
-                                </ol>
-                            </div>
-                        </details>
+            <div class="absolute top-0 right-0 -mr-20 -mt-20 w-64 h-64 rounded-full bg-blue-500 opacity-5 blur-3xl pointer-events-none"></div>
+            <div class="absolute bottom-0 left-0 -ml-20 -mb-20 w-64 h-64 rounded-full bg-teal-500 opacity-5 blur-3xl pointer-events-none"></div>
+        </div>
+    </div>
 
-                        <details class="bg-white p-4 rounded shadow-sm cursor-pointer group">
-                            <summary class="font-semibold text-red-700 outline-none">❌ האתר אומר "הצלחה" אבל הגיליון נשאר ריק</summary>
-                            <div class="mt-2 text-sm text-gray-700 pl-4 border-r-2 border-red-300">
-                                ודאו שסימול המניה (Ticker) שהזנתם באמת קיים ב-Yahoo Finance. נסו להזין סימול מוכר כמו AAPL או MSFT. אם עדיין לא עובד, ייתכן שגוגל דורש לאשר מחדש את ההרשאות דרך פריסת הניסיון (Test Deployment - ראו שלב 3).
-                            </div>
-                        </details>
-                    </div>
+    <div class="p-8 space-y-12">
+
+        <div class="relative pl-4 md:pl-0">
+            <div class="flex items-center mb-4">
+                <div class="w-10 h-10 bg-blue-100 text-blue-700 rounded-full flex items-center justify-center font-bold text-xl ml-4 shrink-0 border-2 border-blue-500">1</div>
+                <h3 class="text-2xl font-bold text-gray-800">הבנת הארכיטקטורה: סדר הפעולות</h3>
+            </div>
+            <div class="mr-14 bg-gray-50 p-6 rounded-lg border border-gray-200">
+                <p class="text-gray-700 mb-4">במערכת שלנו יש שלושה רכיבים מרכזיים שמדברים אחד עם השני. חשוב להבין מי עושה מה, כדי לדעת איפה לחפש שגיאות (Debugging):</p>
+                <div class="bg-white p-4 rounded border border-blue-100 mb-4 shadow-sm">
+                    <ul class="list-disc list-inside space-y-2 text-gray-700">
+                        <li><strong>צד הלקוח (Frontend):</strong> דף ה-HTML/JS. זהו ממשק המשתמש (הטופס). תפקידו לאסוף את שם המניה והתאריכים ולשלוח אותם הלאה. בעיות עיצוב או שגיאות שליחה (CORS) קורות כאן.</li>
+                        <li><strong>צד השרת (Backend):</strong> קוד ה-Google Apps Script (GAS) שיושב בתוך גוגל שיטס. הוא המוח שמקבל את הבקשה ומנהל את העבודה. בעיות של חוסר הרשאות מתרחשות פה.</li>
+                        <li><strong>ספק הנתונים (API):</strong> שרתי Yahoo Finance, שמהם נמשוך את המידע. יאהו חוסמים לעיתים רובוטים, ולכן נצטרך לכתוב לשרת שלנו "תוכנית גיבוי" שתמשוך נתונים מפונקציות גוגל מובניות במקרה של חסימה.</li>
+                    </ul>
                 </div>
             </div>
-
         </div>
 
-        <!-- Footer -->
-        <div class="bg-gray-100 p-6 text-center text-gray-500 text-sm">
-            נוצר עבור קורס ניתוח נתונים ומערכות מידע • בהצלחה במטלה!
+        <div class="relative pl-4 md:pl-0">
+            <div class="flex items-center mb-4">
+                <div class="w-10 h-10 bg-blue-100 text-blue-700 rounded-full flex items-center justify-center font-bold text-xl ml-4 shrink-0 border-2 border-blue-500">2</div>
+                <h3 class="text-2xl font-bold text-gray-800">הכנת מסד הנתונים וקוד השרת (Google Apps Script)</h3>
+            </div>
+            <div class="mr-14 bg-gray-50 p-6 rounded-lg border border-gray-200">
+                <p class="text-gray-700 mb-4">
+                    ניצור קובץ Sheets שיהווה את מסד הנתונים שלנו, ונשתול בו קוד שיודע לתקשר עם Yahoo Finance או לעקוף אותו במקרה הצורך.
+                </p>
+                <ol class="list-decimal list-inside space-y-2 text-gray-700 mb-6">
+                    <li>פתחו גיליון <strong>Google Sheets</strong> חדש וקראו לו בשם ברור.</li>
+                    <li>בתפריט העליון, לחצו על <strong>הרחבות (Extensions)</strong> ואז על <strong>Apps Script</strong>.</li>
+                    <li>מחקו את כל הקוד הקיים שם.</li>
+                    <li>העתיקו את הפרומפט הבא ל-AI שלכם (הוא מכיל הנחיות קריטיות לעקיפת אבטחה), הדביקו את התשובה בעורך של גוגל, ושמרו.</li>
+                </ol>
+
+                <div class="prompt-box p-5 rounded-md relative flex flex-col items-start shadow-inner">
+                    <span class="text-sm text-blue-300 font-bold mb-2 uppercase tracking-wide">🤖 פרומפט שרת - להעתקה לבינה מלאכותית:</span>
+                    <p class="text-base font-mono mb-4 leading-relaxed" dir="rtl">
+אני צריך קוד Google Apps Script המכיל פונקציית doPost(e) שתשמש כ-Web App לחילוץ נתוני מניות.
+הקוד חייב לכלול את ההנחיות הקריטיות הבאות:
+1. קבלת הנתונים מהבקשה מתוך e.postData.contents, וביצוע JSON.parse() כדי לחלץ את: ticker, startDate, endDate.
+2. מנגנון משיכה מ-Yahoo Finance: לפני משיכת ה-CSV, על הקוד לשלוח בקשה ל-finance.yahoo.com כדי למשוך עוגייה (Cookie), ולאחר מכן לשלוח בקשה ל-getcrumb כדי לחלץ אסימון אבטחה. רק עם שניהם, יש לפנות ל-API של הורדת ה-CSV.
+3. תוכנית גיבוי חובה: עטוף את כל תהליך יאהו ב-try-catch. אם יאהו חוסם את הבקשה (שגיאות 401/404/Crumb), בבלוק ה-catch, נקה את הגיליון, וכתוב לתא A1 נוסחת GOOGLEFINANCE שתמשוך את הנתונים ההיסטוריים (פתיחה, סגירה, גבוה, נמוך, נפח) לפי הטיקר והתאריכים שנשלחו.
+4. בסוף, עליו להחזיר תגובת JSON (עם סטטוס success או error).
+הוסף הערות מפורטות בעברית מעל כל שורת קוד.
+                    </p>
+                    <button onclick="copyPrompt(this)" class="bg-blue-600 hover:bg-blue-500 text-white px-4 py-2 rounded text-sm font-semibold transition-colors shadow self-end">העתק פרומפט</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="relative pl-4 md:pl-0">
+            <div class="flex items-center mb-4">
+                <div class="w-10 h-10 bg-blue-100 text-blue-700 rounded-full flex items-center justify-center font-bold text-xl ml-4 shrink-0 border-2 border-blue-500">3</div>
+                <h3 class="text-2xl font-bold text-gray-800">פריסת הסקריפט ויצירת כתובת URL</h3>
+            </div>
+            <div class="mr-14 bg-gray-50 p-6 rounded-lg border border-gray-200">
+                <p class="text-gray-700 mb-4">כדי שדף האינטרנט שלנו יוכל לשלוח פקודות לגיליון, חובה לחשוף את הקוד החוצה בצורה מאובטחת.</p>
+                <ol class="list-decimal list-inside space-y-3 text-gray-700">
+                    <li>לחצו על הכפתור הכחול למעלה: <strong>פריסה (Deploy)</strong>.</li>
+                    <li>בחרו ב-<strong>פריסה חדשה (New deployment)</strong>.</li>
+                    <li>לחצו על גלגל השיניים ⚙️ ובחרו <strong>אפליקציית אינטרנט (Web app)</strong>.</li>
+                    <li class="p-4 bg-yellow-50 border-l-4 border-yellow-500 rounded shadow-sm">
+                        <strong class="text-yellow-800 text-lg">⚠️ הגדרות קריטיות (השלב שבו רובם נופלים!):</strong>
+                        <ul class="list-disc list-inside mt-2 space-y-1 font-semibold text-gray-800">
+                            <li>תחת <em>Execute as</em>: חובה לבחור <strong>Me (אני)</strong>.</li>
+                            <li>תחת <em>Who has access</em>: חובה לשנות ל-<strong>Anyone (כל אחד)</strong>.</li>
+                        </ul>
+                    </li>
+                    <li>לחצו <strong>Deploy</strong>. אשרו את אזהרות האבטחה (Advanced -> Go to script (unsafe)).</li>
+                    <li>העתיקו את ה-<strong>Web app URL</strong> ושמרו אותו.</li>
+                </ol>
+                <div class="alert-box p-4 mt-4 rounded text-sm font-bold">
+                    טיפ זהב: עשיתם שינוי כלשהו בקוד ב-Apps Script? הכתובת הישנה לא תתעדכן! אתם חייבים לעשות שוב "Deploy -> New deployment" כדי שהשינויים ייכנסו לתוקף. (אל תשתמשו ב-Manage deployments).
+                </div>
+            </div>
+        </div>
+
+        <div class="relative pl-4 md:pl-0">
+            <div class="flex items-center mb-4">
+                <div class="w-10 h-10 bg-blue-100 text-blue-700 rounded-full flex items-center justify-center font-bold text-xl ml-4 shrink-0 border-2 border-blue-500">4</div>
+                <h3 class="text-2xl font-bold text-gray-800">בניית לוח הבקרה למשתמש (HTML/JS)</h3>
+            </div>
+            <div class="mr-14 bg-gray-50 p-6 rounded-lg border border-gray-200">
+                <p class="text-gray-700 mb-4">כעת ניצור את "התפריט" - ממשק המשתמש שבו נקליד איזה נתונים אנו רוצים. אנו נשתמש בטריק מיוחד ב-JavaScript כדי למנוע חסימות דפדפן (CORS).</p>
+                
+                <ol class="list-decimal list-inside space-y-3 text-gray-700 mb-6">
+                    <li>צרו מאגר חדש (Public) ב-GitHub.</li>
+                    <li>צרו קובץ חדש בשם <code>index.html</code>.</li>
+                    <li>העתיקו את הפרומפט הבא ל-AI שלכם כדי לייצר את קוד ה-HTML.</li>
+                    <li><strong>חשוב:</strong> בקוד שתקבלו, מצאו את המילה <code>YOUR_WEB_APP_URL</code>, והחליפו אותה בכתובת ששמרתם משלב 3.</li>
+                    <li>שמרו את הקובץ. הפעילו את GitHub Pages בהגדרות המאגר, והמתינו לקבלת הלינק לאתר החי שלכם.</li>
+                </ol>
+
+                <div class="prompt-box p-5 rounded-md relative flex flex-col items-start shadow-inner">
+                    <span class="text-sm text-blue-300 font-bold mb-2 uppercase tracking-wide">🤖 פרומפט לקוח - להעתקה לבינה מלאכותית:</span>
+                    <p class="text-base font-mono mb-4 leading-relaxed" dir="rtl">
+אני צריך קובץ HTML אחד המהווה לוח בקרה פיננסי.
+1. עצב את הדף בצורה מודרנית עם Tailwind CSS.
+2. במרכז, טופס עם: שדה 'סימול מניה' (טקסט), 'תאריך התחלה' (date), 'תאריך סיום' (date), וכפתור שליחה עם ספינר טעינה.
+3. קוד JavaScript שמונע רענון דף ואוסף את הנתונים ל-JSON.
+4. קריטי לעקיפת חסימות דפדפן (CORS Error): בקשת ה-fetch(URL) לשרת גוגל חייבת להיות בשיטת POST. בהגדרות ה-headers חובה להגדיר את ה-Content-Type להיות בדיוק: 'text/plain;charset=utf-8'. בשום פנים ואופן לא להשתמש ב-application/json. ה-body צריך להכיל את ה-JSON.stringify. הכתובת לבקשה תהיה 'YOUR_WEB_APP_URL'.
+5. טיפול בתגובה: הצגת הודעת הצלחה ירוקה או שגיאה אדומה בהתאם לתגובה. הוסף הערות קוד בעברית.
+                    </p>
+                    <button onclick="copyPrompt(this)" class="bg-blue-600 hover:bg-blue-500 text-white px-4 py-2 rounded text-sm font-semibold transition-colors shadow self-end">העתק פרומפט</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="relative pl-4 md:pl-0">
+            <div class="flex items-center mb-4">
+                <div class="w-10 h-10 bg-green-100 text-green-700 rounded-full flex items-center justify-center font-bold text-xl ml-4 shrink-0 border-2 border-green-500">5</div>
+                <h3 class="text-2xl font-bold text-gray-800">ניתוח ויזואלי ב-Tableau</h3>
+            </div>
+            <div class="mr-14 bg-green-50 p-6 rounded-lg border border-green-200">
+                <p class="text-gray-700 mb-4">המערכת פועלת! הנתונים נמשכים אוטומטית לגיליון בלחיצת כפתור באתר שלכם. כעת ניקח את המספרים ונהפוך אותם לתובנות עסקיות באמצעות Tableau.</p>
+                <ol class="list-decimal list-inside space-y-2 text-gray-700">
+                    <li>פתחו את תוכנת <strong>Tableau Desktop</strong> במחשב.</li>
+                    <li>בתפריט השמאלי, תחת <strong>Connect -> To a Server</strong>, בחרו <strong>Google Drive</strong>.</li>
+                    <li>התחברו עם חשבון הגוגל שלכם ואשרו לטבלו לגשת לגיליונות.</li>
+                    <li>בחרו את גיליון נתוני המניות שיצרתם.</li>
+                    <li>עברו ל-Sheet1. גררו את שדה התאריך לציר ה-Columns, ואת שערי הסגירה או הנפח לציר ה-Rows כדי לייצר את הויזואליזציה שלכם.</li>
+                    <li><strong>סנכרון חכם:</strong> בפעם הבאה שתשתמשו באתר שיצרתם כדי למשוך נתונים של מניה אחרת, הגיליון יתעדכן - וכל שעליכם לעשות הוא ללחוץ על "רענן" (Refresh) בטבלו כדי שהגרפים יתעדכנו מיידית!</li>
+                </ol>
+            </div>
         </div>
 
     </div>
+
+    <div class="bg-gray-100 p-6 text-center text-gray-600 text-sm border-t border-gray-200">
+        <p class="font-semibold text-base mb-1">פותח עבור הסטודנטים בקורסי מערכות מידע ופיננסים | ד"ר שי צבאן</p>
+        <p>בהצלחה במטלה!</p>
+    </div>
+</div>
 
 </body>
 </html>
