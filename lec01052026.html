@@ -1,0 +1,2843 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>בינה עסקית ומערכות מידע פיננסיות | ד"ר שי צבאן</title>
+<link href="https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;500;600;700;800;900&family=Rubik:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --primary: #1a56db;
+  --primary-light: #3b82f6;
+  --primary-dark: #1e3a8a;
+  --secondary: #7c3aed;
+  --secondary-light: #a78bfa;
+  --accent: #0891b2;
+  --accent2: #059669;
+  --accent3: #d97706;
+  --accent4: #dc2626;
+  --bg: #f8faff;
+  --bg2: #f1f5fd;
+  --card: #ffffff;
+  --text: #1e293b;
+  --text2: #475569;
+  --text3: #94a3b8;
+  --border: #e2e8f0;
+  --success: #16a34a;
+  --error: #dc2626;
+  --warning: #d97706;
+  --info: #0284c7;
+  --shadow: 0 4px 24px rgba(26,86,219,0.08);
+  --shadow-lg: 0 8px 40px rgba(26,86,219,0.13);
+  --radius: 16px;
+  --radius-sm: 8px;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: 'Heebo', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.75;
+  font-size: 16px;
+  direction: rtl;
+}
+
+/* ===== HEADER ===== */
+.main-header {
+  background: linear-gradient(135deg, #1a56db 0%, #7c3aed 60%, #0891b2 100%);
+  color: white;
+  padding: 56px 32px 48px;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+.main-header::before {
+  content: '';
+  position: absolute;
+  top: -60px; right: -60px;
+  width: 300px; height: 300px;
+  background: rgba(255,255,255,0.05);
+  border-radius: 50%;
+}
+.main-header::after {
+  content: '';
+  position: absolute;
+  bottom: -80px; left: -40px;
+  width: 250px; height: 250px;
+  background: rgba(255,255,255,0.04);
+  border-radius: 50%;
+}
+.main-header h1 {
+  font-size: 2.6rem;
+  font-weight: 900;
+  margin-bottom: 10px;
+  position: relative;
+}
+.main-header .subtitle {
+  font-size: 1.15rem;
+  opacity: 0.88;
+  font-weight: 400;
+  margin-bottom: 6px;
+}
+.main-header .meta {
+  font-size: 0.95rem;
+  opacity: 0.7;
+  margin-top: 8px;
+}
+.badges {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+  margin-top: 22px;
+  flex-wrap: wrap;
+}
+.badge {
+  background: rgba(255,255,255,0.18);
+  border: 1px solid rgba(255,255,255,0.28);
+  border-radius: 50px;
+  padding: 6px 18px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  backdrop-filter: blur(8px);
+}
+
+/* ===== NAV ===== */
+.sticky-nav {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: rgba(255,255,255,0.96);
+  border-bottom: 2px solid var(--border);
+  backdrop-filter: blur(12px);
+  box-shadow: 0 2px 16px rgba(26,86,219,0.08);
+}
+.nav-inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  gap: 4px;
+  padding: 10px 20px;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+.nav-inner::-webkit-scrollbar { display: none; }
+.nav-btn {
+  background: none;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 8px;
+  font-family: 'Heebo', sans-serif;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--text2);
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all 0.2s;
+}
+.nav-btn:hover, .nav-btn.active {
+  background: var(--primary);
+  color: white;
+}
+
+/* ===== PROGRESS BAR ===== */
+.progress-bar-wrap {
+  background: var(--border);
+  height: 5px;
+}
+.progress-bar-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--primary), var(--secondary));
+  width: 0%;
+  transition: width 0.4s;
+}
+
+/* ===== CONTAINER ===== */
+.container {
+  max-width: 1050px;
+  margin: 0 auto;
+  padding: 40px 24px 80px;
+}
+
+/* ===== PART HEADER ===== */
+.part-header {
+  background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+  color: white;
+  border-radius: var(--radius);
+  padding: 36px 40px;
+  margin-bottom: 40px;
+  position: relative;
+  overflow: hidden;
+}
+.part-header.part-b {
+  background: linear-gradient(135deg, #0891b2 0%, #059669 100%);
+}
+.part-header .part-num {
+  font-size: 0.85rem;
+  font-weight: 700;
+  opacity: 0.75;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  margin-bottom: 8px;
+}
+.part-header h2 {
+  font-size: 2rem;
+  font-weight: 900;
+  margin-bottom: 10px;
+}
+.part-header p {
+  font-size: 1.05rem;
+  opacity: 0.88;
+  max-width: 680px;
+}
+.part-icon {
+  position: absolute;
+  left: 32px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 5rem;
+  opacity: 0.15;
+}
+
+/* ===== SECTION ===== */
+.section {
+  margin-bottom: 60px;
+}
+.section-title {
+  font-size: 1.55rem;
+  font-weight: 800;
+  color: var(--primary-dark);
+  margin-bottom: 20px;
+  padding-bottom: 10px;
+  border-bottom: 3px solid var(--primary-light);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.section-title .icon {
+  width: 36px;
+  height: 36px;
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.1rem;
+  flex-shrink: 0;
+}
+
+/* ===== CARDS ===== */
+.card {
+  background: var(--card);
+  border-radius: var(--radius);
+  padding: 28px 32px;
+  margin-bottom: 20px;
+  box-shadow: var(--shadow);
+  border: 1px solid var(--border);
+}
+.card-highlight {
+  border-right: 5px solid var(--primary);
+}
+.card-green { border-right: 5px solid var(--accent2); }
+.card-purple { border-right: 5px solid var(--secondary); }
+.card-orange { border-right: 5px solid var(--accent3); }
+.card-red { border-right: 5px solid var(--accent4); }
+.card-teal { border-right: 5px solid var(--accent); }
+
+/* ===== DEFINITION BOX ===== */
+.def-box {
+  background: linear-gradient(135deg, #eff6ff, #f0fdf4);
+  border: 1px solid #93c5fd;
+  border-radius: var(--radius);
+  padding: 24px 28px;
+  margin: 20px 0;
+  position: relative;
+}
+.def-box::before {
+  content: '📖 הגדרה';
+  position: absolute;
+  top: -12px;
+  right: 20px;
+  background: var(--primary);
+  color: white;
+  padding: 2px 14px;
+  border-radius: 50px;
+  font-size: 0.8rem;
+  font-weight: 700;
+}
+.def-box h4 {
+  font-size: 1.1rem;
+  font-weight: 800;
+  color: var(--primary-dark);
+  margin-bottom: 8px;
+}
+.def-box p { color: var(--text2); line-height: 1.8; }
+
+/* ===== EXAMPLE BOX ===== */
+.example-box {
+  background: linear-gradient(135deg, #fef9c3, #fef3c7);
+  border: 1px solid #fbbf24;
+  border-radius: var(--radius);
+  padding: 22px 26px;
+  margin: 20px 0;
+}
+.example-box-label {
+  font-size: 0.82rem;
+  font-weight: 800;
+  color: #92400e;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  margin-bottom: 8px;
+}
+.example-box p { color: #78350f; line-height: 1.8; }
+
+/* ===== STATS ROW ===== */
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 16px;
+  margin: 24px 0;
+}
+.stat-card {
+  background: var(--card);
+  border-radius: var(--radius);
+  padding: 24px;
+  text-align: center;
+  box-shadow: var(--shadow);
+  border: 1px solid var(--border);
+  transition: transform 0.2s;
+}
+.stat-card:hover { transform: translateY(-3px); }
+.stat-num {
+  font-size: 2.2rem;
+  font-weight: 900;
+  margin-bottom: 6px;
+}
+.stat-label {
+  font-size: 0.85rem;
+  color: var(--text2);
+  font-weight: 500;
+}
+.stat-source {
+  font-size: 0.72rem;
+  color: var(--text3);
+  margin-top: 4px;
+}
+
+/* ===== FLOW DIAGRAM ===== */
+.flow-container {
+  background: var(--card);
+  border-radius: var(--radius);
+  padding: 32px;
+  margin: 24px 0;
+  box-shadow: var(--shadow);
+  overflow-x: auto;
+}
+.flow-container h4 {
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--text2);
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+/* ===== COMPARISON TABLE ===== */
+.comp-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 20px 0;
+  background: var(--card);
+  border-radius: var(--radius);
+  overflow: hidden;
+  box-shadow: var(--shadow);
+}
+.comp-table th {
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  color: white;
+  padding: 14px 18px;
+  font-weight: 700;
+  font-size: 0.95rem;
+  text-align: right;
+}
+.comp-table td {
+  padding: 12px 18px;
+  border-bottom: 1px solid var(--border);
+  color: var(--text);
+  font-size: 0.92rem;
+  vertical-align: top;
+}
+.comp-table tr:last-child td { border-bottom: none; }
+.comp-table tr:nth-child(even) td { background: #f8faff; }
+.comp-table tr:hover td { background: #eff6ff; transition: 0.15s; }
+
+/* ===== MCQ ===== */
+.mcq-block {
+  background: var(--card);
+  border-radius: var(--radius);
+  padding: 28px 32px;
+  margin: 32px 0;
+  box-shadow: var(--shadow-lg);
+  border: 2px solid var(--border);
+}
+.mcq-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 22px;
+  padding-bottom: 14px;
+  border-bottom: 2px solid var(--border);
+}
+.mcq-badge {
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  color: white;
+  padding: 4px 14px;
+  border-radius: 50px;
+  font-size: 0.8rem;
+  font-weight: 700;
+}
+.mcq-badge.easy { background: linear-gradient(135deg, #16a34a, #15803d); }
+.mcq-badge.medium { background: linear-gradient(135deg, #d97706, #b45309); }
+.mcq-badge.hard { background: linear-gradient(135deg, #dc2626, #b91c1c); }
+.mcq-header h3 {
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--text);
+  line-height: 1.5;
+}
+.mcq-q {
+  font-size: 1.02rem;
+  font-weight: 600;
+  color: var(--text);
+  margin-bottom: 16px;
+  line-height: 1.7;
+}
+.mcq-options {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 16px;
+}
+.mcq-option {
+  background: var(--bg2);
+  border: 2px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 12px 18px;
+  cursor: pointer;
+  transition: all 0.2s;
+  font-family: 'Heebo', sans-serif;
+  font-size: 0.95rem;
+  color: var(--text);
+  text-align: right;
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+}
+.mcq-option:hover { border-color: var(--primary-light); background: #eff6ff; }
+.mcq-option.correct { border-color: var(--success); background: #f0fdf4; color: #166534; }
+.mcq-option.wrong { border-color: var(--error); background: #fef2f2; color: #991b1b; }
+.mcq-option .opt-letter {
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  background: var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 800;
+  font-size: 0.8rem;
+  flex-shrink: 0;
+}
+.mcq-option.correct .opt-letter { background: var(--success); color: white; }
+.mcq-option.wrong .opt-letter { background: var(--error); color: white; }
+.mcq-explanation {
+  display: none;
+  background: linear-gradient(135deg, #f0fdf4, #eff6ff);
+  border: 1px solid #86efac;
+  border-radius: var(--radius-sm);
+  padding: 14px 18px;
+  margin-top: 12px;
+  font-size: 0.93rem;
+  color: #166534;
+  line-height: 1.7;
+}
+.mcq-explanation.show { display: block; }
+.mcq-explanation.wrong-exp { 
+  background: linear-gradient(135deg, #fef2f2, #fff7ed);
+  border-color: #fca5a5;
+  color: #991b1b;
+}
+
+/* ===== ACCORDION ===== */
+.accordion {
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  overflow: hidden;
+  margin: 16px 0;
+}
+.accordion-header {
+  background: var(--bg2);
+  padding: 16px 22px;
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-weight: 600;
+  font-size: 0.98rem;
+  color: var(--text);
+  transition: background 0.2s;
+  border: none;
+  width: 100%;
+  text-align: right;
+  font-family: 'Heebo', sans-serif;
+}
+.accordion-header:hover { background: #e0e7ff; }
+.accordion-arrow { transition: transform 0.3s; font-size: 0.9rem; }
+.accordion-header.open .accordion-arrow { transform: rotate(180deg); }
+.accordion-body {
+  display: none;
+  padding: 18px 22px;
+  background: var(--card);
+  border-top: 1px solid var(--border);
+  line-height: 1.8;
+  color: var(--text2);
+}
+.accordion-body.show { display: block; }
+
+/* ===== PYRAMID ===== */
+.pyramid-container {
+  background: var(--card);
+  border-radius: var(--radius);
+  padding: 32px;
+  margin: 24px 0;
+  box-shadow: var(--shadow);
+  text-align: center;
+}
+
+/* ===== INFO GRID ===== */
+.info-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 18px;
+  margin: 24px 0;
+}
+.info-card {
+  background: var(--card);
+  border-radius: var(--radius);
+  padding: 24px;
+  box-shadow: var(--shadow);
+  border: 1px solid var(--border);
+  position: relative;
+  overflow: hidden;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.info-card:hover { transform: translateY(-3px); box-shadow: var(--shadow-lg); }
+.info-card-icon {
+  width: 48px;
+  height: 48px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+  margin-bottom: 14px;
+}
+.info-card h4 {
+  font-size: 1rem;
+  font-weight: 800;
+  color: var(--text);
+  margin-bottom: 8px;
+}
+.info-card p {
+  font-size: 0.9rem;
+  color: var(--text2);
+  line-height: 1.7;
+}
+
+/* ===== TIMELINE ===== */
+.timeline {
+  position: relative;
+  padding: 12px 0;
+  margin: 24px 0;
+}
+.timeline::before {
+  content: '';
+  position: absolute;
+  right: 18px;
+  top: 0;
+  bottom: 0;
+  width: 3px;
+  background: linear-gradient(to bottom, var(--primary), var(--secondary));
+  border-radius: 4px;
+}
+.timeline-item {
+  position: relative;
+  padding: 0 52px 28px 0;
+}
+.timeline-dot {
+  position: absolute;
+  right: 6px;
+  top: 4px;
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  background: var(--primary);
+  border: 3px solid white;
+  box-shadow: 0 0 0 2px var(--primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.65rem;
+  color: white;
+  font-weight: 700;
+}
+.timeline-year {
+  font-size: 0.8rem;
+  font-weight: 800;
+  color: var(--primary);
+  margin-bottom: 4px;
+}
+.timeline-content {
+  background: var(--card);
+  border-radius: var(--radius-sm);
+  padding: 14px 18px;
+  border: 1px solid var(--border);
+  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+}
+.timeline-content h4 {
+  font-size: 0.97rem;
+  font-weight: 700;
+  margin-bottom: 6px;
+  color: var(--text);
+}
+.timeline-content p {
+  font-size: 0.88rem;
+  color: var(--text2);
+  line-height: 1.6;
+}
+
+/* ===== CAREER TABLE ===== */
+.career-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 20px 0;
+  background: var(--card);
+  border-radius: var(--radius);
+  overflow: hidden;
+  box-shadow: var(--shadow);
+}
+.career-table th {
+  background: linear-gradient(135deg, #0891b2, #1a56db);
+  color: white;
+  padding: 14px 16px;
+  font-weight: 700;
+  text-align: right;
+}
+.career-table td {
+  padding: 12px 16px;
+  border-bottom: 1px solid var(--border);
+  font-size: 0.9rem;
+  vertical-align: top;
+}
+.salary-badge {
+  background: #dcfce7;
+  color: #166534;
+  border-radius: 50px;
+  padding: 3px 10px;
+  font-size: 0.82rem;
+  font-weight: 700;
+}
+
+/* ===== CODE BLOCK ===== */
+.code-block {
+  background: #0f172a;
+  border-radius: var(--radius-sm);
+  padding: 20px 22px;
+  font-family: 'Courier New', monospace;
+  font-size: 0.87rem;
+  line-height: 1.7;
+  color: #e2e8f0;
+  margin: 16px 0;
+  overflow-x: auto;
+  direction: ltr;
+  text-align: left;
+}
+.code-block .cm { color: #94a3b8; }
+.code-block .kw { color: #60a5fa; font-weight: 700; }
+.code-block .fn { color: #34d399; }
+.code-block .str { color: #fbbf24; }
+.code-block .num { color: #f472b6; }
+.code-block .var { color: #e2e8f0; }
+
+/* ===== ARCH DIAGRAM ===== */
+.arch-box {
+  background: var(--card);
+  border-radius: var(--radius);
+  padding: 32px;
+  margin: 24px 0;
+  box-shadow: var(--shadow);
+  overflow-x: auto;
+}
+
+/* ===== LABELS / PILLS ===== */
+.pill {
+  display: inline-block;
+  padding: 3px 12px;
+  border-radius: 50px;
+  font-size: 0.8rem;
+  font-weight: 700;
+  margin: 2px;
+}
+.pill-blue { background: #dbeafe; color: #1e40af; }
+.pill-green { background: #dcfce7; color: #166534; }
+.pill-orange { background: #fef3c7; color: #92400e; }
+.pill-purple { background: #ede9fe; color: #5b21b6; }
+.pill-red { background: #fee2e2; color: #991b1b; }
+.pill-teal { background: #cffafe; color: #155e75; }
+
+/* ===== SUMMARY BOX ===== */
+.summary-box {
+  background: linear-gradient(135deg, #1a56db, #7c3aed);
+  color: white;
+  border-radius: var(--radius);
+  padding: 28px 32px;
+  margin: 32px 0;
+}
+.summary-box h3 {
+  font-size: 1.2rem;
+  font-weight: 800;
+  margin-bottom: 16px;
+  opacity: 0.9;
+}
+.summary-row {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 10px;
+  align-items: flex-start;
+}
+.summary-row .key {
+  min-width: 140px;
+  font-weight: 700;
+  opacity: 0.85;
+  font-size: 0.9rem;
+}
+.summary-row .val {
+  font-size: 0.92rem;
+  opacity: 0.92;
+  line-height: 1.6;
+}
+
+/* ===== CALLOUT ===== */
+.callout {
+  display: flex;
+  gap: 14px;
+  background: var(--bg2);
+  border-radius: var(--radius-sm);
+  padding: 16px 20px;
+  margin: 16px 0;
+  border: 1px solid var(--border);
+  align-items: flex-start;
+}
+.callout-icon { font-size: 1.4rem; flex-shrink: 0; margin-top: 2px; }
+.callout-body { font-size: 0.93rem; color: var(--text2); line-height: 1.7; }
+.callout-body strong { color: var(--text); }
+.callout.info { border-color: #93c5fd; background: #eff6ff; }
+.callout.warn { border-color: #fbbf24; background: #fef9c3; }
+.callout.success { border-color: #86efac; background: #f0fdf4; }
+.callout.danger { border-color: #fca5a5; background: #fef2f2; }
+
+/* ===== DIVIDER ===== */
+.divider {
+  height: 2px;
+  background: linear-gradient(90deg, transparent, var(--border), transparent);
+  margin: 48px 0;
+}
+
+/* ===== SCORE TRACKER ===== */
+.score-tracker {
+  position: fixed;
+  bottom: 24px;
+  left: 24px;
+  background: var(--card);
+  border-radius: var(--radius);
+  padding: 14px 20px;
+  box-shadow: var(--shadow-lg);
+  border: 2px solid var(--border);
+  z-index: 200;
+  min-width: 160px;
+}
+.score-tracker h5 {
+  font-size: 0.78rem;
+  color: var(--text3);
+  font-weight: 600;
+  margin-bottom: 6px;
+}
+.score-display {
+  font-size: 1.5rem;
+  font-weight: 900;
+  color: var(--primary);
+}
+.score-display span { font-size: 0.9rem; color: var(--text3); font-weight: 500; }
+
+/* ===== RESPONSIVE ===== */
+@media(max-width:768px){
+  .main-header h1 { font-size: 1.8rem; }
+  .container { padding: 24px 16px 60px; }
+  .stats-grid { grid-template-columns: 1fr 1fr; }
+  .info-grid { grid-template-columns: 1fr; }
+  .part-icon { display: none; }
+  .score-tracker { display: none; }
+}
+
+/* ===== ANIMATIONS ===== */
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.animate-in {
+  animation: fadeInUp 0.5s ease forwards;
+  opacity: 0;
+}
+
+/* ===== SECTION SCROLL REVEAL ===== */
+.reveal {
+  opacity: 0;
+  transform: translateY(24px);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+.reveal.visible {
+  opacity: 1;
+  transform: none;
+}
+
+/* ===== TOOL CARDS ===== */
+.tools-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 16px;
+  margin: 24px 0;
+}
+.tool-card {
+  background: var(--card);
+  border-radius: var(--radius);
+  padding: 22px;
+  box-shadow: var(--shadow);
+  border: 1px solid var(--border);
+  text-align: center;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.tool-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-lg); }
+.tool-emoji { font-size: 2.4rem; margin-bottom: 10px; }
+.tool-name { font-size: 1.05rem; font-weight: 800; margin-bottom: 6px; color: var(--text); }
+.tool-desc { font-size: 0.85rem; color: var(--text2); line-height: 1.6; }
+.tool-tag { margin-top: 10px; }
+
+/* ===== STACK DIAGRAM ===== */
+.stack-layer {
+  border-radius: var(--radius-sm);
+  padding: 14px 20px;
+  margin-bottom: 4px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  transition: transform 0.2s;
+}
+.stack-layer:hover { transform: translateX(-4px); }
+.stack-icon { font-size: 1.3rem; }
+.stack-info h5 { font-size: 0.95rem; font-weight: 700; color: white; margin-bottom: 2px; }
+.stack-info p { font-size: 0.82rem; color: rgba(255,255,255,0.78); }
+
+/* ===== FRONTEND/BACKEND ===== */
+.fe-be-container {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+  margin: 24px 0;
+}
+@media(max-width:680px){ .fe-be-container { grid-template-columns: 1fr; } }
+.fe-card, .be-card {
+  border-radius: var(--radius);
+  padding: 24px;
+  color: white;
+}
+.fe-card { background: linear-gradient(135deg, #0891b2, #1a56db); }
+.be-card { background: linear-gradient(135deg, #7c3aed, #6d28d9); }
+.fe-card h3, .be-card h3 { font-size: 1.2rem; font-weight: 800; margin-bottom: 12px; }
+.fe-card ul, .be-card ul { padding-right: 20px; }
+.fe-card li, .be-card li { font-size: 0.9rem; opacity: 0.9; margin-bottom: 6px; }
+
+/* ===== GAS DIAGRAM ===== */
+.gas-flow {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin: 24px 0;
+  justify-content: center;
+}
+.gas-node {
+  background: var(--card);
+  border-radius: var(--radius-sm);
+  padding: 14px 18px;
+  text-align: center;
+  border: 2px solid var(--border);
+  box-shadow: var(--shadow);
+  min-width: 110px;
+}
+.gas-node .node-icon { font-size: 1.6rem; margin-bottom: 6px; }
+.gas-node .node-label { font-size: 0.82rem; font-weight: 700; color: var(--text2); }
+.gas-arrow {
+  font-size: 1.4rem;
+  color: var(--primary);
+  font-weight: 700;
+}
+
+/* ===== CHECKLIST ===== */
+.checklist {
+  list-style: none;
+  margin: 14px 0;
+}
+.checklist li {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 8px 0;
+  border-bottom: 1px solid var(--border);
+  font-size: 0.93rem;
+  color: var(--text2);
+}
+.checklist li:last-child { border-bottom: none; }
+.checklist .check {
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--accent2), #15803d);
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.7rem;
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header class="main-header">
+  <h1>📊 בינה עסקית ומערכות מידע פיננסיות</h1>
+  <div class="subtitle">מדריך הרצאה מלא — 5 שעות לימוד עמוק</div>
+  <div class="meta">מרצה: ד"ר שי צבאן &nbsp;|&nbsp; סמסטר א' תשפ"ו 2026</div>
+  <div class="badges">
+    <span class="badge">📘 חלק א': בינה עסקית</span>
+    <span class="badge">💻 חלק ב': Frontend / Backend / GAS</span>
+    <span class="badge">❓ שאלות רב-ברירה</span>
+    <span class="badge">📈 דיאגרמות</span>
+  </div>
+</header>
+
+<!-- STICKY NAV -->
+<nav class="sticky-nav">
+  <div class="progress-bar-wrap"><div class="progress-bar-fill" id="progressBar"></div></div>
+  <div class="nav-inner">
+    <button class="nav-btn active" onclick="scrollToSection('part-a')">חלק א': BI</button>
+    <button class="nav-btn" onclick="scrollToSection('s1')">מהי BI</button>
+    <button class="nav-btn" onclick="scrollToSection('s2')">DIKW</button>
+    <button class="nav-btn" onclick="scrollToSection('s3')">ארכיטקטורה</button>
+    <button class="nav-btn" onclick="scrollToSection('s4')">כלים</button>
+    <button class="nav-btn" onclick="scrollToSection('s5')">קריירה</button>
+    <button class="nav-btn" onclick="scrollToSection('s6')">KPI & BRD</button>
+    <button class="nav-btn" onclick="scrollToSection('part-b')">חלק ב': GAS</button>
+    <button class="nav-btn" onclick="scrollToSection('s7')">Frontend/Backend</button>
+    <button class="nav-btn" onclick="scrollToSection('s8')">Google Apps Script</button>
+    <button class="nav-btn" onclick="scrollToSection('s9')">מערכת פיננסית</button>
+  </div>
+</nav>
+
+<!-- SCORE TRACKER -->
+<div class="score-tracker">
+  <h5>📊 ניקוד שאלות</h5>
+  <div class="score-display"><span id="scoreCorrect">0</span> <span>/ <span id="scoreTotal">0</span></span></div>
+</div>
+
+<!-- MAIN CONTENT -->
+<div class="container">
+
+<!-- ===================== PART A ===================== -->
+<div id="part-a"></div>
+<div class="part-header reveal">
+  <div class="part-num">חלק א'</div>
+  <h2>📊 בינה עסקית — מהדאטה אל ההחלטה</h2>
+  <p>נסקור לעומק את עולם ה-Business Intelligence: ההגדרות, הארכיטקטורה, הכלים, התפקידים ותהליך האפיון העסקי. מהנתון הגולמי ועד לתובנה מניעת-פעולה.</p>
+  <div class="part-icon">📊</div>
+</div>
+
+<!-- ==================== SECTION 1: מהי BI ==================== -->
+<div id="s1"></div>
+<div class="section reveal">
+  <div class="section-title"><div class="icon">💡</div> מהי בינה עסקית (Business Intelligence)?</div>
+  
+  <div class="card card-highlight">
+    <p style="font-size:1.05rem;line-height:1.9;color:var(--text2)">
+      בסביבה העסקית התחרותית של ימינו, ארגונים אוספים כמויות <strong>אדירות</strong> של נתונים ממשאבים טכנולוגיים שונים. עם זאת, <strong>איסוף המידע כשלעצמו אינו מהווה יתרון תחרותי</strong>. היתרון טמון ביכולת לנתח את המידע ולקבל בעזרתו החלטות עסקיות מושכלות.
+    </p>
+  </div>
+
+  <div class="def-box">
+    <h4>Business Intelligence (BI) — הגדרה פורמלית</h4>
+    <p><strong>בינה עסקית</strong> היא מערך של <em>טכנולוגיות, תהליכים, ארכיטקטורות ומערכות</em> הממירים <strong>נתונים גולמיים (Raw Data)</strong> למידע בעל משמעות ולתובנות עסקיות <strong>מניעות-פעולה (Actionable Insights)</strong>. מטרת העל של מערכות ה-BI היא לתמוך ולשפר את איכות קבלת ההחלטות הניהוליות בארגון.</p>
+  </div>
+
+  <div class="callout info">
+    <div class="callout-icon">📅</div>
+    <div class="callout-body">
+      <strong>ההיסטוריה של המונח:</strong> המונח BI הוטבע לראשונה ב-1989 על ידי Howard Dresner מ-Gartner Group. אך שורשיו עמוקים יותר — ב-1958, חוקר IBM בשם Hans Peter Luhn הגדיר את הבינה העסקית כ<em>"היכולת להבין את היחסים ההדדיים בין עובדות מוצגות באופן שמנחה פעולה לקראת מטרה רצויה"</em>. מאז עברנו מדוחות מודפסים פעם ברבעון — לדשבורדים אינטראקטיביים בזמן אמת על מסך הנייד של המנכ"ל.
+    </div>
+  </div>
+
+  <div class="section-title" style="font-size:1.2rem;margin-top:36px;"><div class="icon" style="background:linear-gradient(135deg,#059669,#0891b2)">🌍</div> למה BI? נתונים מהשטח</div>
+  
+  <div class="stats-grid">
+    <div class="stat-card">
+      <div class="stat-num" style="color:#1a56db">$33-38B</div>
+      <div class="stat-label">שוק ה-BI העולמי (2025)</div>
+      <div class="stat-source">Fortune Business Insights</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-num" style="color:#059669">~8%</div>
+      <div class="stat-label">קצב צמיחה שנתי (CAGR)</div>
+      <div class="stat-source">Mordor Intelligence</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-num" style="color:#7c3aed">+80%</div>
+      <div class="stat-label">מחברות Fortune 500 משתמשות ב-BI</div>
+      <div class="stat-source">Straits Research</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-num" style="color:#d97706">35%</div>
+      <div class="stat-label">מהכנסות Amazon ממנוע המלצות</div>
+      <div class="stat-source">McKinsey</div>
+    </div>
+  </div>
+
+  <div class="card card-green">
+    <h3 style="font-weight:800;margin-bottom:14px;color:var(--text)">📦 דוגמאות מהשטח: ענקיות שמנצחות בזכות נתונים</h3>
+    <div class="info-grid" style="margin-top:0">
+      <div class="info-card">
+        <div class="info-card-icon" style="background:#fff3cd">🛒</div>
+        <h4>Amazon</h4>
+        <p>מנוע ההמלצות — המבוסס על ניתוח התנהגות קנייה — אחראי לכ-<strong>35% מסך ההכנסות</strong>. כל קנייה, כל חיפוש, כל לחיצה — נתון שמוזן למערכת.</p>
+      </div>
+      <div class="info-card">
+        <div class="info-card-icon" style="background:#fce4ec">🎬</div>
+        <h4>Netflix</h4>
+        <p>אלגוריתם ההמלצות חוסך לחברה כ-<strong>1 מיליארד דולר בשנה</strong> בשימור מנויים. אפילו תמונת הכריכה של כל סרט נבחרת בנפרד עבור כל משתמש.</p>
+      </div>
+      <div class="info-card">
+        <div class="info-card-icon" style="background:#e8f5e9">🏪</div>
+        <h4>שופרסל</h4>
+        <p>מיליוני שורות נתונים מקופות רושמות ואפליקציית הנאמנות מתורגמות לדשבורד עם פדיון יומי מול יעד, סל קניות ממוצע, ואחוז פריטים אזלו מהמדף.</p>
+      </div>
+      <div class="info-card">
+        <div class="info-card-icon" style="background:#e3f2fd">🎭</div>
+        <h4>Netflix — House of Cards</h4>
+        <p>הסדרה אושרה לייצור לאחר שניתוח נתונים הראה ביקוש גבוה לשילוב של קווין ספייסי + דרמה פוליטית + דייוויד פינצ'ר — <strong>החלטה עסקית מבוססת נתונים!</strong></p>
+      </div>
+    </div>
+  </div>
+
+  <div class="section-title" style="font-size:1.2rem;margin-top:36px;"><div class="icon" style="background:linear-gradient(135deg,#d97706,#dc2626)">🔑</div> מהן "תובנות מניעות-פעולה"?</div>
+
+  <div class="card">
+    <p style="font-size:1rem;line-height:1.9">
+      מונח מפתח בעולם ה-BI הוא <strong>Actionable Insights</strong> — תובנות שלא רק מתארות מה קרה, אלא <em>אומרות לך מה לעשות</em>. זה ההבדל בין "מידע מעניין" לבין "מידע שמשנה החלטה".
+    </p>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:20px">
+      <div style="background:#fef2f2;border-radius:10px;padding:16px;border:1px solid #fca5a5">
+        <div style="font-weight:800;color:#991b1b;margin-bottom:8px">❌ מידע בלבד (לא מניע פעולה)</div>
+        <p style="color:#991b1b;font-size:0.9rem">"שיעור הנטישה של לקוחות עלה ל-12%"</p>
+      </div>
+      <div style="background:#f0fdf4;border-radius:10px;padding:16px;border:1px solid #86efac">
+        <div style="font-weight:800;color:#166534;margin-bottom:8px">✅ Actionable Insight</div>
+        <p style="color:#166534;font-size:0.9rem">"לקוחות שלא השתמשו באפליקציה בחודש הראשון נוטשים ב-80%, לכן צריך לשלוח להם מדריך שימוש ביום הראשון"</p>
+      </div>
+    </div>
+    <div class="callout success" style="margin-top:16px">
+      <div class="callout-icon">✅</div>
+      <div class="callout-body">
+        <strong>3 מאפיינים של Actionable Insight:</strong><br>
+        (1) <strong>ספציפית</strong> — מתייחסת לבעיה קונקרטית &nbsp;|&nbsp; (2) <strong>ברת-ביצוע</strong> — אפשר לפעול לפיה &nbsp;|&nbsp; (3) <strong>מבוססת ראיות</strong> — נתמכת בנתונים, לא באינטואיציה בלבד.
+      </div>
+    </div>
+  </div>
+
+  <!-- MCQ 1 -->
+  <div class="mcq-block">
+    <div class="mcq-header">
+      <span class="mcq-badge easy">קל</span>
+      <h3>שאלה 1 — הגדרת BI</h3>
+    </div>
+    <div class="mcq-q">מהי הגדרה הנכונה ביותר של Business Intelligence?</div>
+    <div class="mcq-options">
+      <button class="mcq-option" onclick="checkMCQ(this,'wrong','A1')"><span class="opt-letter">א</span> תוכנה לייצוא גרפים ממערכות ERP</button>
+      <button class="mcq-option" onclick="checkMCQ(this,'correct','A1')"><span class="opt-letter">ב</span> מערך טכנולוגיות ותהליכים שממיר נתונים גולמיים לתובנות מניעות-פעולה לצורך קבלת החלטות ניהוליות</button>
+      <button class="mcq-option" onclick="checkMCQ(this,'wrong','A1')"><span class="opt-letter">ג</span> מערכת להזנת נתונים חשבונאיים בזמן אמת</button>
+      <button class="mcq-option" onclick="checkMCQ(this,'wrong','A1')"><span class="opt-letter">ד</span> אלגוריתם בינה מלאכותית לחיזוי מחירי מניות</button>
+    </div>
+    <div id="exp-A1" class="mcq-explanation">✅ <strong>תשובה ב' נכונה.</strong> BI הוא מערך כולל של טכנולוגיות, תהליכים וארכיטקטורות שמטרתם אחת: להמיר נתונים גולמיים לתובנות שיניעו החלטות טובות יותר. הוא לא כלי אחד ולא מוגבל להזנה או לגרפים בלבד.</div>
+  </div>
+
+  <!-- MCQ 2 -->
+  <div class="mcq-block">
+    <div class="mcq-header">
+      <span class="mcq-badge medium">בינוני</span>
+      <h3>שאלה 2 — Actionable Insights</h3>
+    </div>
+    <div class="mcq-q">מנהל מוצר בסטארטאפ SaaS מקבל דוח שאומר: "זמן הכניסה הממוצע של משתמשים חדשים הוא 3.2 שניות". איזו מהאפשרויות הבאות מהווה Actionable Insight אמיתי?</div>
+    <div class="mcq-options">
+      <button class="mcq-option" onclick="checkMCQ(this,'wrong','A2')"><span class="opt-letter">א</span> "זמן כניסה ממוצע: 3.2 שניות" — הנתון הגולמי כפי שהוא</button>
+      <button class="mcq-option" onclick="checkMCQ(this,'wrong','A2')"><span class="opt-letter">ב</span> "יש לשפר את ביצועי השרת בכלל"</button>
+      <button class="mcq-option" onclick="checkMCQ(this,'correct','A2')"><span class="opt-letter">ג</span> "משתמשים שזמן הכניסה שלהם עולה על 4 שניות נוטשים ב-68% בשבוע הראשון — יש לאופטימייז את תהליך ה-Onboarding לקהל הזה"</button>
+      <button class="mcq-option" onclick="checkMCQ(this,'wrong','A2')"><span class="opt-letter">ד</span> "זמן הכניסה הוא בינוני בהשוואה לתעשייה"</button>
+    </div>
+    <div id="exp-A2" class="mcq-explanation">✅ <strong>תשובה ג' נכונה.</strong> תשובה ג' היא Actionable Insight כי היא ספציפית (מי מושפע), ברת-ביצוע (מה צריך לעשות), ומבוססת ראיות (נתוני נטישה). שאר התשובות מתארות מצב אך לא מובילות לפעולה ספציפית.</div>
+  </div>
+
+  <!-- MCQ 3 -->
+  <div class="mcq-block">
+    <div class="mcq-header">
+      <span class="mcq-badge hard">מתקדם</span>
+      <h3>שאלה 3 — יישום עסקי</h3>
+    </div>
+    <div class="mcq-q">רשת מסעדות מגלה שפדיון שולחנות משפחתיים ביום שלישי נמוך ב-30% משאר ימי השבוע. מה מבין הבאים מהווה שימוש נכון ב-BI ויוביל לתוצאה עסקית?</div>
+    <div class="mcq-options">
+      <button class="mcq-option" onclick="checkMCQ(this,'wrong','A3')"><span class="opt-letter">א</span> להוסיף עוד עמודות לגיליון האקסל הקיים</button>
+      <button class="mcq-option" onclick="checkMCQ(this,'wrong','A3')"><span class="opt-letter">ב</span> לשנות את צבע הדשבורד לאדום כדי להתריע על הבעיה</button>
+      <button class="mcq-option" onclick="checkMCQ(this,'correct','A3')"><span class="opt-letter">ג</span> להפעיל מבצע "ארוחות ילדים חינם" ביום שלישי, לעקוב אחרי השפעתו על הפדיון, ולהתאים את ההצעה בהתאם לנתונים</button>
+      <button class="mcq-option" onclick="checkMCQ(this,'wrong','A3')"><span class="opt-letter">ד</span> לקנות מערכת ERP חדשה שתטפל בנתוני הפדיון</button>
+    </div>
+    <div id="exp-A3" class="mcq-explanation">✅ <strong>תשובה ג' נכונה.</strong> זהו מעגל BI שלם: ניתוח נתונים → תובנה → פעולה → מדידה → התאמה. BI אינו רק "לראות" נתונים אלא לפעול לפיהם ולמדוד את התוצאה. קנייה של ERP (ד') היא שגיאה קלאסית — ERP אוסף נתונים ביצועיים, לא מנתח ומסיק מסקנות.</div>
+  </div>
+</div>
+
+<div class="divider"></div>
+
+<!-- ==================== SECTION 2: DIKW ==================== -->
+<div id="s2"></div>
+<div class="section reveal">
+  <div class="section-title"><div class="icon">🔺</div> פירמידת DIKW: מנתון לחכמה</div>
+
+  <div class="card">
+    <p style="line-height:1.9;color:var(--text2)">
+      כדי להבין את תפקיד ה-BI, יש להבחין בין ארבעה מושגי יסוד הנבנים זה על גבי זה. המודל נקרא <strong>פירמידת DIKW</strong> (ראשי תיבות של Data, Information, Knowledge, Wisdom) וגובש על ידי <strong>Russell Ackoff</strong> במאמרו "From Data to Wisdom" ב-1989.
+    </p>
+  </div>
+
+  <!-- DIKW Pyramid SVG -->
+  <div class="pyramid-container">
+    <h4 style="text-align:center;color:var(--text);font-size:1.1rem;margin-bottom:24px;font-weight:800">פירמידת DIKW — מהנתון הגולמי לחכמה</h4>
+    <svg viewBox="0 0 700 380" xmlns="http://www.w3.org/2000/svg" style="max-width:100%;height:auto">
+      <!-- Wisdom -->
+      <polygon points="350,20 230,100 470,100" fill="#7c3aed" opacity="0.92"/>
+      <text x="350" y="70" text-anchor="middle" fill="white" font-size="16" font-weight="800" font-family="Heebo,sans-serif">Wisdom / בינה</text>
+      <!-- Knowledge -->
+      <polygon points="230,108 160,190 540,190 470,108" fill="#1a56db" opacity="0.88"/>
+      <text x="350" y="158" text-anchor="middle" fill="white" font-size="16" font-weight="700" font-family="Heebo,sans-serif">Knowledge / ידע</text>
+      <!-- Information -->
+      <polygon points="160,198 100,280 600,280 540,198" fill="#0891b2" opacity="0.85"/>
+      <text x="350" y="248" text-anchor="middle" fill="white" font-size="16" font-weight="700" font-family="Heebo,sans-serif">Information / מידע</text>
+      <!-- Data -->
+      <polygon points="100,288 40,370 660,370 600,288" fill="#94a3b8" opacity="0.8"/>
+      <text x="350" y="338" text-anchor="middle" fill="white" font-size="16" font-weight="700" font-family="Heebo,sans-serif">Data / נתון</text>
+      <!-- Labels right -->
+      <text x="680" y="65" text-anchor="start" fill="#7c3aed" font-size="11" font-weight="700" font-family="Heebo,sans-serif">Actionable Insight</text>
+      <text x="680" y="155" text-anchor="start" fill="#1a56db" font-size="11" font-weight="700" font-family="Heebo,sans-serif">תבניות + מגמות</text>
+      <text x="680" y="245" text-anchor="start" fill="#0891b2" font-size="11" font-weight="700" font-family="Heebo,sans-serif">הקשר + משמעות</text>
+      <text x="680" y="335" text-anchor="start" fill="#64748b" font-size="11" font-weight="700" font-family="Heebo,sans-serif">עובדות גולמיות</text>
+      <!-- Arrow BI -->
+      <text x="20" y="200" fill="#dc2626" font-size="12" font-weight="800" font-family="Heebo,sans-serif">BI מאיץ</text>
+      <text x="20" y="215" fill="#dc2626" font-size="12" font-weight="800" font-family="Heebo,sans-serif">את המסע ↑</text>
+    </svg>
+  </div>
+
+  <div class="info-grid">
+    <div class="info-card" style="border-top:4px solid #94a3b8">
+      <div class="info-card-icon" style="background:#f1f5f9">📊</div>
+      <h4>Data — נתון</h4>
+      <p>עובדות גולמיות, מספרים, תווים או סמלים <strong>חסרי הקשר</strong>.<br><br>
+      <em>דוגמה: המספר "1200"</em><br><br>
+      זה בדיוק מה שקופה רושמת מוציאה — מספרים בלי הקשר.</p>
+    </div>
+    <div class="info-card" style="border-top:4px solid #0891b2">
+      <div class="info-card-icon" style="background:#e0f7fa">💬</div>
+      <h4>Information — מידע</h4>
+      <p>נתונים שעברו עיבוד וקיבלו <strong>הקשר ומשמעות</strong>.<br><br>
+      <em>דוגמה: "1,200 ₪ פדיון לשולחן #4 במסעדה ב-31/12"</em><br><br>
+      אנחנו יודעים מי, מה, מתי.</p>
+    </div>
+    <div class="info-card" style="border-top:4px solid #1a56db">
+      <div class="info-card-icon" style="background:#e8eaf6">🧠</div>
+      <h4>Knowledge — ידע</h4>
+      <p>הבנת המידע בתוך <strong>הקשר רחב יותר, זיהוי תבניות</strong>.<br><br>
+      <em>דוגמה: "הפדיון הממוצע בשולחנות משפחתיים בימי שלישי נמוך ב-30% משאר השבוע"</em><br><br>
+      אנחנו רואים מגמה.</p>
+    </div>
+    <div class="info-card" style="border-top:4px solid #7c3aed">
+      <div class="info-card-icon" style="background:#f3e5f5">🎯</div>
+      <h4>Wisdom / Intelligence — בינה</h4>
+      <p>הפעלת הידע לצורך <strong>קבלת החלטה</strong> — כלומר Actionable Insight.<br><br>
+      <em>דוגמה: "נשיק מבצע 'ארוחות ילדים חינם' ביום שלישי כדי להעלות הפדיון"</em><br><br>
+      אנחנו פועלים!</p>
+    </div>
+  </div>
+
+  <div class="callout info">
+    <div class="callout-icon">💡</div>
+    <div class="callout-body">
+      <strong>מה BI עושה בפועל?</strong> מערכת ה-BI היא <strong>הגשר הדיגיטלי</strong> המאפשר לארגון לעלות במעלה הפירמידה הזו — מהנתון הגולמי בבסיס ועד לתובנה מניעת-פעולה במשרד המנכ"ל. ה-BI מאיץ תהליך שפעם לקח שבועות — כעת לוקח דקות.
+    </div>
+  </div>
+
+  <div class="card card-orange">
+    <h3 style="font-weight:800;margin-bottom:16px">🍽 דוגמה מעמיקה: רשת שופרסל</h3>
+    <div style="overflow-x:auto">
+      <table class="comp-table">
+        <tr>
+          <th>רמת הפירמידה</th>
+          <th>מה שופרסל רואה?</th>
+          <th>כיצד מושג?</th>
+        </tr>
+        <tr>
+          <td><strong>Data</strong></td>
+          <td>6,374,821 עסקאות ביום אחד</td>
+          <td>קופות רושמות, סריקת ברקוד</td>
+        </tr>
+        <tr>
+          <td><strong>Information</strong></td>
+          <td>פדיון יומי לפי סניף: ירושלים ₪480K, תל-אביב ₪620K</td>
+          <td>ETL + DWH</td>
+        </tr>
+        <tr>
+          <td><strong>Knowledge</strong></td>
+          <td>סניפי תל-אביב מוכרים 28% יותר מוצרי אורגני מסניפי הפריפריה</td>
+          <td>BI Analytics + דשבורד</td>
+        </tr>
+        <tr>
+          <td><strong>Wisdom/BI</strong></td>
+          <td>"להרחיב קטגוריית אורגני ב-12 סניפי הגוש הדן — תוספת הכנסה ₪4M לרבעון"</td>
+          <td>Actionable Insight לסמנכ"ל</td>
+        </tr>
+      </table>
+    </div>
+  </div>
+
+  <!-- MCQ 4 -->
+  <div class="mcq-block">
+    <div class="mcq-header">
+      <span class="mcq-badge medium">בינוני</span>
+      <h3>שאלה 4 — פירמידת DIKW</h3>
+    </div>
+    <div class="mcq-q">בנק מגלה שלקוחות שמשתמשים באפליקציה הניידת מחזיקים בממוצע 2.4 מוצרים יותר מלקוחות שאינם משתמשים באפליקציה, ולכן ממליץ לשגר קמפיין הורדה ממוקד ללקוחות בעלי תיק השקעות מעל ₪200K. באיזו רמת DIKW אנחנו?</div>
+    <div class="mcq-options">
+      <button class="mcq-option" onclick="checkMCQ(this,'wrong','A4')"><span class="opt-letter">א</span> Data — נתון גולמי</button>
+      <button class="mcq-option" onclick="checkMCQ(this,'wrong','A4')"><span class="opt-letter">ב</span> Information — מידע</button>
+      <button class="mcq-option" onclick="checkMCQ(this,'wrong','A4')"><span class="opt-letter">ג</span> Knowledge — ידע</button>
+      <button class="mcq-option" onclick="checkMCQ(this,'correct','A4')"><span class="opt-letter">ד</span> Wisdom / Intelligence — בינה, Actionable Insight</button>
+    </div>
+    <div id="exp-A4" class="mcq-explanation">✅ <strong>תשובה ד' נכונה.</strong> יש כאן תובנה קונקרטית הכוללת: זיהוי מגמה (שימוש באפליקציה → יותר מוצרים), ספציפיות (לקוחות מעל ₪200K), וברת-ביצוע (קמפיין ממוקד). זהו בדיוק Actionable Insight — רמת Wisdom בפירמידת DIKW.</div>
+  </div>
+
+  <!-- MCQ 5 -->
+  <div class="mcq-block">
+    <div class="mcq-header">
+      <span class="mcq-badge easy">קל</span>
+      <h3>שאלה 5 — סיווג רמות DIKW</h3>
+    </div>
+    <div class="mcq-q">חברת תעופה אוספת נתוני טיסות. סדרו את המשפטים הבאים מהנמוך ביותר לגבוה ביותר בפירמידת DIKW:<br>
+    (1) "נסיעה מס' TLV-BER2847 נחתה ב-14:32" &nbsp;|&nbsp; (2) "48% מנוסעי הקו תל-אביב-ברלין חוזרים תוך 30 יום" &nbsp;|&nbsp; (3) "הטיסה נחתה" &nbsp;|&nbsp; (4) "להשיק מנוי חודשי TLV-BER למגזר ההיי-טק"</div>
+    <div class="mcq-options">
+      <button class="mcq-option" onclick="checkMCQ(this,'wrong','A5')"><span class="opt-letter">א</span> 1, 2, 3, 4</button>
+      <button class="mcq-option" onclick="checkMCQ(this,'correct','A5')"><span class="opt-letter">ב</span> 3, 1, 2, 4 (Data → Information → Knowledge → Wisdom)</button>
+      <button class="mcq-option" onclick="checkMCQ(this,'wrong','A5')"><span class="opt-letter">ג</span> 2, 3, 1, 4</button>
+      <button class="mcq-option" onclick="checkMCQ(this,'wrong','A5')"><span class="opt-letter">ד</span> 4, 3, 2, 1</button>
+    </div>
+    <div id="exp-A5" class="mcq-explanation">✅ <strong>תשובה ב' נכונה.</strong> (3) "הטיסה נחתה" = Data גולמי בלי הקשר. (1) "TLV-BER2847 נחתה ב-14:32" = Information עם הקשר. (2) "48% חוזרים תוך 30 יום" = Knowledge — תבנית. (4) "להשיק מנוי חודשי" = Wisdom — פעולה עסקית.</div>
+  </div>
+</div>
+
+<div class="divider"></div>
+
+<!-- ==================== SECTION 3: BI vs ERP vs Excel ==================== -->
+<div class="section reveal">
+  <div class="section-title"><div class="icon">⚖️</div> BI לעומת ERP לעומת Excel: מה ההבדל?</div>
+
+  <div class="card">
+    <p style="line-height:1.9;color:var(--text2)">
+      <strong>רבים מבלבלים</strong> בין מערכות המידע בארגון. שלוש מערכות שונות בתכלית — וההבנה שלהן קריטית לכל מי שרוצה לעבוד בתחום ה-BI.
+    </p>
+  </div>
+
+  <!-- OLTP vs OLAP -->
+  <div class="info-grid">
+    <div class="info-card" style="border-top:4px solid #dc2626">
+      <div class="info-card-icon" style="background:#fef2f2">⚡</div>
+      <h4>OLTP — Online Transaction Processing</h4>
+      <p><strong>עיבוד פעולות בודדות בזמן אמת.</strong><br><br>
+      כשקופאית סורקת מוצר בסופר — זו טרנזקציה. כשעובד מזין חשבונית ל-SAP — גם זו. המערכת מטפלת בפעולות מהירות, קטנות וממוקדות.<br><br>
+      <span class="pill pill-red">מהיר</span> <span class="pill pill-red">פעולה אחת</span> <span class="pill pill-red">זמן אמת</span></p>
+    </div>
+    <div class="info-card" style="border-top:4px solid #1a56db">
+      <div class="info-card-icon" style="background:#eff6ff">🔍</div>
+      <h4>OLAP — Online Analytical Processing</h4>
+      <p><strong>ניתוח כמויות גדולות של נתונים.</strong><br><br>
+      כשסמנכ"ל שואל "מה מגמת הרווחיות של כל הסניפים ב-5 השנים האחרונות?" — המערכת סורקת מיליארדי רשומות ומציגה תשובה. <strong>זו ליבת ה-BI.</strong><br><br>
+      <span class="pill pill-blue">אנליטיקה</span> <span class="pill pill-blue">היסטוריה</span> <span class="pill pill-blue">מיליארדי שורות</span></p>
+    </div>
+  </div>
+
+  <table class="comp-table">
+    <tr>
+      <th>מאפיין</th>
+      <th>Excel / Google Sheets</th>
+      <th>ERP (SAP, Priority)</th>
+      <th>מערכת BI (Tableau, Power BI)</th>
+    </tr>
+    <tr>
+      <td><strong>מטרה עיקרית</strong></td>
+      <td>ניתוח אישי, חישובים נקודתיים</td>
+      <td>ניהול תהליכי ליבה — הזנת נתונים (OLTP)</td>
+      <td>צילוב נתונים מכל הארגון ותמונה אסטרטגית (OLAP)</td>
+    </tr>
+    <tr>
+      <td><strong>נפח נתונים</strong></td>
+      <td>מוגבל (~1M שורות), איטי בנתונים מורכבים</td>
+      <td>טרנזקציות בודדות ומהירות</td>
+      <td>שאילתות על מיליארדי רשומות</td>
+    </tr>
+    <tr>
+      <td><strong>נקודת מבט</strong></td>
+      <td>סטטי, סכנת "גרסאות אמת מרובות"</td>
+      <td>נקודתי — "חשבונית 1045"</td>
+      <td>ארגוני מתכלל — "גרסת אמת אחת"</td>
+    </tr>
+    <tr>
+      <td><strong>דוגמאות</strong></td>
+      <td>Excel, Google Sheets</td>
+      <td>SAP, Oracle, Priority, Salesforce</td>
+      <td>Tableau, Power BI, Qlik, Looker</td>
+    </tr>
+    <tr>
+      <td><strong>משתמש טיפוסי</strong></td>
+      <td>כל עובד, חשב, סטודנט</td>
+      <td>עובד תפעולי, מנהל רכש</td>
+      <td>מנהלים, אנליסטים, סמנכ"לים</td>
+    </tr>
+  </table>
+
+  <div class="callout warn">
+    <div class="callout-icon">⚠️</div>
+    <div class="callout-body">
+      <strong>בעיה קלאסית — "גרסאות אמת מרובות":</strong> ניחנו במצב בו סמנכ"ל כספים וסמנכ"ל שיווק מציגים בישיבה מספרי רווח שונים לאותו רבעון — כי כל אחד השתמש בהגדרה שונה של "רווח" (בלי/עם הובלה, בלי/עם מע"מ). <strong>הפתרון של BI:</strong> הגדרת Business Glossary אחיד + מקור אמת אחד (Single Source of Truth).
+    </div>
+  </div>
+
+  <!-- MCQ 6 -->
+  <div class="mcq-block">
+    <div class="mcq-header">
+      <span class="mcq-badge easy">קל</span>
+      <h3>שאלה 6 — BI vs ERP</h3>
+    </div>
+    <div class="mcq-q">מה ההבדל המרכזי בין מערכת ERP למערכת BI?</div>
+    <div class="mcq-options">
+      <button class="mcq-option" onclick="checkMCQ(this,'wrong','A6')"><span class="opt-letter">א</span> ERP מיועדת לייצוא גרפים, BI לאחסון נתונים</button>
+      <button class="mcq-option" onclick="checkMCQ(this,'correct','A6')"><span class="opt-letter">ב</span> ERP משמשת לניהול תהליכים יומיומיים והזנת נתונים (OLTP), בעוד BI קוראת נתונים אלו לצורך ניתוח וקבלת החלטות (OLAP)</button>
+      <button class="mcq-option" onclick="checkMCQ(this,'wrong','A6')"><span class="opt-letter">ג</span> אין הבדל — שתיהן אותה פלטפורמה</button>
+      <button class="mcq-option" onclick="checkMCQ(this,'wrong','A6')"><span class="opt-letter">ד</span> BI מיועדת רק לצוותי IT ואינה נגישה למנהלים</button>
+    </div>
+    <div id="exp-A6" class="mcq-explanation">✅ <strong>תשובה ב' נכונה.</strong> ERP (כמו SAP, Priority) היא מערכת OLTP — מזינים לה נתונים ביצועיים (חשבוניות, הזמנות, שכר). BI (כמו Tableau, Power BI) היא מערכת OLAP — שואבת נתונים ממקורות שונים כולל ERP ומנתחת אותם לצורך קבלת החלטות.</div>
+  </div>
+
+  <!-- MCQ 7 -->
+  <div class="mcq-block">
+    <div class="mcq-header">
+      <span class="mcq-badge medium">בינוני</span>
+      <h3>שאלה 7 — OLTP vs OLAP</h3>
+    </div>
+    <div class="mcq-q">מנהל רכש בחברת ייצור מזין חשבונית ספק של ₪48,500 למערכת SAP, בו בזמן שמנהלת שיווק בוחנת דשבורד Tableau המציג מגמת עלויות ספקים ב-24 חודשים האחרונים. מה מאפיין כל מערכת?</div>
+    <div class="mcq-options">
+      <button class="mcq-option" onclick="checkMCQ(this,'wrong','A7')"><span class="opt-letter">א</span> שתיהן OLAP — שתיהן מנתחות היסטוריה</button>
+      <button class="mcq-option" onclick="checkMCQ(this,'correct','A7')"><span class="opt-letter">ב</span> SAP = OLTP (פעולה יחידה בזמן אמת), Tableau = OLAP (ניתוח כמויות גדולות של נתונים היסטוריים)</button>
+      <button class="mcq-option" onclick="checkMCQ(this,'wrong','A7')"><span class="opt-letter">ג</span> שתיהן OLTP — שתיהן מוזנות על ידי עובדים</button>
+      <button class="mcq-option" onclick="checkMCQ(this,'wrong','A7')"><span class="opt-letter">ד</span> Tableau = OLTP (עדכון תכוף), SAP = OLAP (ניתוח)</button>
+    </div>
+    <div id="exp-A7" class="mcq-explanation">✅ <strong>תשובה ב' נכונה.</strong> הזנת חשבונית = פעולה (טרנזקציה) יחידה ומהירה = OLTP. דשבורד מגמות = ניתוח כמויות גדולות של נתונים היסטוריים = OLAP. BI מבוסס על OLAP; ERP מבוסס על OLTP.</div>
+  </div>
+</div>
+
+<div class="divider"></div>
+
+<!-- ==================== SECTION 4: BI ARCHITECTURE ==================== -->
+<div id="s3"></div>
+<div class="section reveal">
+  <div class="section-title"><div class="icon">🏗️</div> ארכיטקטורת מערכת BI: מאחורי הקלעים</div>
+
+  <div class="card">
+    <p style="line-height:1.9;color:var(--text2)">
+      עבור מי שנכנס לשוק העבודה, חשוב להכיר את שרשרת הערך (Pipeline) של הנתונים. כיצד נתון גולמי ממערכת ה-ERP מגיע בסופו של דבר לדשבורד המנכ"ל? זהו מסע בן 5 תחנות.
+    </p>
+  </div>
+
+  <!-- Architecture Flow -->
+  <div class="arch-box">
+    <h4 style="text-align:center;font-weight:800;margin-bottom:28px;color:var(--text)">ארכיטקטורת BI — שרשרת הנתונים המלאה</h4>
+    <svg viewBox="0 0 900 220" xmlns="http://www.w3.org/2000/svg" style="max-width:100%;height:auto">
+      <!-- Step 1: Sources -->
+      <rect x="10" y="60" width="130" height="100" rx="12" fill="#eff6ff" stroke="#3b82f6" stroke-width="2"/>
+      <text x="75" y="95" text-anchor="middle" font-size="24" font-family="sans-serif">🏭</text>
+      <text x="75" y="118" text-anchor="middle" font-size="11" font-weight="700" fill="#1e3a8a" font-family="Heebo,sans-serif">מקורות נתונים</text>
+      <text x="75" y="134" text-anchor="middle" font-size="9" fill="#3b82f6" font-family="Heebo,sans-serif">ERP, CRM, IoT</text>
+      <text x="75" y="148" text-anchor="middle" font-size="9" fill="#3b82f6" font-family="Heebo,sans-serif">Web, Sheets</text>
+      <!-- Arrow 1 -->
+      <path d="M 142 110 L 182 110" stroke="#1a56db" stroke-width="2.5" marker-end="url(#arrow)"/>
+      <text x="162" y="102" text-anchor="middle" font-size="9" fill="#64748b" font-family="Heebo,sans-serif">שאיבה</text>
+      <!-- Step 2: ETL -->
+      <rect x="185" y="60" width="130" height="100" rx="12" fill="#f0fdf4" stroke="#16a34a" stroke-width="2"/>
+      <text x="250" y="95" text-anchor="middle" font-size="24" font-family="sans-serif">⚙️</text>
+      <text x="250" y="118" text-anchor="middle" font-size="11" font-weight="700" fill="#166534" font-family="Heebo,sans-serif">ETL / ELT</text>
+      <text x="250" y="134" text-anchor="middle" font-size="9" fill="#16a34a" font-family="Heebo,sans-serif">Extract</text>
+      <text x="250" y="148" text-anchor="middle" font-size="9" fill="#16a34a" font-family="Heebo,sans-serif">Transform • Load</text>
+      <!-- Arrow 2 -->
+      <path d="M 317 110 L 357 110" stroke="#1a56db" stroke-width="2.5" marker-end="url(#arrow)"/>
+      <text x="337" y="102" text-anchor="middle" font-size="9" fill="#64748b" font-family="Heebo,sans-serif">טעינה</text>
+      <!-- Step 3: DWH -->
+      <rect x="360" y="60" width="130" height="100" rx="12" fill="#faf5ff" stroke="#7c3aed" stroke-width="2"/>
+      <text x="425" y="95" text-anchor="middle" font-size="24" font-family="sans-serif">🗄️</text>
+      <text x="425" y="118" text-anchor="middle" font-size="11" font-weight="700" fill="#5b21b6" font-family="Heebo,sans-serif">DWH</text>
+      <text x="425" y="134" text-anchor="middle" font-size="9" fill="#7c3aed" font-family="Heebo,sans-serif">מחסן נתונים</text>
+      <text x="425" y="148" text-anchor="middle" font-size="9" fill="#7c3aed" font-family="Heebo,sans-serif">Snowflake, BigQuery</text>
+      <!-- Arrow 3 -->
+      <path d="M 492 110 L 532 110" stroke="#1a56db" stroke-width="2.5" marker-end="url(#arrow)"/>
+      <text x="512" y="102" text-anchor="middle" font-size="9" fill="#64748b" font-family="Heebo,sans-serif">מודל</text>
+      <!-- Step 4: Semantic -->
+      <rect x="535" y="60" width="130" height="100" rx="12" fill="#fff7ed" stroke="#d97706" stroke-width="2"/>
+      <text x="600" y="95" text-anchor="middle" font-size="24" font-family="sans-serif">🔤</text>
+      <text x="600" y="118" text-anchor="middle" font-size="11" font-weight="700" fill="#92400e" font-family="Heebo,sans-serif">שכבה סמנטית</text>
+      <text x="600" y="134" text-anchor="middle" font-size="9" fill="#d97706" font-family="Heebo,sans-serif">תרגום טכני</text>
+      <text x="600" y="148" text-anchor="middle" font-size="9" fill="#d97706" font-family="Heebo,sans-serif">לשפה עסקית</text>
+      <!-- Arrow 4 -->
+      <path d="M 667 110 L 707 110" stroke="#1a56db" stroke-width="2.5" marker-end="url(#arrow)"/>
+      <text x="687" y="102" text-anchor="middle" font-size="9" fill="#64748b" font-family="Heebo,sans-serif">הצגה</text>
+      <!-- Step 5: Dashboard -->
+      <rect x="710" y="60" width="145" height="100" rx="12" fill="#fef2f2" stroke="#dc2626" stroke-width="2"/>
+      <text x="783" y="95" text-anchor="middle" font-size="24" font-family="sans-serif">📊</text>
+      <text x="783" y="118" text-anchor="middle" font-size="11" font-weight="700" fill="#991b1b" font-family="Heebo,sans-serif">דשבורדים</text>
+      <text x="783" y="134" text-anchor="middle" font-size="9" fill="#dc2626" font-family="Heebo,sans-serif">Tableau, Power BI</text>
+      <text x="783" y="148" text-anchor="middle" font-size="9" fill="#dc2626" font-family="Heebo,sans-serif">למנהלים</text>
+      <!-- Labels at bottom -->
+      <text x="75" y="185" text-anchor="middle" font-size="9" fill="#94a3b8" font-family="Heebo,sans-serif">שלב 1</text>
+      <text x="250" y="185" text-anchor="middle" font-size="9" fill="#94a3b8" font-family="Heebo,sans-serif">שלב 2</text>
+      <text x="425" y="185" text-anchor="middle" font-size="9" fill="#94a3b8" font-family="Heebo,sans-serif">שלב 3</text>
+      <text x="600" y="185" text-anchor="middle" font-size="9" fill="#94a3b8" font-family="Heebo,sans-serif">שלב 4</text>
+      <text x="783" y="185" text-anchor="middle" font-size="9" fill="#94a3b8" font-family="Heebo,sans-serif">שלב 5</text>
+      <!-- Arrow marker -->
+      <defs>
+        <marker id="arrow" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+          <path d="M 0 0 L 8 3 L 0 6 Z" fill="#1a56db"/>
+        </marker>
+      </defs>
+    </svg>
+  </div>
+
+  <div class="accordion">
+    <button class="accordion-header" onclick="toggleAccordion(this)">
+      🏭 שלב 1: מקורות נתונים (Data Sources) <span class="accordion-arrow">▼</span>
+    </button>
+    <div class="accordion-body">
+      <p>המערכות התפעוליות של הארגון — <strong>קופות רושמות, CRM, אתר אינטרנט, ERP (SAP, Priority), רשתות חברתיות, חיישני IoT.</strong> כל מערכת שמייצרת נתונים היא מקור פוטנציאלי.</p>
+      <div class="example-box" style="margin-top:12px">
+        <div class="example-box-label">דוגמה — רשת אופנה</div>
+        <p>קופות הנוגעות בכל רכישה (נתוני עסקאות) + CRM עם פרטי לקוחות + אתר האינטרנט (קליקים, עגלות נטושות) + מלאי (ERP) + מדיה חברתית (פוסטים, תגובות) = 5 מקורות שונים שצריך לאחד.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="accordion">
+    <button class="accordion-header" onclick="toggleAccordion(this)">
+      ⚙️ שלב 2: ETL / ELT — לב ה-Pipeline <span class="accordion-arrow">▼</span>
+    </button>
+    <div class="accordion-body">
+      <p><strong>ETL = Extract, Transform, Load</strong></p>
+      <ul style="margin:10px 0 10px 20px;line-height:2">
+        <li><strong>Extract (שליפה)</strong> — שאיבת נתונים ממקורות שונים</li>
+        <li><strong>Transform (המרה)</strong> — ניקוי, איחוד פורמטים, טיפול בערכים חסרים</li>
+        <li><strong>Load (טעינה)</strong> — אחסון במחסן הנתונים</li>
+      </ul>
+      <div class="callout info">
+        <div class="callout-icon">🍳</div>
+        <div class="callout-body">
+          <strong>האנלוגיה למטבח:</strong> ETL הוא צוות ההכנה. הם מקבלים סחורה ממספקים שונים (ירקות, בשר, דגים = נתונים ממקורות שונים), שוטפים וחותכים (Transform), ומאחסנים מסודר במקרר הגדול (Load).
+        </div>
+      </div>
+      <p style="margin-top:12px"><strong>ELT (המגמה המודרנית)</strong> — טוענים קודם גולמי, מעבדים בתוך המחסן. מתאפשר בזכות כוח החישוב של מחסני ענן כמו Snowflake ו-BigQuery.</p>
+    </div>
+  </div>
+
+  <div class="accordion">
+    <button class="accordion-header" onclick="toggleAccordion(this)">
+      🗄️ שלב 3: מחסן נתונים (DWH) — לעומת Data Lake ו-Lakehouse <span class="accordion-arrow">▼</span>
+    </button>
+    <div class="accordion-body">
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px;margin-bottom:14px">
+        <div style="background:#eff6ff;border-radius:10px;padding:16px;border:1px solid #93c5fd">
+          <strong style="color:#1e40af">🗄️ Data Warehouse (DWH)</strong><br>
+          <p style="font-size:0.88rem;color:#1e3a8a;margin-top:6px">ספרייה מסודרת. כל ספר ממוין לפי נושא. מהיר, מדויק, מוכן לשימוש. Schema-on-Write.<br><em>Snowflake, BigQuery, Redshift</em></p>
+        </div>
+        <div style="background:#f0fdf4;border-radius:10px;padding:16px;border:1px solid #86efac">
+          <strong style="color:#166534">🌊 Data Lake</strong><br>
+          <p style="font-size:0.88rem;color:#166534;margin-top:6px">מחסן ענק — זורקים הכל בכל פורמט. גמיש אך עלול להפוך ל-Data Swamp. Schema-on-Read.<br><em>Amazon S3, Azure Data Lake</em></p>
+        </div>
+        <div style="background:#faf5ff;border-radius:10px;padding:16px;border:1px solid #c4b5fd">
+          <strong style="color:#5b21b6">🏠 Data Lakehouse</strong><br>
+          <p style="font-size:0.88rem;color:#5b21b6;margin-top:6px">הפתרון המודרני (Databricks) — משלב גמישות של Lake + סדר של Warehouse. הטוב משני העולמות.<br><em>Databricks, Delta Lake</em></p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="accordion">
+    <button class="accordion-header" onclick="toggleAccordion(this)">
+      🔤 שלב 4: שכבה סמנטית (Semantic Layer) <span class="accordion-arrow">▼</span>
+    </button>
+    <div class="accordion-body">
+      <p>שכבה שמתרגמת את השמות הטכניים לשפה עסקית.</p>
+      <div class="callout info">
+        <div class="callout-icon">📋</div>
+        <div class="callout-body">
+          <strong>האנלוגיה לתפריט:</strong> הלקוח (המנהל) לא צריך לדעת שב-DB יש "חומר גלם 4517-B" — הוא רואה בתפריט "שניצל ביתי". באותו אופן, השכבה הסמנטית מתרגמת <code>tbl_trx_2024</code> ל-"עסקאות 2024".
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="accordion">
+    <button class="accordion-header" onclick="toggleAccordion(this)">
+      ☁️ מה הקשר לענן (Cloud)? <span class="accordion-arrow">▼</span>
+    </button>
+    <div class="accordion-body">
+      <p>בעבר, ארגונים החזיקו שרתים פיזיים (On-Premise). כיום רוב הארגונים עברו לענן:</p>
+      <table style="width:100%;margin-top:12px;border-collapse:collapse">
+        <tr style="background:#eff6ff">
+          <th style="padding:10px;text-align:right;border-bottom:1px solid #e2e8f0;font-size:0.88rem">ספק ענן</th>
+          <th style="padding:10px;text-align:right;border-bottom:1px solid #e2e8f0;font-size:0.88rem">אחסון</th>
+          <th style="padding:10px;text-align:right;border-bottom:1px solid #e2e8f0;font-size:0.88rem">DWH</th>
+          <th style="padding:10px;text-align:right;border-bottom:1px solid #e2e8f0;font-size:0.88rem">BI</th>
+        </tr>
+        <tr><td style="padding:8px">AWS (Amazon)</td><td style="padding:8px">S3</td><td style="padding:8px">Redshift</td><td style="padding:8px">QuickSight</td></tr>
+        <tr style="background:#f8faff"><td style="padding:8px">Azure (Microsoft)</td><td style="padding:8px">ADLS/Blob</td><td style="padding:8px">Synapse</td><td style="padding:8px">Power BI</td></tr>
+        <tr><td style="padding:8px">GCP (Google)</td><td style="padding:8px">Cloud Storage</td><td style="padding:8px">BigQuery</td><td style="padding:8px">Looker</td></tr>
+      </table>
+    </div>
+  </div>
+
+  <!-- MCQ 8 -->
+  <div class="mcq-block">
+    <div class="mcq-header">
+      <span class="mcq-badge medium">בינוני</span>
+      <h3>שאלה 8 — ארכיטקטורת BI</h3>
+    </div>
+    <div class="mcq-q">מה תפקידו של תהליך ה-ETL בארכיטקטורת BI?</div>
+    <div class="mcq-options">
+      <button class="mcq-option" onclick="checkMCQ(this,'wrong','A8')"><span class="opt-letter">א</span> עיצוב הדשבורד ויצירת גרפים</button>
+      <button class="mcq-option" onclick="checkMCQ(this,'wrong','A8')"><span class="opt-letter">ב</span> מחיקת נתונים ישנים</button>
+      <button class="mcq-option" onclick="checkMCQ(this,'correct','A8')"><span class="opt-letter">ג</span> שליפת נתונים ממקורות, ניקויים והמרתם, וטעינתם למחסן הנתונים</button>
+      <button class="mcq-option" onclick="checkMCQ(this,'wrong','A8')"><span class="opt-letter">ד</span> יצירת ממשק משתמש לדשבורד</button>
+    </div>
+    <div id="exp-A8" class="mcq-explanation">✅ <strong>תשובה ג' נכונה.</strong> ETL = Extract (שליפה ממקורות) + Transform (ניקוי, איחוד, המרת פורמטים) + Load (טעינה למחסן). זהו שלב קריטי שמבטיח שהנתונים המגיעים למחסן הם נקיים, אחידים ואמינים.</div>
+  </div>
+
+  <!-- MCQ 9 -->
+  <div class="mcq-block">
+    <div class="mcq-header">
+      <span class="mcq-badge medium">בינוני</span>
+      <h3>שאלה 9 — ETL לעומת ELT</h3>
+    </div>
+    <div class="mcq-q">מדוע ארגונים רבים עוברים כיום מגישת ETL לגישת ELT?</div>
+    <div class="mcq-options">
+      <button class="mcq-option" onclick="checkMCQ(this,'wrong','A9')"><span class="opt-letter">א</span> כי ממשלות חייבו זאת בחקיקה</button>
+      <button class="mcq-option" onclick="checkMCQ(this,'wrong','A9')"><span class="opt-letter">ב</span> כי ETL לא עובד יותר עם נתונים מודרניים</button>
+      <button class="mcq-option" onclick="checkMCQ(this,'correct','A9')"><span class="opt-letter">ג</span> כי מחסני ענן (Snowflake, BigQuery) חזקים מספיק לעבד נתונים בתוכם, ושמירת הנתון הגולמי מאפשרת גמישות עתידית</button>
+      <button class="mcq-option" onclick="checkMCQ(this,'wrong','A9')"><span class="opt-letter">ד</span> כי ELT זול פי 10 מ-ETL תמיד</button>
+    </div>
+    <div id="exp-A9" class="mcq-explanation">✅ <strong>תשובה ג' נכונה.</strong> בעבר, שרתי ה-DWH היו יקרים ואיטיים — לכן ניקו לפני הטעינה. כיום, מחסני ענן כמו Snowflake עוצמתיים כל-כך שעיבוד בתוכם מהיר ויעיל. בנוסף, שמירת הנתון הגולמי (גם אם מבולגן) מאפשרת לחזור ולנתח אותו בדרכים שונות בעתיד.</div>
+  </div>
+
+  <!-- MCQ 10 -->
+  <div class="mcq-block">
+    <div class="mcq-header">
+      <span class="mcq-badge hard">מתקדם</span>
+      <h3>שאלה 10 — DWH לעומת Data Lake</h3>
+    </div>
+    <div class="mcq-q">סטארטאפ רפואי מאחסן: (1) נתוני מכירות מובנים מה-CRM שלו, (2) תמונות MRI בפורמט DICOM, (3) שיחות שירות לקוחות מוקלטות, (4) נתוני חיישן ממכשיר ניטור. איזו ארכיטקטורה מתאימה ביותר?</div>
+    <div class="mcq-options">
+      <button class="mcq-option" onclick="checkMCQ(this,'wrong','A10')"><span class="opt-letter">א</span> DWH בלבד — מאחסן הכל במבנה מסודר</button>
+      <button class="mcq-option" onclick="checkMCQ(this,'wrong','A10')"><span class="opt-letter">ב</span> Excel — הכי פשוט לניהול</button>
+      <button class="mcq-option" onclick="checkMCQ(this,'correct','A10')"><span class="opt-letter">ג</span> Data Lakehouse — DWH לנתונים המובנים + Data Lake לתמונות, הקלטות וחיישנים, עם שכבת ניתוח מאוחדת</button>
+      <button class="mcq-option" onclick="checkMCQ(this,'wrong','A10')"><span class="opt-letter">ד</span> Data Lake בלבד — מאחסן הכל ללא הגבלה</button>
+    </div>
+    <div id="exp-A10" class="mcq-explanation">✅ <strong>תשובה ג' נכונה.</strong> DWH לבד לא יכול לאחסן תמונות MRI, הקלטות ונתוני חיישן (נתונים לא-מובנים). Data Lake לבד עלול להפוך ל-"Data Swamp" ללא מבנה. Lakehouse משלב: Data Lake לאחסון נתונים לא-מובנים + יכולות DWH לניתוח מובנה — הפתרון האידיאלי לנתונים רב-גוניים.</div>
+  </div>
+</div>
+
+<div class="divider"></div>
+
+<!-- ==================== SECTION 5: TOOLS ==================== -->
+<div id="s4"></div>
+<div class="section reveal">
+  <div class="section-title"><div class="icon">🛠️</div> כלים מובילים בשוק ה-BI</div>
+
+  <div class="card">
+    <p style="line-height:1.9;color:var(--text2)">הכלי הוא רק אמצעי — מי שמבין את העקרונות יידע להתאים עצמו לכל טכנולוגיה. עם זאת, הכרת הנוף הטכנולוגי היא קריטית לשוק העבודה.</p>
+  </div>
+
+  <!-- Visualization Tools -->
+  <h3 style="font-size:1.1rem;font-weight:800;margin:24px 0 14px;color:var(--text)">📊 כלי הצגה וויזואליזציה</h3>
+  <div class="tools-grid">
+    <div class="tool-card" style="border-top:4px solid #1a56db">
+      <div class="tool-emoji">📈</div>
+      <div class="tool-name">Tableau</div>
+      <div class="tool-desc">הכלי שנלמד בקורס. יכולות ויזואליזציה חזקות ביותר. Cross-Platform (Windows, Mac, Web). Tableau Public — חינמי לחלוטין. נרכש ע"י Salesforce ב-2019 ב-$15.7B.</div>
+      <div class="tool-tag"><span class="pill pill-blue">כלי הקורס</span> <span class="pill pill-blue">Cross-Platform</span></div>
+    </div>
+    <div class="tool-card" style="border-top:4px solid #2563eb">
+      <div class="tool-emoji">💪</div>
+      <div class="tool-name">Power BI</div>
+      <div class="tool-desc">כלי Microsoft. נפוץ מאד בישראל בזכות אינטגרציה עם Office 365 ו-Azure. Desktop = Windows בלבד. שפת DAX. מושלם אם הארגון כבר עובד עם Microsoft.</div>
+      <div class="tool-tag"><span class="pill pill-purple">נפוץ בישראל</span> <span class="pill pill-purple">Microsoft</span></div>
+    </div>
+    <div class="tool-card" style="border-top:4px solid #059669">
+      <div class="tool-emoji">🔗</div>
+      <div class="tool-name">Qlik Sense</div>
+      <div class="tool-desc">Associative Engine — מנוע ייחודי לחקירת נתונים בכל כיוון ללא הגדרה מוקדמת. נפוץ בפיננסים וביטוח. QlikView = גרסה הישנה יותר.</div>
+      <div class="tool-tag"><span class="pill pill-green">פיננסים</span> <span class="pill pill-green">ביטוח</span></div>
+    </div>
+    <div class="tool-card" style="border-top:4px solid #0891b2">
+      <div class="tool-emoji">☁️</div>
+      <div class="tool-name">Looker (Google)</div>
+      <div class="tool-desc">BI מבוסס ענן. נרכש ע"י Google ב-2020 ב-$2.6B. שפת LookML. מתחבר ל-BigQuery. פופולרי בסטארטאפים.</div>
+      <div class="tool-tag"><span class="pill pill-teal">Google Cloud</span> <span class="pill pill-teal">סטארטאפים</span></div>
+    </div>
+  </div>
+
+  <!-- Infrastructure Tools -->
+  <h3 style="font-size:1.1rem;font-weight:800;margin:28px 0 14px;color:var(--text)">🏗️ כלי תשתית ו-Modern Data Stack</h3>
+
+  <div class="arch-box">
+    <h4 style="font-weight:800;margin-bottom:20px;text-align:center">Modern Data Stack — ה"לגו" של הנתונים המודרניים</h4>
+    <div class="stack-layer" style="background:linear-gradient(135deg,#ef4444,#dc2626)">
+      <span class="stack-icon">📊</span>
+      <div class="stack-info">
+        <h5>שלב 5: ויזואליזציה</h5>
+        <p>Tableau / Power BI / Looker — דשבורדים ודוחות למנהלים</p>
+      </div>
+    </div>
+    <div style="text-align:center;font-size:1.2rem;color:#94a3b8">↑</div>
+    <div class="stack-layer" style="background:linear-gradient(135deg,#d97706,#b45309)">
+      <span class="stack-icon">⏰</span>
+      <div class="stack-info">
+        <h5>שלב 4: תזמור (Orchestration)</h5>
+        <p>Dagster / Airflow — מוודא שהכל רץ בסדר הנכון ובזמן</p>
+      </div>
+    </div>
+    <div style="text-align:center;font-size:1.2rem;color:#94a3b8">↑</div>
+    <div class="stack-layer" style="background:linear-gradient(135deg,#16a34a,#15803d)">
+      <span class="stack-icon">🧹</span>
+      <div class="stack-info">
+        <h5>שלב 3: ניקוי ועיבוד (Transform)</h5>
+        <p>dbt — כתיבת לוגיקת ניקוי ב-SQL כ"קוד" מנוהל</p>
+      </div>
+    </div>
+    <div style="text-align:center;font-size:1.2rem;color:#94a3b8">↑</div>
+    <div class="stack-layer" style="background:linear-gradient(135deg,#7c3aed,#6d28d9)">
+      <span class="stack-icon">🗄️</span>
+      <div class="stack-info">
+        <h5>שלב 2: אחסון (Storage)</h5>
+        <p>BigQuery / Snowflake — מחסן הנתונים בענן</p>
+      </div>
+    </div>
+    <div style="text-align:center;font-size:1.2rem;color:#94a3b8">↑</div>
+    <div class="stack-layer" style="background:linear-gradient(135deg,#1a56db,#1e3a8a)">
+      <span class="stack-icon">🔌</span>
+      <div class="stack-info">
+        <h5>שלב 1: שאיבה (Ingestion)</h5>
+        <p>Fivetran / Airbyte — מביאים נתונים מ-Salesforce, Google Analytics, DB ועוד</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- BI History Timeline -->
+  <h3 style="font-size:1.1rem;font-weight:800;margin:28px 0 14px;color:var(--text)">📅 ציר הזמן של BI</h3>
+  <div class="timeline">
+    <div class="timeline-item">
+      <div class="timeline-dot">60-70</div>
+      <div class="timeline-year">שנות ה-60-70</div>
+      <div class="timeline-content">
+        <h4>Mainframe Reports</h4>
+        <p>דוחות מודפסים על נייר מחורר. המידע הגיע למנהלים פעם בחודש או ברבעון. תהליך ידני ואיטי.</p>
+      </div>
+    </div>
+    <div class="timeline-item">
+      <div class="timeline-dot">80</div>
+      <div class="timeline-year">שנות ה-80</div>
+      <div class="timeline-content">
+        <h4>Decision Support Systems (DSS)</h4>
+        <p>מערכות תמיכה בהחלטות. Teradata משיקה את מחסן הנתונים הראשון — מהפכה ראשונה.</p>
+      </div>
+    </div>
+    <div class="timeline-item">
+      <div class="timeline-dot">90</div>
+      <div class="timeline-year">שנות ה-90</div>
+      <div class="timeline-content">
+        <h4>לידת המונח BI</h4>
+        <p>Howard Dresner מ-Gartner מטביע את המונח "Business Intelligence" (1989). Cognos, BusinessObjects ו-MicroStrategy שולטות.</p>
+      </div>
+    </div>
+    <div class="timeline-item">
+      <div class="timeline-dot">2000</div>
+      <div class="timeline-year">שנות ה-2000</div>
+      <div class="timeline-content">
+        <h4>דמוקרטיזציה</h4>
+        <p>Tableau (2003) ו-QlikView — כעת גם משתמש עסקי רגיל יכול לבנות דשבורד. SAP רוכשת BusinessObjects; IBM רוכשת Cognos.</p>
+      </div>
+    </div>
+    <div class="timeline-item">
+      <div class="timeline-dot">2025</div>
+      <div class="timeline-year">2015 — היום</div>
+      <div class="timeline-content">
+        <h4>עידן הענן, AI והנתונים הגדולים</h4>
+        <p>Tableau נרכשת ע"י Salesforce ב-$15.7B. Snowflake ו-Databricks משנות הכל. AI מוטמע בתוך כלי BI לניתוח אוטומטי.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- MCQ 11 -->
+  <div class="mcq-block">
+    <div class="mcq-header">
+      <span class="mcq-badge easy">קל</span>
+      <h3>שאלה 11 — כלים</h3>
+    </div>
+    <div class="mcq-q">סטארטאפ ישראלי צומח שעובד כולו בענן Google (GCP) ורוצה מחסן נתונים Serverless שמתמחר לפי כמות נתונים שנסרקת. מה מתאים ביותר?</div>
+    <div class="mcq-options">
+      <button class="mcq-option" onclick="checkMCQ(this,'wrong','A11')"><span class="opt-letter">א</span> Oracle Database On-Premise</button>
+      <button class="mcq-option" onclick="checkMCQ(this,'correct','A11')"><span class="opt-letter">ב</span> Google BigQuery</button>
+      <button class="mcq-option" onclick="checkMCQ(this,'wrong','A11')"><span class="opt-letter">ג</span> Microsoft Excel Online</button>
+      <button class="mcq-option" onclick="checkMCQ(this,'wrong','A11')"><span class="opt-letter">ד</span> MySQL Community Edition</button>
+    </div>
+    <div id="exp-A11" class="mcq-explanation">✅ <strong>תשובה ב' נכונה.</strong> BigQuery הוא מחסן נתונים Serverless של Google — תשלום לפי כמות נתונים שנסרקת בשאילתות, ללא צורך בניהול שרתים. הוא מתחבר טבעית לכל שירותי GCP. Oracle On-Premise (א') הוא ההפך מ-Serverless.</div>
+  </div>
+
+  <!-- MCQ 12 -->
+  <div class="mcq-block">
+    <div class="mcq-header">
+      <span class="mcq-badge hard">מתקדם</span>
+      <h3>שאלה 12 — Modern Data Stack</h3>
+    </div>
+    <div class="mcq-q">סמנכ"ל נתונים בחברת ביטוח רוצה לבנות Modern Data Stack. הוא מתלבט בין שני אפיקים:<br>
+    אפיק א': Fivetran → Snowflake → dbt → Tableau<br>
+    אפיק ב': Excel → Gmail → PDF מודפס → הצגה PowerPoint<br>
+    מה ההבדל הקריטי מעבר לטכנולוגיה?</div>
+    <div class="mcq-options">
+      <button class="mcq-option" onclick="checkMCQ(this,'wrong','A12')"><span class="opt-letter">א</span> רק העלות — אפיק א' יקר יותר</button>
+      <button class="mcq-option" onclick="checkMCQ(this,'correct','A12')"><span class="opt-letter">ב</span> אפיק א' מאפשר: אוטומציה מלאה, גרסת אמת אחת, ניתוח בזמן אמת, מדרגיות, וסגירת הלולאה מנתון לתובנה ללא התערבות ידנית</button>
+      <button class="mcq-option" onclick="checkMCQ(this,'wrong','A12')"><span class="opt-letter">ג</span> אפיק ב' עדיף לחברות ישראליות כי הוא בעברית</button>
+      <button class="mcq-option" onclick="checkMCQ(this,'wrong','A12')"><span class="opt-letter">ד</span> אפיק א' מתאים רק לחברות טכנולוגיה ולא לביטוח</button>
+    </div>
+    <div id="exp-A12" class="mcq-explanation">✅ <strong>תשובה ב' נכונה.</strong> ההבדל הקריטי הוא מעבר מ"תהליך ידני" ל"Pipeline אוטומטי". אפיק א' מבטיח: Single Source of Truth (גרסת אמת אחת), עדכון אוטומטי, מדרגיות לכמויות גדולות, ויכולת ניתוח שלא אפשרית ב-Excel. חברת ביטוח עם מיליוני פוליסות לא יכולה להסתמך על גיליונות Excel.</div>
+  </div>
+</div>
+
+<div class="divider"></div>
+
+<!-- ==================== SECTION 6: CAREER ==================== -->
+<div id="s5"></div>
+<div class="section reveal">
+  <div class="section-title"><div class="icon">💼</div> מפת הקריירה בעולם ה-BI</div>
+
+  <div class="card">
+    <p style="line-height:1.9;color:var(--text2)">תחום הבינה העסקית פתח שלל תפקידים חדשים שלא היו קיימים לפני עשור. עבור סטודנטים, חשוב להבין את מפת הקריירה ולהכיר את המיומנויות הנדרשות לכל תפקיד.</p>
+  </div>
+
+  <table class="career-table">
+    <tr>
+      <th>תפקיד</th>
+      <th>תיאור</th>
+      <th>כלים ומיומנויות</th>
+      <th>שכר ממוצע (ישראל)</th>
+    </tr>
+    <tr>
+      <td><strong>BI Analyst</strong> ⭐ <span class="pill pill-orange">נקודת כניסה</span></td>
+      <td>בונה דשבורדים, עונה על שאלות עסקיות, עובד מול הנהלה</td>
+      <td>Tableau / Power BI, SQL, Excel, הבנה עסקית</td>
+      <td><span class="salary-badge">₪18,000–28,000</span></td>
+    </tr>
+    <tr>
+      <td><strong>Data Analyst</strong> ⭐ <span class="pill pill-orange">נקודת כניסה</span></td>
+      <td>מנתח נתונים לעומק, סטטיסטיקה, דוחות Ad-Hoc, זיהוי מגמות</td>
+      <td>SQL, Python/R, Excel, סטטיסטיקה</td>
+      <td><span class="salary-badge">₪16,000–25,000</span></td>
+    </tr>
+    <tr>
+      <td><strong>Analytics Engineer</strong></td>
+      <td>מגשר בין Data Engineer ל-Analyst. בונה מודלי נתונים</td>
+      <td>SQL, dbt, Git, Snowflake/BigQuery</td>
+      <td><span class="salary-badge">₪25,000–40,000</span></td>
+    </tr>
+    <tr>
+      <td><strong>Data Engineer</strong></td>
+      <td>בונה תשתית: pipelines, מחסני נתונים. "האינסטלטור"</td>
+      <td>Python, SQL, Spark, Airflow, Cloud</td>
+      <td><span class="salary-badge">₪30,000–50,000</span></td>
+    </tr>
+    <tr>
+      <td><strong>Data Scientist</strong></td>
+      <td>בונה מודלים סטטיסטיים ולמידת מכונה לחיזוי</td>
+      <td>Python, ML frameworks, סטטיסטיקה מתקדמת</td>
+      <td><span class="salary-badge">₪30,000–50,000+</span></td>
+    </tr>
+  </table>
+
+  <div class="card card-green">
+    <h3 style="font-weight:800;margin-bottom:16px">🎓 לסטודנט/ית: לאן לכוון?</h3>
+    <p style="line-height:1.9;color:var(--text2)">
+      אם אתם לומדים מנהל עסקים עם התמחות במערכות מידע ואין לכם ניסיון טכני קודם — נקודת הכניסה הטבעית ביותר היא <strong>BI Analyst</strong> או <strong>Data Analyst</strong>. למה? כי הם דורשים בדיוק את השילוב שלכם: <strong>הבנה עסקית + ידע טכני בסיסי</strong>.
+    </p>
+    <div class="callout success" style="margin-top:16px">
+      <div class="callout-icon">🚀</div>
+      <div class="callout-body">
+        <strong>מה לעשות כבר עכשיו?</strong><br>
+        (1) SQL — SELECT, JOIN, GROUP BY, Sub-queries. זו השפה הבסיסית של נתונים.<br>
+        (2) Tableau Public — בנו 2-3 דשבורדים על נתונים אמיתיים (Kaggle) — זה הפורטפוליו שלכם.<br>
+        (3) Excel מתקדם — VLOOKUP, Pivot Tables, Power Query.<br>
+        (4) חשיבה עסקית — היכולת לתרגם "למה הפדיון ירד?" לשאילתת נתונים.
+      </div>
+    </div>
+  </div>
+
+  <!-- MCQ 13 -->
+  <div class="mcq-block">
+    <div class="mcq-header">
+      <span class="mcq-badge medium">בינוני</span>
+      <h3>שאלה 13 — תפקידים</h3>
+    </div>
+    <div class="mcq-q">מה ההבדל המרכזי בין Data Analyst ל-Data Engineer?</div>
+    <div class="mcq-options">
+      <button class="mcq-option" onclick="checkMCQ(this,'wrong','A13')"><span class="opt-letter">א</span> אין הבדל — אותם תפקידים בשמות שונים</button>
+      <button class="mcq-option" onclick="checkMCQ(this,'correct','A13')"><span class="opt-letter">ב</span> Data Analyst מנתח נתונים ומפיק תובנות עסקיות; Data Engineer בונה את התשתית הטכנית (pipelines, מחסנים) שמאפשרת את הניתוח</button>
+      <button class="mcq-option" onclick="checkMCQ(this,'wrong','A13')"><span class="opt-letter">ג</span> Data Engineer עובד רק עם Excel ו-Data Analyst עם Python</button>
+      <button class="mcq-option" onclick="checkMCQ(this,'wrong','A13')"><span class="opt-letter">ד</span> Data Analyst מנהל צוותים ו-Data Engineer כפוף לו</button>
+    </div>
+    <div id="exp-A13" class="mcq-explanation">✅ <strong>תשובה ב' נכונה.</strong> Data Analyst = "מה הנתונים אומרים?" — מנתח, בונה דשבורדים, מגיש תובנות. Data Engineer = "איך הנתונים מגיעים?" — "האינסטלטור" שבונה את הצנרת הטכנית (ETL, DWH, pipelines). שניהם הכרחיים ועובדים יחד.</div>
+  </div>
+</div>
+
+<div class="divider"></div>
+
+<!-- ==================== SECTION 7: KPI & BRD ==================== -->
+<div id="s6"></div>
+<div class="section reveal">
+  <div class="section-title"><div class="icon">🎯</div> KPI, אפיון עסקי ומסמך BRD</div>
+
+  <div class="def-box">
+    <h4>KPI — Key Performance Indicator</h4>
+    <p><strong>מדד ביצוע מרכזי</strong> — מספר שמאפשר לארגון לעקוב אחרי התקדמותו לעבר יעד עסקי ספציפי. KPI טוב הוא: קונקרטי, מוגבל בזמן, ברת-מדידה, ומשפיע על החלטה.</p>
+  </div>
+
+  <div class="card card-purple">
+    <h3 style="font-weight:800;margin-bottom:14px">📊 דוגמאות KPI לפי תעשייה</h3>
+    <table class="comp-table" style="margin:0">
+      <tr>
+        <th>תעשייה</th>
+        <th>יעד עסקי</th>
+        <th>KPI</th>
+        <th>נוסחה</th>
+      </tr>
+      <tr>
+        <td>קמעונאות</td>
+        <td>הגדלת פדיון</td>
+        <td>Average Order Value (AOV)</td>
+        <td>פדיון כולל ÷ מספר עסקאות</td>
+      </tr>
+      <tr>
+        <td>SaaS</td>
+        <td>שימור לקוחות</td>
+        <td>Churn Rate</td>
+        <td>לקוחות שעזבו ÷ לקוחות בתחילת תקופה</td>
+      </tr>
+      <tr>
+        <td>בנקאות</td>
+        <td>ניהול סיכונים</td>
+        <td>NPL Ratio</td>
+        <td>הלוואות בפיגור ÷ תיק אשראי כולל</td>
+      </tr>
+      <tr>
+        <td>שיווק דיגיטלי</td>
+        <td>מקסום ROI</td>
+        <td>CAC (Customer Acquisition Cost)</td>
+        <td>הוצאות שיווק ÷ לקוחות חדשים</td>
+      </tr>
+      <tr>
+        <td>ביטוח</td>
+        <td>רווחיות ביטוח</td>
+        <td>Loss Ratio</td>
+        <td>סך תביעות ÷ סך פרמיות</td>
+      </tr>
+      <tr>
+        <td>נדל"ן</td>
+        <td>מקסום הכנסה</td>
+        <td>NOI (Net Operating Income)</td>
+        <td>הכנסות שכירות – הוצאות תפעוליות</td>
+      </tr>
+    </table>
+  </div>
+
+  <!-- BRD -->
+  <div class="section-title" style="font-size:1.2rem;margin-top:36px"><div class="icon" style="background:linear-gradient(135deg,#d97706,#b45309)">📋</div> מסמך BRD — Business Requirements Document</div>
+
+  <div class="def-box">
+    <h4>BRD — מסמך דרישות עסקיות</h4>
+    <p>מסמך שמתווך בין "השפה העסקית" של המנכ"ל לבין "השפה הטכנית" של המפתח. הוא מפרט בדיוק לאיזה מידע הארגון זקוק ואת הלוגיקה העסקית לחישוב המדדים.</p>
+  </div>
+
+  <div class="card">
+    <h3 style="font-weight:800;margin-bottom:16px">📝 מבנה טיפוסי של מסמך BRD</h3>
+    <ul class="checklist">
+      <li><span class="check">1</span> <div><strong>תקציר מנהלים</strong> — תמצית הפרויקט: מה נבנה, למה, ועבור מי</div></li>
+      <li><span class="check">2</span> <div><strong>רקע עסקי</strong> — מדוע הפרויקט נחוץ כעת? איזו בעיה הוא פותר?</div></li>
+      <li><span class="check">3</span> <div><strong>יעדים ו-KPIs</strong> — יעדים מדידים ברורים: "הקטנת Churn ב-10% תוך שנה"</div></li>
+      <li><span class="check">4</span> <div><strong>בעלי עניין (Stakeholders)</strong> — מי ישתמש בדשבורד? סמנכ"לים? מנהלי סניפים? נציגי שירות?</div></li>
+      <li><span class="check">5</span> <div><strong>דרישות פונקציונליות</strong> — אילו דוחות? אילו פילטרים? כלי פנייה מ-Top-Down</div></li>
+      <li><span class="check">6</span> <div><strong>Business Glossary</strong> — הגדרה מדויקת של כל מדד (מהו "רווח"? עם/בלי מע"מ?)</div></li>
+      <li><span class="check">7</span> <div><strong>מקורות נתונים</strong> — מאילו מערכות? SAP? Salesforce? Google Analytics?</div></li>
+      <li><span class="check">8</span> <div><strong>דרישות לא-פונקציונליות</strong> — ביצועים (דשבורד עד 3 שניות), אבטחה, הרשאות</div></li>
+      <li><span class="check">9</span> <div><strong>לוח זמנים ותקציב</strong></div></li>
+    </ul>
+  </div>
+
+  <!-- Top-Down Approach -->
+  <div class="arch-box">
+    <h4 style="font-weight:800;margin-bottom:20px;text-align:center">מתודולוגיית האפיון: Top-Down</h4>
+    <svg viewBox="0 0 700 180" xmlns="http://www.w3.org/2000/svg" style="max-width:100%;height:auto">
+      <rect x="10" y="40" width="140" height="80" rx="10" fill="#eff6ff" stroke="#3b82f6" stroke-width="2"/>
+      <text x="80" y="75" text-anchor="middle" font-size="24">🎯</text>
+      <text x="80" y="98" text-anchor="middle" font-size="11" font-weight="700" fill="#1e3a8a" font-family="Heebo,sans-serif">1. יעד עסקי</text>
+      <text x="80" y="113" text-anchor="middle" font-size="9" fill="#3b82f6" font-family="Heebo,sans-serif">"הקטנת Churn ב-10%"</text>
+      <path d="M 152 80 L 177 80" stroke="#1a56db" stroke-width="2" marker-end="url(#arr2)"/>
+      <rect x="180" y="40" width="140" height="80" rx="10" fill="#f0fdf4" stroke="#16a34a" stroke-width="2"/>
+      <text x="250" y="75" text-anchor="middle" font-size="24">❓</text>
+      <text x="250" y="98" text-anchor="middle" font-size="11" font-weight="700" fill="#166534" font-family="Heebo,sans-serif">2. שאלות עסקיות</text>
+      <text x="250" y="113" text-anchor="middle" font-size="9" fill="#16a34a" font-family="Heebo,sans-serif">"מי בסיכון נטישה?"</text>
+      <path d="M 322 80 L 347 80" stroke="#1a56db" stroke-width="2" marker-end="url(#arr2)"/>
+      <rect x="350" y="40" width="140" height="80" rx="10" fill="#faf5ff" stroke="#7c3aed" stroke-width="2"/>
+      <text x="420" y="75" text-anchor="middle" font-size="24">📏</text>
+      <text x="420" y="98" text-anchor="middle" font-size="11" font-weight="700" fill="#5b21b6" font-family="Heebo,sans-serif">3. הגדרת KPIs</text>
+      <text x="420" y="113" text-anchor="middle" font-size="9" fill="#7c3aed" font-family="Heebo,sans-serif">Churn Rate, NPS</text>
+      <path d="M 492 80 L 517 80" stroke="#1a56db" stroke-width="2" marker-end="url(#arr2)"/>
+      <rect x="520" y="40" width="160" height="80" rx="10" fill="#fff7ed" stroke="#d97706" stroke-width="2"/>
+      <text x="600" y="75" text-anchor="middle" font-size="24">🔌</text>
+      <text x="600" y="98" text-anchor="middle" font-size="11" font-weight="700" fill="#92400e" font-family="Heebo,sans-serif">4. מקורות נתונים</text>
+      <text x="600" y="113" text-anchor="middle" font-size="9" fill="#d97706" font-family="Heebo,sans-serif">רק עכשיו פונים ל-IT!</text>
+      <defs><marker id="arr2" markerWidth="7" markerHeight="7" refX="5" refY="3" orient="auto"><path d="M 0 0 L 7 3 L 0 6 Z" fill="#1a56db"/></marker></defs>
+    </svg>
+    <div class="callout warn" style="margin-top:16px">
+      <div class="callout-icon">🚫</div>
+      <div class="callout-body"><strong>טעות נפוצה:</strong> "יש לנו המון נתונים — בואו נבנה דשבורד!" זהו גישת Bottom-Up שמובילה לדשבורדים שאף אחד לא משתמש בהם. <strong>תמיד תתחילו מהיעד העסקי, לא מהטכנולוגיה.</strong></div>
+    </div>
+  </div>
+
+  <!-- MCQ 14 -->
+  <div class="mcq-block">
+    <div class="mcq-header">
+      <span class="mcq-badge medium">בינוני</span>
+      <h3>שאלה 14 — KPI</h3>
+    </div>
+    <div class="mcq-q">מנהל שיווק שואל: "כמה עולה לנו לגייס לקוח חדש?" — באיזה KPI מדובר, ומהי הנוסחה הנכונה?</div>
+    <div class="mcq-options">
+      <button class="mcq-option" onclick="checkMCQ(this,'wrong','A14')"><span class="opt-letter">א</span> Churn Rate = לקוחות שעזבו ÷ לקוחות בתחילת תקופה</button>
+      <button class="mcq-option" onclick="checkMCQ(this,'correct','A14')"><span class="opt-letter">ב</span> CAC (Customer Acquisition Cost) = הוצאות שיווק ÷ מספר לקוחות חדשים</button>
+      <button class="mcq-option" onclick="checkMCQ(this,'wrong','A14')"><span class="opt-letter">ג</span> NPS (Net Promoter Score) = משבח – מבקר</button>
+      <button class="mcq-option" onclick="checkMCQ(this,'wrong','A14')"><span class="opt-letter">ד</span> AOV (Average Order Value) = פדיון ÷ עסקאות</button>
+    </div>
+    <div id="exp-A14" class="mcq-explanation">✅ <strong>תשובה ב' נכונה.</strong> CAC = Customer Acquisition Cost — עלות גיוס לקוח. הנוסחה: סך הוצאות שיווק ומכירות ÷ מספר לקוחות חדשים שנגויסו בתקופה. CAC משמש להשוואה מול LTV (LifeTime Value) כדי לקבוע אם ההשקעה בשיווק משתלמת.</div>
+  </div>
+
+  <!-- MCQ 15 -->
+  <div class="mcq-block">
+    <div class="mcq-header">
+      <span class="mcq-badge hard">מתקדם</span>
+      <h3>שאלה 15 — BRD ואפיון</h3>
+    </div>
+    <div class="mcq-q">מנהל מוצר בסטארטאפ פונה לצוות הנתונים ואומר: "תבנו לי דשבורד שמראה הכל על הלקוחות שלנו". מה פעולת האנליסט הנכונה?</div>
+    <div class="mcq-options">
+      <button class="mcq-option" onclick="checkMCQ(this,'wrong','A15')"><span class="opt-letter">א</span> להתחיל לבנות מיד — ככל שיותר מידע בדשבורד, כך יותר טוב</button>
+      <button class="mcq-option" onclick="checkMCQ(this,'correct','A15')"><span class="opt-letter">ב</span> לקיים ראיון אפיון: "מה היעד העסקי? אילו שאלות אתה צריך לענות? מי עוד יגלוש בדשבורד? אילו KPIs רלוונטיים?" — ולתעד ב-BRD לפני כל קוד</button>
+      <button class="mcq-option" onclick="checkMCQ(this,'wrong','A15')"><span class="opt-letter">ג</span> להסביר שבלי גישה ל-ERP אי אפשר לבנות כלום</button>
+      <button class="mcq-option" onclick="checkMCQ(this,'wrong','A15')"><span class="opt-letter">ד</span> להעביר את הבקשה לצוות ה-IT</button>
+    </div>
+    <div id="exp-A15" class="mcq-explanation">✅ <strong>תשובה ב' נכונה.</strong> "הכל על הלקוחות" הוא בקשה חסרת מיקוד — דשבורד שמציג "הכל" לא מועיל לאף אחד. האנליסט הטוב עושה Top-Down: מתחיל מהיעד העסקי, מגדיר שאלות ספציפיות, ורק אז בונה. ה-BRD מבטיח שכולם מסכימים לפני שמתחילים.</div>
+  </div>
+
+  <!-- Summary Part A -->
+  <div class="summary-box">
+    <h3>📌 סיכום חלק א': בינה עסקית</h3>
+    <div class="summary-row"><div class="key">הגדרת BI</div><div class="val">מערך טכנולוגיות הממיר נתונים גולמיים לתובנות מניעות-פעולה (Actionable Insights)</div></div>
+    <div class="summary-row"><div class="key">DIKW</div><div class="val">Data → Information → Knowledge → Wisdom. BI מאיץ את המסע עד ל-Insight</div></div>
+    <div class="summary-row"><div class="key">ארכיטקטורה</div><div class="val">Sources → ETL/ELT → DWH/Lakehouse → Semantic Layer → Dashboards</div></div>
+    <div class="summary-row"><div class="key">OLTP vs OLAP</div><div class="val">ERP = OLTP (פעולות); BI = OLAP (ניתוח); שניהם הכרחיים ועובדים יחד</div></div>
+    <div class="summary-row"><div class="key">כלים</div><div class="val">Tableau (הקורס), Power BI (ישראל), Qlik, Looker + Snowflake, dbt, Fivetran</div></div>
+    <div class="summary-row"><div class="key">קריירה</div><div class="val">נקודת כניסה: BI Analyst / Data Analyst. מיומנויות ליבה: SQL, Tableau, חשיבה עסקית</div></div>
+    <div class="summary-row"><div class="key">אפיון</div><div class="val">Top-Down: יעד עסקי → שאלות → KPIs → מקורות. מתועד ב-BRD לפני כל קוד</div></div>
+  </div>
+</div>
+
+<div class="divider"></div>
+
+<!-- ===================== PART B ===================== -->
+<div id="part-b"></div>
+<div class="part-header part-b reveal">
+  <div class="part-num">חלק ב'</div>
+  <h2>💻 Frontend, Backend ו-Google Apps Script</h2>
+  <p>מהי ארכיטקטורת לקוח-שרת? מה ההבדל בין Frontend לבין Backend? כיצד Google Apps Script מאפשר לנו לדמות Backend פשוט ולמשוך נתונים פיננסיים? נבנה מערכת מידע פיננסית מקצה לקצה.</p>
+  <div class="part-icon">💻</div>
+</div>
+
+<!-- ==================== SECTION 8: Frontend / Backend ==================== -->
+<div id="s7"></div>
+<div class="section reveal">
+  <div class="section-title"><div class="icon">🖥️</div> Frontend vs Backend: יסודות ארכיטקטורת הרשת</div>
+
+  <div class="card">
+    <p style="line-height:1.9;color:var(--text2)">
+      כמעט כל יישום שאתם משתמשים בו — מ-Google Sheets ועד לאתר הבנק שלכם — בנוי משני שכבות: <strong>Frontend</strong> (מה שאתם רואים) ו-<strong>Backend</strong> (מה שמתרחש מאחורי הקלעים). הבנת ההפרדה הזו היא מפתח לכל מי שעובד עם נתונים.
+    </p>
+  </div>
+
+  <div class="fe-be-container">
+    <div class="fe-card">
+      <h3>🖥️ Frontend — הצד הנראה</h3>
+      <p style="opacity:0.9;margin-bottom:14px;font-size:0.92rem">כל מה שהמשתמש רואה ומתקשר איתו ישירות</p>
+      <ul>
+        <li>HTML — מבנה הדף (כמו שלד)</li>
+        <li>CSS — עיצוב וסגנון (כמו בגדים)</li>
+        <li>JavaScript — אינטראקטיביות (כמו שרירים)</li>
+        <li>דוגמאות: טפסים, כפתורים, גרפים, דשבורד</li>
+        <li>רץ: <strong>בדפדפן של המשתמש</strong></li>
+      </ul>
+    </div>
+    <div class="be-card">
+      <h3>⚙️ Backend — הצד הנסתר</h3>
+      <p style="opacity:0.9;margin-bottom:14px;font-size:0.92rem">לוגיקה עסקית, עיבוד נתונים, אבטחה</p>
+      <ul>
+        <li>שרת שמקבל בקשות ומחזיר תשובות</li>
+        <li>מסד נתונים (MySQL, PostgreSQL, MongoDB)</li>
+        <li>שפות: Node.js, Python, Java, PHP</li>
+        <li>APIs — חיבור ה-Frontend לנתונים</li>
+        <li>רץ: <strong>על שרת רחוק (בענן)</strong></li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- Client-Server Diagram -->
+  <div class="arch-box">
+    <h4 style="font-weight:800;margin-bottom:20px;text-align:center">ארכיטקטורת לקוח-שרת — Request / Response</h4>
+    <svg viewBox="0 0 750 200" xmlns="http://www.w3.org/2000/svg" style="max-width:100%;height:auto">
+      <!-- Client -->
+      <rect x="20" y="50" width="160" height="110" rx="14" fill="#eff6ff" stroke="#3b82f6" stroke-width="2"/>
+      <text x="100" y="85" text-anchor="middle" font-size="28">💻</text>
+      <text x="100" y="112" text-anchor="middle" font-size="12" font-weight="700" fill="#1e3a8a" font-family="Heebo,sans-serif">Client (Frontend)</text>
+      <text x="100" y="130" text-anchor="middle" font-size="10" fill="#3b82f6" font-family="Heebo,sans-serif">דפדפן המשתמש</text>
+      <text x="100" y="148" text-anchor="middle" font-size="10" fill="#3b82f6" font-family="Heebo,sans-serif">HTML / CSS / JS</text>
+      <!-- Request Arrow -->
+      <path d="M 182 85 L 360 85" stroke="#1a56db" stroke-width="2.5" marker-end="url(#arr3)" stroke-dasharray="6,3"/>
+      <text x="270" y="75" text-anchor="middle" font-size="10" fill="#1a56db" font-weight="700" font-family="Heebo,sans-serif">HTTP Request</text>
+      <text x="270" y="60" text-anchor="middle" font-size="9" fill="#64748b" font-family="Heebo,sans-serif">GET /api/stocks?ticker=AAPL</text>
+      <!-- Response Arrow -->
+      <path d="M 360 115 L 182 115" stroke="#16a34a" stroke-width="2.5" marker-end="url(#arr4)" stroke-dasharray="6,3"/>
+      <text x="270" y="145" text-anchor="middle" font-size="10" fill="#16a34a" font-weight="700" font-family="Heebo,sans-serif">HTTP Response (JSON)</text>
+      <text x="270" y="160" text-anchor="middle" font-size="9" fill="#64748b" font-family="Heebo,sans-serif">&#123;"price": 189.5, "date": "2026-04-30"&#125;</text>
+      <!-- Server -->
+      <rect x="370" y="50" width="160" height="110" rx="14" fill="#faf5ff" stroke="#7c3aed" stroke-width="2"/>
+      <text x="450" y="85" text-anchor="middle" font-size="28">⚙️</text>
+      <text x="450" y="112" text-anchor="middle" font-size="12" font-weight="700" fill="#5b21b6" font-family="Heebo,sans-serif">Server (Backend)</text>
+      <text x="450" y="130" text-anchor="middle" font-size="10" fill="#7c3aed" font-family="Heebo,sans-serif">לוגיקה עסקית</text>
+      <text x="450" y="148" text-anchor="middle" font-size="10" fill="#7c3aed" font-family="Heebo,sans-serif">Node.js / Python</text>
+      <!-- DB -->
+      <rect x="570" y="65" width="150" height="80" rx="12" fill="#f0fdf4" stroke="#16a34a" stroke-width="2"/>
+      <text x="645" y="100" text-anchor="middle" font-size="24">🗄️</text>
+      <text x="645" y="122" text-anchor="middle" font-size="11" font-weight="700" fill="#166534" font-family="Heebo,sans-serif">מסד נתונים</text>
+      <text x="645" y="137" text-anchor="middle" font-size="9" fill="#16a34a" font-family="Heebo,sans-serif">MySQL, Postgres</text>
+      <path d="M 530 105 L 568 105" stroke="#16a34a" stroke-width="1.5" marker-end="url(#arr5)"/>
+      <defs>
+        <marker id="arr3" markerWidth="7" markerHeight="7" refX="5" refY="3" orient="auto"><path d="M 0 0 L 7 3 L 0 6 Z" fill="#1a56db"/></marker>
+        <marker id="arr4" markerWidth="7" markerHeight="7" refX="5" refY="3" orient="auto"><path d="M 0 0 L 7 3 L 0 6 Z" fill="#16a34a"/></marker>
+        <marker id="arr5" markerWidth="7" markerHeight="7" refX="5" refY="3" orient="auto"><path d="M 0 0 L 7 3 L 0 6 Z" fill="#16a34a"/></marker>
+      </defs>
+    </svg>
+  </div>
+
+  <div class="def-box">
+    <h4>API — Application Programming Interface</h4>
+    <p>ה-API הוא החיבור בין Frontend ל-Backend. הוא מגדיר <strong>איזה מידע ניתן לבקש ובאיזה פורמט תקבל אותו</strong>. דמיינו API כמו תפריט מסעדה — אתם לא נכנסים למטבח (Backend), אלא מזמינים ממה שבתפריט (API) ומקבלים את האוכל (Response).</p>
+  </div>
+
+  <div class="card card-teal">
+    <h3 style="font-weight:800;margin-bottom:14px">🌐 דוגמה: אתר הבנק שלכם</h3>
+    <div class="info-grid" style="margin-top:0">
+      <div>
+        <h4 style="margin-bottom:8px;color:var(--text)">Frontend (מה אתם רואים)</h4>
+        <ul class="checklist" style="margin:0">
+          <li><span class="check">✓</span> עיצוב האתר, לוגו, כפתורים</li>
+          <li><span class="check">✓</span> טופס הכניסה (שם משתמש + סיסמה)</li>
+          <li><span class="check">✓</span> גרף יתרת החשבון</li>
+          <li><span class="check">✓</span> רשימת עסקאות</li>
+        </ul>
+      </div>
+      <div>
+        <h4 style="margin-bottom:8px;color:var(--text)">Backend (מה שקורה מאחורי)</h4>
+        <ul class="checklist" style="margin:0">
+          <li><span class="check">✓</span> אימות סיסמה מול מסד הנתונים</li>
+          <li><span class="check">✓</span> שליפת יתרת חשבון מה-DB</li>
+          <li><span class="check">✓</span> חישוב עסקאות וריבית</li>
+          <li><span class="check">✓</span> הצפנת כל הנתונים (SSL)</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- MCQ 16 -->
+  <div class="mcq-block">
+    <div class="mcq-header">
+      <span class="mcq-badge easy">קל</span>
+      <h3>שאלה 16 — Frontend vs Backend</h3>
+    </div>
+    <div class="mcq-q">משתמש לוחץ על כפתור "בדוק יתרה" באפליקציית הבנק. מה מהבאים מתרחש ב-Backend?</div>
+    <div class="mcq-options">
+      <button class="mcq-option" onclick="checkMCQ(this,'wrong','B1')"><span class="opt-letter">א</span> הצגת אנימציה של כפתור לחוץ</button>
+      <button class="mcq-option" onclick="checkMCQ(this,'wrong','B1')"><span class="opt-letter">ב</span> שינוי צבע הרקע של הדף</button>
+      <button class="mcq-option" onclick="checkMCQ(this,'correct','B1')"><span class="opt-letter">ג</span> שליפת יתרת החשבון ממסד הנתונים של הבנק, אימות הזהות, והחזרת הנתון מוצפן</button>
+      <button class="mcq-option" onclick="checkMCQ(this,'wrong','B1')"><span class="opt-letter">ד</span> הצגת מספר היתרה על המסך</button>
+    </div>
+    <div id="exp-B1" class="mcq-explanation">✅ <strong>תשובה ג' נכונה.</strong> אנימציה (א'), שינוי צבע (ב'), והצגה על מסך (ד') — כולם Frontend. שליפת הנתון ממסד הנתונים ואימות הזהות הם פעולות Backend שמתרחשות על שרת הבנק, לא בדפדפן המשתמש.</div>
+  </div>
+
+  <!-- MCQ 17 -->
+  <div class="mcq-block">
+    <div class="mcq-header">
+      <span class="mcq-badge medium">בינוני</span>
+      <h3>שאלה 17 — API</h3>
+    </div>
+    <div class="mcq-q">אפליקציית מזג האוויר שלכם מציגה טמפרטורה עדכנית. מה תפקיד ה-API בתהליך?</div>
+    <div class="mcq-options">
+      <button class="mcq-option" onclick="checkMCQ(this,'wrong','B2')"><span class="opt-letter">א</span> ה-API הוא מסד הנתונים שמאחסן את נתוני מזג האוויר</button>
+      <button class="mcq-option" onclick="checkMCQ(this,'wrong','B2')"><span class="opt-letter">ב</span> ה-API הוא עיצוב הגרף של הטמפרטורה</button>
+      <button class="mcq-option" onclick="checkMCQ(this,'correct','B2')"><span class="opt-letter">ג</span> ה-API הוא ממשק תקשורת — האפליקציה שולחת בקשה (עיר + תאריך) ושרת מזג האוויר מחזיר נתונים בפורמט מוסכם (JSON)</span></button>
+      <button class="mcq-option" onclick="checkMCQ(this,'wrong','B2')"><span class="opt-letter">ד</span> ה-API הוא שם האפליקציה</button>
+    </div>
+    <div id="exp-B2" class="mcq-explanation">✅ <strong>תשובה ג' נכונה.</strong> API הוא ה"חיבור" בין שתי מערכות. האפליקציה שולחת בקשה HTTP (Request) לשרת מזג האוויר עם פרמטרים (עיר, תאריך), והשרת מחזיר תשובה (Response) בפורמט JSON. ה-API מגדיר את "שפת השיחה" ביניהם.</div>
+  </div>
+</div>
+
+<div class="divider"></div>
+
+<!-- ==================== SECTION 9: Google Apps Script ==================== -->
+<div id="s8"></div>
+<div class="section reveal">
+  <div class="section-title"><div class="icon">📜</div> Google Apps Script — Backend בלחיצת כפתור</div>
+
+  <div class="def-box">
+    <h4>Google Apps Script (GAS) — מהו?</h4>
+    <p>Google Apps Script הוא <strong>פלטפורמת תכנות בענן של גוגל</strong> המבוססת על JavaScript, המאפשרת לכתוב קוד שרץ על <strong>שרתי גוגל</strong> ולבצע פעולות אוטומטיות עם שירותי Google: Sheets, Drive, Gmail, Forms ועוד. בהקשר שלנו — הוא מאפשר לנו לדמות <strong>Backend פשוט ללא צורך בשרת פיזי</strong>.</p>
+  </div>
+
+  <div class="info-grid">
+    <div class="info-card" style="border-top:4px solid #059669">
+      <div class="info-card-icon" style="background:#f0fdf4">✅</div>
+      <h4>יתרונות GAS</h4>
+      <p>• חינמי לחלוטין<br>• ללא הגדרת שרת<br>• אינטגרציה עם Google Sheets<br>• פריסה בלחיצה (Web App)<br>• JavaScript מוכר</p>
+    </div>
+    <div class="info-card" style="border-top:4px solid #dc2626">
+      <div class="info-card-icon" style="background:#fef2f2">⚠️</div>
+      <h4>מגבלות GAS</h4>
+      <p>• מכסת 6 דקות לבצוע<br>• לא מתאים לעומסים גבוהים<br>• מוגבל לאקוסיסטם Google<br>• אינו Backend אמיתי<br>• מוגבל ב-API Calls</p>
+    </div>
+    <div class="info-card" style="border-top:4px solid #1a56db">
+      <div class="info-card-icon" style="background:#eff6ff">🎓</div>
+      <h4>מתי להשתמש?</h4>
+      <p>• פרויקטים לימודיים<br>• אוטומציות בתוך ארגון<br>• פרוטוטיפים מהירים<br>• שליפת נתונים פיננסיים<br>• עיבוד נתונים ב-Sheets</p>
+    </div>
+  </div>
+
+  <!-- GAS vs Real Backend -->
+  <h3 style="font-size:1.1rem;font-weight:800;margin:28px 0 14px;color:var(--text)">📊 GAS לעומת Backend אמיתי</h3>
+  <table class="comp-table">
+    <tr>
+      <th>מאפיין</th>
+      <th>Google Apps Script</th>
+      <th>Backend "אמיתי" (Node.js)</th>
+    </tr>
+    <tr>
+      <td><strong>שרת</strong></td>
+      <td>שרתי גוגל (ענן)</td>
+      <td>שרת VPS/Cloud (AWS, Azure)</td>
+    </tr>
+    <tr>
+      <td><strong>שפה</strong></td>
+      <td>JavaScript (V8)</td>
+      <td>Node.js, Python, Java, Go</td>
+    </tr>
+    <tr>
+      <td><strong>מסד נתונים</strong></td>
+      <td>Google Sheets (כ-"DB")</td>
+      <td>MySQL, PostgreSQL, MongoDB</td>
+    </tr>
+    <tr>
+      <td><strong>עלות</strong></td>
+      <td>חינמי</td>
+      <td>$10-$1000+ לחודש</td>
+    </tr>
+    <tr>
+      <td><strong>מדרגיות</strong></td>
+      <td>מוגבלת (6 דקות)</td>
+      <td>גבוהה מאד</td>
+    </tr>
+    <tr>
+      <td><strong>מתאים ל</strong></td>
+      <td>אוטומציות, לימוד, פרוטוטיפ</td>
+      <td>אפליקציות Production</td>
+    </tr>
+  </table>
+
+  <!-- doGet / doPost -->
+  <div class="section-title" style="font-size:1.2rem;margin-top:36px"><div class="icon" style="background:linear-gradient(135deg,#0891b2,#1a56db)">⚡</div> doGet ו-doPost — "פתחי הכניסה" של GAS</div>
+
+  <div class="card">
+    <p style="line-height:1.9;color:var(--text2)">כאשר GAS מופעל כ-<strong>Web App</strong>, הוא חושף שתי פונקציות מיוחדות שמקבלות בקשות HTTP מבחוץ — בדיוק כמו Backend אמיתי:</p>
+  </div>
+
+  <div class="info-grid">
+    <div class="info-card" style="border-top:4px solid #0891b2">
+      <div class="info-card-icon" style="background:#e0f7fa">📤</div>
+      <h4>doGet(e)</h4>
+      <p>מטפל בבקשות <strong>GET</strong> — בקשות שמביאות מידע ללא שינוי. מתאים להחזרת נתונים, בדיקת תקינות, "Ping". הפרמטרים עוברים ב-URL (query string).</p>
+      <div class="code-block" style="margin-top:10px;font-size:0.8rem">
+function <span class="fn">doGet</span>(<span class="var">e</span>) {<br>
+  <span class="kw">return</span> ContentService<br>
+    .createTextOutput(<br>
+      <span class="str">"API Active!"</span><br>
+    );<br>
+}
+      </div>
+    </div>
+    <div class="info-card" style="border-top:4px solid #7c3aed">
+      <div class="info-card-icon" style="background:#f3e5f5">📥</div>
+      <h4>doPost(e)</h4>
+      <p>מטפל בבקשות <strong>POST</strong> — שליחת נתונים לשרת לעיבוד. הפרמטרים עוברים ב-Body (גוף הבקשה). מתאים לחישובים מורכבים, שליפת נתונים פיננסיים.</p>
+      <div class="code-block" style="margin-top:10px;font-size:0.8rem">
+function <span class="fn">doPost</span>(<span class="var">e</span>) {<br>
+  <span class="kw">const</span> <span class="var">params</span> = JSON.parse(<br>
+    <span class="var">e</span>.postData.contents<br>
+  );<br>
+  <span class="cm">// עיבוד...</span><br>
+  <span class="kw">return</span> <span class="fn">respond</span>(<span class="var">result</span>);<br>
+}
+      </div>
+    </div>
+  </div>
+
+  <!-- Critical Payload Parsing -->
+  <div class="callout danger">
+    <div class="callout-icon">🚨</div>
+    <div class="callout-body">
+      <strong>בעיה קריטית: Payload Parsing ב-GAS</strong><br>
+      ה-Frontend שולח נתונים כ-<code>text/plain</code> (לא JSON) כדי להימנע מבעיות CORS. GAS חייב לנתח את גוף הבקשה בצורה בטוחה עם try-catch. ללא זה — כל שגיאה קטנה תרסק את השרת כולו.
+    </div>
+  </div>
+
+  <div class="code-block">
+<span class="cm">// ✅ ניתוח בטוח של ה-payload ב-GAS</span><br>
+function <span class="fn">doPost</span>(<span class="var">e</span>) {<br>
+  <span class="kw">let</span> <span class="var">params</span> = {};<br>
+  <span class="kw">try</span> {<br>
+    <span class="kw">const</span> <span class="var">raw</span> = <span class="var">e</span>.postData.contents<br>
+      || (<span class="var">e</span>.postData.getDataAsString<br>
+          ? <span class="var">e</span>.postData.<span class="fn">getDataAsString</span>()<br>
+          : <span class="str">"{}"</span>);<br>
+    <span class="var">params</span> = JSON.<span class="fn">parse</span>(<span class="var">raw</span>);<br>
+  } <span class="kw">catch</span>(<span class="var">err</span>) {<br>
+    <span class="kw">return</span> ContentService<br>
+      .<span class="fn">createTextOutput</span>(JSON.<span class="fn">stringify</span>({<br>
+        status: <span class="str">"error"</span>,<br>
+        message: <span class="str">"Parse failed"</span><br>
+      }))<br>
+      .<span class="fn">setMimeType</span>(ContentService.MimeType.JSON);<br>
+  }<br>
+  <span class="cm">// חובה: tickers, startDate, endDate, frequency, action</span><br>
+  <span class="kw">const</span> { <span class="var">tickers</span>, <span class="var">startDate</span>, <span class="var">endDate</span>, <span class="var">frequency</span>, <span class="var">action</span> } = <span class="var">params</span>;<br>
+  <span class="kw">if</span> (!<span class="var">tickers</span> || !<span class="var">startDate</span> || !<span class="var">endDate</span> || !<span class="var">frequency</span> || !<span class="var">action</span>) {<br>
+    <span class="kw">throw new</span> Error(<span class="str">"Missing parameters: "</span> + JSON.<span class="fn">stringify</span>(<span class="var">params</span>));<br>
+  }<br>
+  <span class="cm">// המשך לוגיקה...</span><br>
+}
+  </div>
+
+  <!-- MCQ 18 -->
+  <div class="mcq-block">
+    <div class="mcq-header">
+      <span class="mcq-badge easy">קל</span>
+      <h3>שאלה 18 — GAS</h3>
+    </div>
+    <div class="mcq-q">מהי הדרך שבה Google Apps Script מדמה Backend?</div>
+    <div class="mcq-options">
+      <button class="mcq-option" onclick="checkMCQ(this,'wrong','B3')"><span class="opt-letter">א</span> GAS מתקין שרת Node.js על המחשב שלכם</button>
+      <button class="mcq-option" onclick="checkMCQ(this,'correct','B3')"><span class="opt-letter">ב</span> GAS פורס קוד JavaScript על שרתי גוגל וחושף URL ציבורי (Web App) שמקבל בקשות HTTP כמו Backend אמיתי</button>
+      <button class="mcq-option" onclick="checkMCQ(this,'wrong','B3')"><span class="opt-letter">ג</span> GAS פועל בתוך הדפדפן של המשתמש כמו JavaScript רגיל</button>
+      <button class="mcq-option" onclick="checkMCQ(this,'wrong','B3')"><span class="opt-letter">ד</span> GAS מחייב שרת Apache מקומי</button>
+    </div>
+    <div id="exp-B3" class="mcq-explanation">✅ <strong>תשובה ב' נכונה.</strong> GAS מאפשר לפרוס קוד JavaScript על שרתי גוגל ולחשוף אותו כ-Web App עם URL ציבורי. כל מי שמבקש את ה-URL מקבל את תגובת ה-Backend. הקוד רץ על שרתי גוגל — לא על המחשב של המשתמש — בדיוק כמו Backend אמיתי.</div>
+  </div>
+
+  <!-- MCQ 19 -->
+  <div class="mcq-block">
+    <div class="mcq-header">
+      <span class="mcq-badge medium">בינוני</span>
+      <h3>שאלה 19 — doGet vs doPost</h3>
+    </div>
+    <div class="mcq-q">מתי עדיף להשתמש ב-doPost במקום ב-doGet ב-GAS?</div>
+    <div class="mcq-options">
+      <button class="mcq-option" onclick="checkMCQ(this,'wrong','B4')"><span class="opt-letter">א</span> כשרוצים שהתשובה תהיה בפורמט HTML ולא JSON</button>
+      <button class="mcq-option" onclick="checkMCQ(this,'wrong','B4')"><span class="opt-letter">ב</span> doPost מהיר יותר מ-doGet תמיד</button>
+      <button class="mcq-option" onclick="checkMCQ(this,'correct','B4')"><span class="opt-letter">ג</span> כשצריך לשלוח כמות גדולה של נתונים (רשימת מניות, טווחי תאריכים) שלא ניתן להכניס ל-URL, או כשהנתונים רגישים</button>
+      <button class="mcq-option" onclick="checkMCQ(this,'wrong','B4')"><span class="opt-letter">ד</span> doPost מיועד רק להזנת נתונים לגיליון Sheets</button>
+    </div>
+    <div id="exp-B4" class="mcq-explanation">✅ <strong>תשובה ג' נכונה.</strong> doGet מוגבל ב-URL (כ-2048 תווים) ו-query string גלוי לכולם. doPost שולח נתונים ב-Body הבקשה: יכול להכיל כמות בלתי מוגבלת של פרמטרים (כמו רשימת 20 מניות + תאריכים), וה-Body לא מוצג ב-URL (קצת יותר פרטי). המערכת הפיננסית שלנו שולחת tickers+תאריכים ב-POST.</div>
+  </div>
+
+  <!-- MCQ 20 -->
+  <div class="mcq-block">
+    <div class="mcq-header">
+      <span class="mcq-badge medium">בינוני</span>
+      <h3>שאלה 20 — CORS ב-GAS</h3>
+    </div>
+    <div class="mcq-q">מדוע ה-Frontend שלנו שולח נתונים כ-text/plain ולא כ-application/json?</div>
+    <div class="mcq-options">
+      <button class="mcq-option" onclick="checkMCQ(this,'wrong','B5')"><span class="opt-letter">א</span> כי GAS לא תומך ב-JSON</button>
+      <button class="mcq-option" onclick="checkMCQ(this,'wrong','B5')"><span class="opt-letter">ב</span> כי text/plain קטן יותר מ-JSON</button>
+      <button class="mcq-option" onclick="checkMCQ(this,'correct','B5')"><span class="opt-letter">ג</span> כי שליחת Content-Type: application/json גורמת לדפדפן לבצע Preflight CORS Request שה-GAS לא מטפל בו — וכך הבקשה נחסמת. text/plain מונע את ה-Preflight</span></button>
+      <button class="mcq-option" onclick="checkMCQ(this,'wrong','B5')"><span class="opt-letter">ד</span> כי JSON נוצר רק בתגובות שרת, לא בבקשות</button>
+    </div>
+    <div id="exp-B5" class="mcq-explanation">✅ <strong>תשובה ג' נכונה.</strong> CORS (Cross-Origin Resource Sharing) הוא מנגנון אבטחה של הדפדפן. בקשות עם Content-Type: application/json הן "non-simple requests" ומחייבות Preflight OPTIONS request. GAS לא מטפל ב-Preflight — אז הבקשה נחסמת. text/plain היא "simple request" שעוברת ישירות ללא Preflight.</div>
+  </div>
+</div>
+
+<div class="divider"></div>
+
+<!-- ==================== SECTION 10: Financial System ==================== -->
+<div id="s9"></div>
+<div class="section reveal">
+  <div class="section-title"><div class="icon">📈</div> מערכת איסוף נתונים פיננסיים — מקצה לקצה</div>
+
+  <div class="card">
+    <p style="line-height:1.9;color:var(--text2)">
+      כעת נבנה מערכת שלמה: ממשק משתמש (Frontend) → שרת GAS (Backend) → מקורות נתונים (Yahoo Finance / Google Finance) → תצוגה בסדרות זמן. זוהי ארכיטקטורת <strong>3 שכבות (3-Tier Architecture)</strong> מוקטנת ומעשית.
+    </p>
+  </div>
+
+  <!-- System Architecture -->
+  <div class="arch-box">
+    <h4 style="font-weight:800;margin-bottom:24px;text-align:center">ארכיטקטורת המערכת הפיננסית</h4>
+    <div class="gas-flow">
+      <div class="gas-node" style="border-color:#1a56db;background:#eff6ff">
+        <div class="node-icon">💻</div>
+        <div class="node-label" style="color:#1e3a8a">ממשק לקוח<br>(HTML/JS)</div>
+      </div>
+      <div class="gas-arrow">→</div>
+      <div class="gas-node" style="border-color:#7c3aed;background:#faf5ff">
+        <div class="node-icon">🤖</div>
+        <div class="node-label" style="color:#5b21b6">שרת GAS<br>(Backend)</div>
+      </div>
+      <div class="gas-arrow">→</div>
+      <div class="gas-node" style="border-color:#0891b2;background:#e0f7fa">
+        <div class="node-icon">🌐</div>
+        <div class="node-label" style="color:#155e75">Yahoo Finance<br>Google Finance</div>
+      </div>
+      <div class="gas-arrow">→</div>
+      <div class="gas-node" style="border-color:#059669;background:#f0fdf4">
+        <div class="node-icon">📊</div>
+        <div class="node-label" style="color:#166534">סדרות זמן<br>CSV + Sheets</div>
+      </div>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px;margin-top:16px">
+      <div style="background:#eff6ff;border-radius:8px;padding:12px;text-align:center">
+        <div style="font-weight:700;color:#1e3a8a;font-size:0.88rem">שלב 1: Frontend</div>
+        <div style="font-size:0.8rem;color:#3b82f6;margin-top:4px">בקרות קלט, ולידציות, שליחת POST ל-GAS</div>
+      </div>
+      <div style="background:#faf5ff;border-radius:8px;padding:12px;text-align:center">
+        <div style="font-weight:700;color:#5b21b6;font-size:0.88rem">שלב 2: GAS</div>
+        <div style="font-size:0.8rem;color:#7c3aed;margin-top:4px">פענוח בקשה, שליפה מ-Yahoo, בניית dateMap</div>
+      </div>
+      <div style="background:#e0f7fa;border-radius:8px;padding:12px;text-align:center">
+        <div style="font-weight:700;color:#155e75;font-size:0.88rem">שלב 3: מקורות</div>
+        <div style="font-size:0.8rem;color:#0891b2;margin-top:4px">Yahoo Finance CSV / GOOGLEFINANCE fallback</div>
+      </div>
+      <div style="background:#f0fdf4;border-radius:8px;padding:12px;text-align:center">
+        <div style="font-weight:700;color:#166534;font-size:0.88rem">שלב 4: פלט</div>
+        <div style="font-size:0.8rem;color:#059669;margin-top:4px">Time-Series Wide Format: תאריך | AAPL | MSFT | GOOG</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Time Series Explanation -->
+  <div class="section-title" style="font-size:1.2rem;margin-top:36px"><div class="icon" style="background:linear-gradient(135deg,#059669,#0891b2)">⏱️</div> Time-Series Wide Format — מהו?</div>
+
+  <div class="def-box">
+    <h4>Time-Series (סדרת זמן) — הגדרה</h4>
+    <p>מבנה נתונים שבו <strong>כל שורה מייצגת נקודת זמן (תאריך)</strong> וכל עמודה מייצגת משתנה שנמדד (מניה). זהו הפורמט האידיאלי להשוואה בין מספר מניות לאורך זמן.</p>
+  </div>
+
+  <!-- Time Series Example Table -->
+  <div class="card card-teal">
+    <h3 style="font-weight:800;margin-bottom:14px">📅 דוגמה: Time-Series Wide Format</h3>
+    <div style="overflow-x:auto">
+      <table class="comp-table">
+        <tr>
+          <th>תאריך</th>
+          <th>AAPL (Apple)</th>
+          <th>MSFT (Microsoft)</th>
+          <th>GOOG (Google)</th>
+          <th>AMZN (Amazon)</th>
+        </tr>
+        <tr>
+          <td>2026-01-02</td>
+          <td>187.45</td>
+          <td>412.30</td>
+          <td>178.20</td>
+          <td>198.60</td>
+        </tr>
+        <tr>
+          <td>2026-01-05</td>
+          <td>189.10</td>
+          <td>415.80</td>
+          <td>181.45</td>
+          <td>201.20</td>
+        </tr>
+        <tr>
+          <td>2026-01-06</td>
+          <td>188.70</td>
+          <td>414.20</td>
+          <td>—</td>
+          <td>200.80</td>
+        </tr>
+        <tr>
+          <td>2026-01-07</td>
+          <td>192.30</td>
+          <td>418.90</td>
+          <td>183.60</td>
+          <td>205.40</td>
+        </tr>
+      </table>
+    </div>
+    <div class="callout info" style="margin-top:14px">
+      <div class="callout-icon">💡</div>
+      <div class="callout-body"><strong>שימו לב:</strong> ב-2026-01-06 ל-GOOG חסר ערך (—) — כי לא הייתה עסקה באותו יום. האלגוריתם ממלא ריקנות עם "" במקום לשבש את שאר הנתונים. זהו ניהול נתונים חסרים!</div>
+    </div>
+  </div>
+
+  <!-- Algorithm Explanation -->
+  <div class="section-title" style="font-size:1.2rem;margin-top:36px"><div class="icon" style="background:linear-gradient(135deg,#dc2626,#d97706)">🧮</div> אלגוריתם ה-dateMap — לב המערכת</div>
+
+  <div class="arch-box">
+    <h4 style="font-weight:800;margin-bottom:20px">אלגוריתם בניית סדרת הזמן — שלב אחר שלב</h4>
+    
+    <div style="display:flex;flex-direction:column;gap:12px">
+      <div style="background:#eff6ff;border-radius:8px;padding:16px;border-right:4px solid #1a56db">
+        <div style="font-weight:800;color:#1e3a8a;margin-bottom:6px">🔢 שלב 1: פיצול רשימת המניות</div>
+        <p style="font-size:0.9rem;color:#1e3a8a"><code>tickers.split(",").map(t => t.trim().toUpperCase())</code> → ["AAPL", "MSFT", "GOOG"]</p>
+      </div>
+      <div style="background:#f0fdf4;border-radius:8px;padding:16px;border-right:4px solid #059669">
+        <div style="font-weight:800;color:#166534;margin-bottom:6px">🗺️ שלב 2: בניית dateMap — מפת תאריכים</div>
+        <p style="font-size:0.9rem;color:#166534">
+          <code>dateMap = &#123;&#125;</code> — אובייקט שמפתחו הוא תאריך וערכו הוא אובייקט עם מחירי כל מניה.<br>
+          לאחר עיבוד כל המניות: <code>dateMap["2026-01-02"] = &#123;"AAPL": 187.45, "MSFT": 412.30&#125;</code>
+        </p>
+      </div>
+      <div style="background:#faf5ff;border-radius:8px;padding:16px;border-right:4px solid #7c3aed">
+        <div style="font-weight:800;color:#5b21b6;margin-bottom:6px">🌐 שלב 3: שליפת נתונים</div>
+        <p style="font-size:0.9rem;color:#5b21b6">
+          <strong>מקור ראשי:</strong> Yahoo Finance CSV API — מחזיר CSV עם עמודות Date, Adj Close.<br>
+          <strong>Fallback:</strong> GOOGLEFINANCE() ב-Sheets — אם Yahoo נכשל.
+        </p>
+      </div>
+      <div style="background:#fff7ed;border-radius:8px;padding:16px;border-right:4px solid #d97706">
+        <div style="font-weight:800;color:#92400e;margin-bottom:6px">📋 שלב 4: בניית טבלה סופית</div>
+        <p style="font-size:0.9rem;color:#92400e">
+          איסוף כל התאריכים הייחודיים מ-dateMap → מיון כרונולוגי → בניית combinedData 2D array.<br>
+          כותרת: ["תאריך", "AAPL", "MSFT", "GOOG"]<br>
+          שורות: לולאה על תאריכים, מחיר כל מניה (או "" אם חסר).
+        </p>
+      </div>
+      <div style="background:#fef2f2;border-radius:8px;padding:16px;border-right:4px solid #dc2626">
+        <div style="font-weight:800;color:#991b1b;margin-bottom:6px">📤 שלב 5: החזרת הפלט</div>
+        <p style="font-size:0.9rem;color:#991b1b">
+          <strong>action === 'csv':</strong> המרת combinedData למחרוזת CSV → החזרה ל-Frontend להורדה<br>
+          <strong>action === 'sheet':</strong> יצירת Google Sheet חדש → כתיבת הנתונים → החזרת URL
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Code: Core Algorithm -->
+  <div class="card" style="margin-top:20px">
+    <h3 style="font-weight:800;margin-bottom:12px">💻 קוד: לוגיקת dateMap</h3>
+    <div class="code-block">
+<span class="cm">// אתחול מפת תאריכים ריקה</span><br>
+<span class="kw">const</span> <span class="var">dateMap</span> = {};<br>
+<span class="kw">const</span> <span class="var">tickersArray</span> = <span class="var">tickers</span>.<span class="fn">split</span>(<span class="str">","</span>)<br>
+  .<span class="fn">map</span>(<span class="var">t</span> => <span class="var">t</span>.<span class="fn">trim</span>().<span class="fn">toUpperCase</span>());<br><br>
+<span class="cm">// לולאה על כל מניה</span><br>
+<span class="kw">for</span> (<span class="kw">const</span> <span class="var">ticker</span> <span class="kw">of</span> <span class="var">tickersArray</span>) {<br>
+  <span class="kw">const</span> <span class="var">csvData</span> = <span class="fn">fetchYahooCSV</span>(<span class="var">ticker</span>, <span class="var">startDate</span>, <span class="var">endDate</span>);<br>
+  <span class="kw">const</span> <span class="var">rows</span> = <span class="var">csvData</span>.<span class="fn">split</span>(<span class="str">"\n"</span>).<span class="fn">slice</span>(<span class="num">1</span>);<br><br>
+  <span class="kw">for</span> (<span class="kw">const</span> <span class="var">row</span> <span class="kw">of</span> <span class="var">rows</span>) {<br>
+    <span class="kw">const</span> [<span class="var">date</span>, , , , , <span class="var">adjClose</span>] = <span class="var">row</span>.<span class="fn">split</span>(<span class="str">","</span>);<br>
+    <span class="kw">if</span> (!<span class="var">dateMap</span>[<span class="var">date</span>]) <span class="var">dateMap</span>[<span class="var">date</span>] = {};<br>
+    <span class="var">dateMap</span>[<span class="var">date</span>][<span class="var">ticker</span>] = <span class="fn">parseFloat</span>(<span class="var">adjClose</span>);<br>
+  }<br>
+}<br><br>
+<span class="cm">// מיון תאריכים + בניית טבלה</span><br>
+<span class="kw">const</span> <span class="var">sortedDates</span> = Object.<span class="fn">keys</span>(<span class="var">dateMap</span>).<span class="fn">sort</span>();<br>
+<span class="kw">const</span> <span class="var">header</span> = [<span class="str">"תאריך"</span>, ...<span class="var">tickersArray</span>];<br>
+<span class="kw">const</span> <span class="var">rows</span> = <span class="var">sortedDates</span>.<span class="fn">map</span>(<span class="var">date</span> => [<br>
+  <span class="var">date</span>,<br>
+  ...<span class="var">tickersArray</span>.<span class="fn">map</span>(<span class="var">t</span> => <span class="var">dateMap</span>[<span class="var">date</span>][<span class="var">t</span>] ?? <span class="str">""</span>)<br>
+]);<br>
+<span class="kw">const</span> <span class="var">combinedData</span> = [<span class="var">header</span>, ...<span class="var">rows</span>];
+    </div>
+  </div>
+
+  <!-- Validation Section -->
+  <div class="section-title" style="font-size:1.2rem;margin-top:36px"><div class="icon" style="background:linear-gradient(135deg,#dc2626,#b91c1c)">🛡️</div> בקרות קלט (Validation) — Frontend</div>
+
+  <div class="card">
+    <p style="line-height:1.9;color:var(--text2)">המערכת חייבת לבצע <strong>בקרות קלט בצד הלקוח</strong> (Client-Side Validation) לפני שאפילו שולחים בקשה לשרת. זה חוסך זמן ומשאבי שרת.</p>
+  </div>
+
+  <div class="info-grid">
+    <div class="info-card" style="border-top:4px solid #dc2626">
+      <div class="info-card-icon" style="background:#fef2f2">📅</div>
+      <h4>ולידציית תאריכים</h4>
+      <p>• תאריך התחלה < תאריך סיום?<br>• תאריכים לא בעתיד?<br>• פורמט YYYY-MM-DD?<br>• טווח לא גדול מ-10 שנים?</p>
+    </div>
+    <div class="info-card" style="border-top:4px solid #d97706">
+      <div class="info-card-icon" style="background:#fef9c3">📊</div>
+      <h4>ולידציית מניות</h4>
+      <p>• לפחות מניה אחת הוזנה?<br>• אותיות לטיניות בלבד?<br>• לא יותר מ-10 מניות?<br>• הפרדה בפסיקים?</p>
+    </div>
+    <div class="info-card" style="border-top:4px solid #7c3aed">
+      <div class="info-card-icon" style="background:#faf5ff">⚙️</div>
+      <h4>ולידציית תדירות</h4>
+      <p>• יומי / שבועי / חודשי?<br>• פרמטר חובה!<br>• ולידציה מול רשימה מוגדרת</p>
+    </div>
+  </div>
+
+  <div class="code-block">
+<span class="cm">// ולידציה בצד הלקוח לפני שליחה</span><br>
+function <span class="fn">validateInputs</span>() {<br>
+  <span class="kw">const</span> <span class="var">start</span> = <span class="kw">new</span> Date(<span class="var">startDate</span>.value);<br>
+  <span class="kw">const</span> <span class="var">end</span> = <span class="kw">new</span> Date(<span class="var">endDate</span>.value);<br>
+  <span class="kw">const</span> <span class="var">today</span> = <span class="kw">new</span> Date();<br><br>
+  <span class="kw">if</span> (<span class="var">start</span> >= <span class="var">end</span>) {<br>
+    <span class="fn">showError</span>(<span class="str">"תאריך ההתחלה חייב להיות לפני תאריך הסיום"</span>);<br>
+    <span class="kw">return false</span>;<br>
+  }<br>
+  <span class="kw">if</span> (<span class="var">end</span> > <span class="var">today</span>) {<br>
+    <span class="fn">showError</span>(<span class="str">"תאריך הסיום לא יכול להיות בעתיד"</span>);<br>
+    <span class="kw">return false</span>;<br>
+  }<br>
+  <span class="kw">const</span> <span class="var">tickerList</span> = <span class="var">tickers</span>.value<br>
+    .<span class="fn">split</span>(<span class="str">","</span>).<span class="fn">filter</span>(<span class="var">t</span> => <span class="var">t</span>.<span class="fn">trim</span>());<br>
+  <span class="kw">if</span> (<span class="var">tickerList</span>.length === <span class="num">0</span>) {<br>
+    <span class="fn">showError</span>(<span class="str">"יש להזין לפחות מניה אחת"</span>);<br>
+    <span class="kw">return false</span>;<br>
+  }<br>
+  <span class="kw">return true</span>; <span class="cm">// ✅ כל הבדיקות עברו</span><br>
+}
+  </div>
+
+  <!-- Workflow Diagram -->
+  <div class="section-title" style="font-size:1.2rem;margin-top:36px"><div class="icon" style="background:linear-gradient(135deg,#0891b2,#059669)">🔄</div> זרימת עבודה: טען → צפה → ייצא</div>
+
+  <div class="arch-box">
+    <h4 style="font-weight:800;margin-bottom:20px;text-align:center">זרימת עבודה: Workflow הסטודנט</h4>
+    <svg viewBox="0 0 800 160" xmlns="http://www.w3.org/2000/svg" style="max-width:100%;height:auto">
+      <!-- Step 1 -->
+      <rect x="10" y="30" width="150" height="90" rx="10" fill="#eff6ff" stroke="#1a56db" stroke-width="2"/>
+      <text x="85" y="60" text-anchor="middle" font-size="22">✍️</text>
+      <text x="85" y="82" text-anchor="middle" font-size="11" font-weight="700" fill="#1e3a8a" font-family="Heebo,sans-serif">הזנת קלט</text>
+      <text x="85" y="98" text-anchor="middle" font-size="9" fill="#3b82f6" font-family="Heebo,sans-serif">מניות + תאריכים</text>
+      <text x="85" y="112" text-anchor="middle" font-size="9" fill="#3b82f6" font-family="Heebo,sans-serif">+ תדירות</text>
+      <path d="M 162 75 L 192 75" stroke="#94a3b8" stroke-width="2" marker-end="url(#arr6)"/>
+      <!-- Step 2 -->
+      <rect x="195" y="30" width="150" height="90" rx="10" fill="#fef9c3" stroke="#d97706" stroke-width="2"/>
+      <text x="270" y="60" text-anchor="middle" font-size="22">🛡️</text>
+      <text x="270" y="82" text-anchor="middle" font-size="11" font-weight="700" fill="#92400e" font-family="Heebo,sans-serif">ולידציה</text>
+      <text x="270" y="98" text-anchor="middle" font-size="9" fill="#d97706" font-family="Heebo,sans-serif">בדיקות קלט</text>
+      <text x="270" y="112" text-anchor="middle" font-size="9" fill="#d97706" font-family="Heebo,sans-serif">צד לקוח</text>
+      <path d="M 347 75 L 377 75" stroke="#94a3b8" stroke-width="2" marker-end="url(#arr6)"/>
+      <!-- Step 3 -->
+      <rect x="380" y="30" width="150" height="90" rx="10" fill="#faf5ff" stroke="#7c3aed" stroke-width="2"/>
+      <text x="455" y="60" text-anchor="middle" font-size="22">🤖</text>
+      <text x="455" y="82" text-anchor="middle" font-size="11" font-weight="700" fill="#5b21b6" font-family="Heebo,sans-serif">שרת GAS</text>
+      <text x="455" y="98" text-anchor="middle" font-size="9" fill="#7c3aed" font-family="Heebo,sans-serif">שליפה + עיבוד</text>
+      <text x="455" y="112" text-anchor="middle" font-size="9" fill="#7c3aed" font-family="Heebo,sans-serif">Yahoo Finance</text>
+      <path d="M 532 75 L 562 75" stroke="#94a3b8" stroke-width="2" marker-end="url(#arr6)"/>
+      <!-- Step 4 -->
+      <rect x="565" y="30" width="220" height="90" rx="10" fill="#f0fdf4" stroke="#059669" stroke-width="2"/>
+      <text x="675" y="60" text-anchor="middle" font-size="22">📊</text>
+      <text x="675" y="82" text-anchor="middle" font-size="11" font-weight="700" fill="#166534" font-family="Heebo,sans-serif">תצוגה מקדימה</text>
+      <text x="675" y="98" text-anchor="middle" font-size="9" fill="#059669" font-family="Heebo,sans-serif">→ הורדת CSV</text>
+      <text x="675" y="112" text-anchor="middle" font-size="9" fill="#059669" font-family="Heebo,sans-serif">→ שמירה ב-Sheets</text>
+      <defs><marker id="arr6" markerWidth="7" markerHeight="7" refX="5" refY="3" orient="auto"><path d="M 0 0 L 7 3 L 0 6 Z" fill="#94a3b8"/></marker></defs>
+    </svg>
+  </div>
+
+  <!-- MCQ 21 -->
+  <div class="mcq-block">
+    <div class="mcq-header">
+      <span class="mcq-badge medium">בינוני</span>
+      <h3>שאלה 21 — Time-Series</h3>
+    </div>
+    <div class="mcq-q">מדוע מבנה Time-Series Wide Format עדיף לניתוח השוואתי בין מניות מרובות?</div>
+    <div class="mcq-options">
+      <button class="mcq-option" onclick="checkMCQ(this,'wrong','B6')"><span class="opt-letter">א</span> כי הוא דורש פחות מקום אחסון</button>
+      <button class="mcq-option" onclick="checkMCQ(this,'correct','B6')"><span class="opt-letter">ב</span> כי כל שורה מייצגת תאריך אחד ועמודה כל מניה — המאפשר השוואה ישירה בין מניות על אותה שורת תאריך ויצירת גרפים מרובי-קווים בקלות</button>
+      <button class="mcq-option" onclick="checkMCQ(this,'wrong','B6')"><span class="opt-letter">א</span> כי Yahoo Finance מחזיר נתונים בפורמט זה אוטומטית</button>
+      <button class="mcq-option" onclick="checkMCQ(this,'wrong','B6')"><span class="opt-letter">ד</span> כי זהו הפורמט היחיד שגוגל Sheets תומך בו</button>
+    </div>
+    <div id="exp-B6" class="mcq-explanation">✅ <strong>תשובה ב' נכונה.</strong> Wide Format (מניה = עמודה) מאפשר: השוואה ישירה בין מניות על אותה שורת תאריך, ייצוא CSV נוח לניתוח ב-Excel/Sheets, ויצירת גרפי Line Chart מרובי-קווים. ה-Long Format (מניה + ערך = שורה) יהיה קשה לפרש ויצריך Pivot כדי להשוות.</div>
+  </div>
+
+  <!-- MCQ 22 -->
+  <div class="mcq-block">
+    <div class="mcq-header">
+      <span class="mcq-badge hard">מתקדם</span>
+      <h3>שאלה 22 — ארכיטקטורה פיננסית</h3>
+    </div>
+    <div class="mcq-q">המערכת שלנו משתמשת ב-Yahoo Finance כמקור ראשי ו-GOOGLEFINANCE כ-Fallback. מה יקרה אם שתי המקורות נכשלים בו-זמנית עבור מניה מסוימת?</div>
+    <div class="mcq-options">
+      <button class="mcq-option" onclick="checkMCQ(this,'wrong','B7')"><span class="opt-letter">א</span> המערכת תקרוס ותחזיר שגיאה לכל המניות</button>
+      <button class="mcq-option" onclick="checkMCQ(this,'wrong','B7')"><span class="opt-letter">ב</span> המניה תוצג עם ערכי 0 בכל התאריכים</button>
+      <button class="mcq-option" onclick="checkMCQ(this,'correct','B7')"><span class="opt-letter">ג</span> הקוד הנכון יתפוס את השגיאה ב-try-catch, יחזיר הודעת שגיאה ספציפית לאותה מניה בלבד, ושאר המניות ימשיכו לעבוד</button>
+      <button class="mcq-option" onclick="checkMCQ(this,'wrong','B7')"><span class="opt-letter">ד</span> GAS אוטומטית ישאל שרת אחר</button>
+    </div>
+    <div id="exp-B7" class="mcq-explanation">✅ <strong>תשובה ג' נכונה.</strong> ב-GAS טוב, כל שליפת מניה עטופה ב-try-catch. אם שניהם נכשלים — dateMap פשוט לא מתמלא עבור אותה מניה, ובטבלה הסופית יופיעו ריקנויות ("") עבור אותה עמודה. שגיאה ברמת מניה אחת לא תקרוס את הבקשה כולה. זו תכנות הגנתי (Defensive Programming).</div>
+  </div>
+
+  <!-- MCQ 23 -->
+  <div class="mcq-block">
+    <div class="mcq-header">
+      <span class="mcq-badge hard">מתקדם</span>
+      <h3>שאלה 23 — שיקולי ארכיטקטורה</h3>
+    </div>
+    <div class="mcq-q">חברת פינטק רוצה מערכת שמעבדת 100,000 בקשות ביום לנתונים פיננסיים. האם Google Apps Script מתאים? אם לא — מה כן?</div>
+    <div class="mcq-options">
+      <button class="mcq-option" onclick="checkMCQ(this,'wrong','B8')"><span class="opt-letter">א</span> כן — GAS מתאים לכל קנה מידה, כולל Production</button>
+      <button class="mcq-option" onclick="checkMCQ(this,'correct','B8')"><span class="opt-letter">ב</span> לא — GAS מוגבל במכסת ה-API Calls ובזמן הביצוע. עדיף: Node.js / Python Flask/FastAPI על AWS Lambda, עם Redis לcaching ו-PostgreSQL/TimescaleDB לנתוני Time-Series</button>
+      <button class="mcq-option" onclick="checkMCQ(this,'wrong','B8')"><span class="opt-letter">ג</span> לא — אבל Excel מקוון מתאים לעומסים כאלה</button>
+      <button class="mcq-option" onclick="checkMCQ(this,'wrong','B8')"><span class="opt-letter">ד</span> כן — אפשר להגדיל את מכסת GAS לסכום חודשי קטן</button>
+    </div>
+    <div id="exp-B8" class="mcq-explanation">✅ <strong>תשובה ב' נכונה.</strong> GAS מוגבל: 6 דקות ביצוע, מכסות API, לא מתאים ל-Production עם עומסים גבוהים. לחברת פינטק אמיתית: Backend מבוסס Node.js/Python על Serverless (AWS Lambda/Google Cloud Functions) שמתמחר לפי בקשה, Redis לcaching שערים, TimescaleDB/InfluxDB לנתוני Time-Series, ו-Kafka לעיבוד real-time stream.</div>
+  </div>
+
+  <!-- MCQ 24 -->
+  <div class="mcq-block">
+    <div class="mcq-header">
+      <span class="mcq-badge medium">בינוני</span>
+      <h3>שאלה 24 — ולידציה</h3>
+    </div>
+    <div class="mcq-q">משתמש מנסה לשלוח בקשה עם תאריך התחלה 2026-12-01 ותאריך סיום 2026-06-01. מה על המערכת לעשות, ובאיזה שלב?</div>
+    <div class="mcq-options">
+      <button class="mcq-option" onclick="checkMCQ(this,'wrong','B9')"><span class="opt-letter">א</span> להחליף אוטומטית בין התאריכים וממשיך</button>
+      <button class="mcq-option" onclick="checkMCQ(this,'wrong','B9')"><span class="opt-letter">ב</span> לשלוח את הבקשה לשרת GAS שיטפל בשגיאה</button>
+      <button class="mcq-option" onclick="checkMCQ(this,'correct','B9')"><span class="opt-letter">ג</span> לחסום את הבקשה ב-Frontend (ולידציה צד לקוח) ולהציג הודעת שגיאה ברורה — לפני שאפילו פנו לשרת</button>
+      <button class="mcq-option" onclick="checkMCQ(this,'wrong','B9')"><span class="opt-letter">ד</span> להציג תוצאות ריקות ללא הסבר</button>
+    </div>
+    <div id="exp-B9" class="mcq-explanation">✅ <strong>תשובה ג' נכונה.</strong> ולידציה צד לקוח (Client-Side Validation) היא קו ההגנה הראשון. מנשתחסמים שגיאות ברורות (כמו תאריך התחלה > סיום) לפני שליחה לשרת — חוסכים זמן ומשאבי שרת, ומשפרים UX. הודעת שגיאה מיידית עם הסבר ברור היא UX טוב. הפניה לשרת ורק שם הטיפול — UX גרוע וסיכון אבטחה.</div>
+  </div>
+
+  <!-- Summary Part B -->
+  <div class="summary-box" style="background:linear-gradient(135deg,#0891b2,#059669)">
+    <h3>📌 סיכום חלק ב': Frontend, Backend ו-GAS</h3>
+    <div class="summary-row"><div class="key">Frontend</div><div class="val">מה המשתמש רואה — HTML, CSS, JS. רץ בדפדפן. טופס, ולידציה, תצוגה.</div></div>
+    <div class="summary-row"><div class="key">Backend</div><div class="val">לוגיקה עסקית, מסד נתונים, אבטחה. רץ על שרת רחוק. משיב ל-API Calls.</div></div>
+    <div class="summary-row"><div class="key">API</div><div class="val">חיבור Frontend ↔ Backend. מגדיר מה ניתן לבקש ובאיזה פורמט.</div></div>
+    <div class="summary-row"><div class="key">GAS</div><div class="val">Backend פשוט על שרתי גוגל. doGet + doPost. מתאים ללימוד ופרוטוטיפ.</div></div>
+    <div class="summary-row"><div class="key">doPost</div><div class="val">מקבל bקשה עם tickers+תאריכים, מנתח ב-try-catch, שולף Yahoo Finance.</div></div>
+    <div class="summary-row"><div class="key">Time-Series</div><div class="val">Wide Format: שורה = תאריך, עמודה = מניה. מאפשר השוואה קלה.</div></div>
+    <div class="summary-row"><div class="key">dateMap</div><div class="val">אלגוריתם מרכזי: מפת תאריכים → מחיר כל מניה → מיון → combinedData.</div></div>
+  </div>
+
+  <!-- Final Quiz -->
+  <div class="section-title" style="font-size:1.2rem;margin-top:40px"><div class="icon" style="background:linear-gradient(135deg,#dc2626,#7c3aed)">🏆</div> שאלות מסכמות: חלק א' + ב' ביחד</div>
+
+  <!-- MCQ 25 -->
+  <div class="mcq-block">
+    <div class="mcq-header">
+      <span class="mcq-badge hard">מתקדם — משולב</span>
+      <h3>שאלה 25 — חיבור BI ו-GAS</h3>
+    </div>
+    <div class="mcq-q">מנהל השקעות בחברה רוצה דשבורד Tableau שמראה השוואת ביצועי מניות ב-3 שנים האחרונות. צוות הנתונים מציע לבנות Pipeline: GAS שולף Time-Series → מייצא CSV → נטען ל-Tableau. באיזה שלב של ארכיטקטורת BI כל חלק?</div>
+    <div class="mcq-options">
+      <button class="mcq-option" onclick="checkMCQ(this,'wrong','C1')"><span class="opt-letter">א</span> GAS = Semantic Layer; CSV = ETL; Tableau = DWH</button>
+      <button class="mcq-option" onclick="checkMCQ(this,'correct','C1')"><span class="opt-letter">ב</span> GAS = Data Source + ETL (שולף ומעבד); CSV = Load אל קובץ ביניים; Tableau = שכבת התצוגה (Visualization Layer)</button>
+      <button class="mcq-option" onclick="checkMCQ(this,'wrong','C1')"><span class="opt-letter">ג</span> GAS = DWH; CSV = ETL; Tableau = Source</button>
+      <button class="mcq-option" onclick="checkMCQ(this,'wrong','C1')"><span class="opt-letter">ד</span> כולם שייכים לשכבת ה-OLTP</button>
+    </div>
+    <div id="exp-C1" class="mcq-explanation">✅ <strong>תשובה ב' נכונה.</strong> GAS מבצע Extract (שולף מ-Yahoo Finance) + Transform (בונה dateMap, ממיין, מאחד) = ETL מוקטן. ה-CSV הוא Load זמני (לא DWH מלא, אבל ממלא תפקידו). Tableau משמש כשכבת Visualization (דשבורדים + Semantic Layer). Pipeline שלם בסקייל קטן — אבל עם אותה ארכיטקטורה רעיונית.</div>
+  </div>
+
+  <!-- MCQ 26 -->
+  <div class="mcq-block">
+    <div class="mcq-header">
+      <span class="mcq-badge hard">מתקדם — משולב</span>
+      <h3>שאלה 26 — DIKW ומערכת פיננסית</h3>
+    </div>
+    <div class="mcq-q">המערכת מחזירה: "Apple (AAPL) ירדה ב-12.3% בחודש האחרון, בעוד Microsoft (MSFT) עלתה ב-4.1% באותה תקופה". מיפוי ל-DIKW ולהחלטה עסקית — מה הצעד הבא לקבלת Actionable Insight?</div>
+    <div class="mcq-options">
+      <button class="mcq-option" onclick="checkMCQ(this,'wrong','C2')"><span class="opt-letter">א</span> זוהי כבר Wisdom — אפשר לפעול מיד</button>
+      <button class="mcq-option" onclick="checkMCQ(this,'correct','C2')"><span class="opt-letter">ב</span> זהו Knowledge (ידע — תבניות ומגמות). להגיע ל-Wisdom צריך: לנתח מדוע ירדה AAPL, להצליב עם נתוני תעשייה, ולהסיק "האם לרכוש/למכור/להמתין" עם ביסוס ראיות</button>
+      <button class="mcq-option" onclick="checkMCQ(this,'wrong','C2')"><span class="opt-letter">ג</span> זהו Data — המספרים חסרי הקשר</button>
+      <button class="mcq-option" onclick="checkMCQ(this,'wrong','C2')"><span class="opt-letter">ד</span> זהו Information — ואין צורך בניתוח נוסף</button>
+    </div>
+    <div id="exp-C2" class="mcq-explanation">✅ <strong>תשובה ב' נכונה.</strong> %-ירידה ב-AAPL vs %-עלייה ב-MSFT = Knowledge (הצגת תבנית/מגמה). זה מעניין אך לא מספיק לפעולה. Actionable Insight יצריך: בחינת גורמי ה-12.3% (רווחים? תחרות? רגולציה?), השוואה ל-S&P500, ניתוח RSI/PE, והמלצה ספציפית: "רכישה ב-AAPL ב-$175 Stop-Loss ב-$168".</div>
+  </div>
+
+  <!-- Final Score -->
+  <div style="background:linear-gradient(135deg,#1a56db,#7c3aed,#0891b2);border-radius:var(--radius);padding:36px;text-align:center;margin-top:40px;color:white">
+    <div style="font-size:3rem;margin-bottom:12px">🏆</div>
+    <h2 style="font-size:1.8rem;font-weight:900;margin-bottom:12px">כל הכבוד! סיימת את המדריך המלא</h2>
+    <p style="opacity:0.88;font-size:1.05rem;margin-bottom:20px">כיסית 5 שעות תוכן בתחומי Business Intelligence, ארכיטקטורת נתונים, Frontend/Backend, ו-Google Apps Script</p>
+    <div style="background:rgba(255,255,255,0.15);border-radius:12px;padding:16px;display:inline-block">
+      <div style="font-size:1.2rem;font-weight:700">ניקוד שאלות שלך:</div>
+      <div style="font-size:3rem;font-weight:900" id="finalScore">0 / 0</div>
+    </div>
+    <div style="margin-top:20px;font-size:0.9rem;opacity:0.75">
+      נוצר עבור קורס מערכות מידע פיננסיות | ד"ר שי צבאן | 2026
+    </div>
+  </div>
+
+</div>
+</div>
+
+<!-- JAVASCRIPT -->
+<script>
+// ===== MCQ LOGIC =====
+let scoreCorrect = 0;
+let scoreTotal = 0;
+
+function checkMCQ(btn, result, qId) {
+  const block = btn.closest('.mcq-block');
+  const options = block.querySelectorAll('.mcq-option');
+  const exp = document.getElementById('exp-' + qId);
+  
+  if (block.dataset.answered) return;
+  block.dataset.answered = 'true';
+  scoreTotal++;
+
+  options.forEach(opt => {
+    opt.style.pointerEvents = 'none';
+  });
+
+  if (result === 'correct') {
+    btn.classList.add('correct');
+    btn.querySelector('.opt-letter').textContent = '✓';
+    scoreCorrect++;
+    if (exp) {
+      exp.classList.add('show');
+    }
+  } else {
+    btn.classList.add('wrong');
+    btn.querySelector('.opt-letter').textContent = '✗';
+    // Highlight correct
+    options.forEach(opt => {
+      if (opt.getAttribute('onclick').includes("'correct'")) {
+        opt.classList.add('correct');
+        opt.querySelector('.opt-letter').textContent = '✓';
+      }
+    });
+    if (exp) {
+      exp.classList.add('show');
+      exp.classList.add('wrong-exp');
+    }
+  }
+
+  document.getElementById('scoreCorrect').textContent = scoreCorrect;
+  document.getElementById('scoreTotal').textContent = scoreTotal;
+  document.getElementById('finalScore').textContent = scoreCorrect + ' / ' + scoreTotal;
+}
+
+// ===== ACCORDION =====
+function toggleAccordion(header) {
+  const body = header.nextElementSibling;
+  const isOpen = body.classList.contains('show');
+  body.classList.toggle('show');
+  header.classList.toggle('open');
+}
+
+// ===== NAV SCROLL =====
+function scrollToSection(id) {
+  const el = document.getElementById(id);
+  if (el) {
+    el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+}
+
+// ===== PROGRESS BAR =====
+window.addEventListener('scroll', () => {
+  const doc = document.documentElement;
+  const scrollTop = doc.scrollTop || document.body.scrollTop;
+  const scrollHeight = doc.scrollHeight - doc.clientHeight;
+  const progress = (scrollTop / scrollHeight) * 100;
+  document.getElementById('progressBar').style.width = progress + '%';
+});
+
+// ===== SCROLL REVEAL =====
+const reveals = document.querySelectorAll('.reveal');
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.classList.add('visible');
+    }
+  });
+}, { threshold: 0.1 });
+
+reveals.forEach(r => observer.observe(r));
+
+// ===== NAV ACTIVE =====
+const sections = ['part-a','s1','s2','s3','s4','s5','s6','part-b','s7','s8','s9'];
+const navBtns = document.querySelectorAll('.nav-btn');
+
+window.addEventListener('scroll', () => {
+  let current = '';
+  sections.forEach(id => {
+    const el = document.getElementById(id);
+    if (el) {
+      const rect = el.getBoundingClientRect();
+      if (rect.top <= 120) current = id;
+    }
+  });
+  navBtns.forEach((btn, i) => {
+    btn.classList.toggle('active', sections[i] === current);
+  });
+});
+</script>
+</body>
+</html>
