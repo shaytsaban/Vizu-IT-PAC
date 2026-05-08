@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+<html dir="rtl" lang="he">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>פתרון מפורט למטלה 2 - בינה עסקית</title>
+    <link href="https://fonts.googleapis.com/css2?family=Assistant:wght@400;600;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #2563eb;
+            --primary-hover: #1d4ed8;
+            --bg-color: #f8fafc;
+            --card-bg: #ffffff;
+            --text-main: #1e293b;
+            --text-muted: #64748b;
+            --correct: #10b981;
+            --wrong: #ef4444;
+            --accent: #f59e0b;
+        }
+
+        body {
+            font-family: 'Assistant', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            margin: 0;
+            padding: 40px 20px;
+            line-height: 1.7;
+        }
+
+        .container { max-width: 1000px; margin: 0 auto; }
+        
+        .header { text-align: center; margin-bottom: 50px; }
+        h1 { font-size: 2.5rem; color: var(--primary); margin-bottom: 10px; }
+        .credit { font-size: 1.2rem; color: var(--text-muted); font-weight: 600; background: #e2e8f0; padding: 10px; border-radius: 8px; display: inline-block; }
+
+        .question-container {
+            background: var(--card-bg);
+            border-radius: 12px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+            padding: 30px;
+            margin-bottom: 50px;
+            border-top: 6px solid var(--primary);
+        }
+
+        .question-text { font-size: 1.4rem; font-weight: 600; margin-bottom: 20px; }
+        .options-list { list-style: none; padding: 0; margin-bottom: 30px; }
+        .options-list li {
+            background: #f1f5f9;
+            margin: 8px 0;
+            padding: 15px;
+            border-radius: 8px;
+            font-size: 1.1rem;
+            border-right: 4px solid transparent;
+        }
+
+        .step-content {
+            display: none;
+            padding: 20px;
+            margin-top: 15px;
+            border-radius: 8px;
+            background-color: #f8fafc;
+            border: 1px solid #e2e8f0;
+            animation: fadeIn 0.4s ease-in-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .step-content h4 { margin-top: 0; color: var(--primary); font-size: 1.2rem; border-bottom: 2px solid #e2e8f0; padding-bottom: 8px; }
+        .step-content.wrong { border-right: 4px solid var(--wrong); }
+        .step-content.correct { border-right: 4px solid var(--correct); background-color: #ecfdf5; }
+        .step-content.neutral { border-right: 4px solid var(--primary); }
+        .step-content.finale { border-right: 4px solid var(--accent); background-color: #fffbeb; }
+
+        .btn-next {
+            background-color: var(--primary); color: white; border: none; padding: 12px 24px;
+            font-size: 1.1rem; font-weight: 600; border-radius: 8px; cursor: pointer; transition: all 0.2s;
+        }
+        .btn-next:hover { background-color: var(--primary-hover); transform: translateY(-2px); }
+        .btn-next:disabled { background-color: #cbd5e1; cursor: not-allowed; transform: none; }
+
+        .highlights { background: white; padding: 15px; border-radius: 6px; margin-top: 15px; border-right: 3px solid var(--accent); }
+
+        .css-flowchart {
+            display: flex; align-items: center; justify-content: center; flex-wrap: wrap; gap: 10px;
+            margin-top: 20px; padding: 20px; background: white; border-radius: 8px; box-shadow: inset 0 2px 4px rgba(0,0,0,0.05);
+        }
+        .flow-box {
+            background-color: #e2e8f0; color: #334155; padding: 12px 18px; border-radius: 8px;
+            font-weight: 600; text-align: center; border: 2px solid #94a3b8; font-size: 0.95rem;
+        }
+        .flow-box.highlight { background-color: #bae6fd; border-color: #38bdf8; color: #0369a1; }
+        .flow-box.final { background-color: var(--correct); border-color: #059669; color: white; transform: scale(1.05); }
+        .flow-arrow { color: #94a3b8; font-size: 1.2rem; font-weight: bold; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="header">
+        <h1>📊 תרגול מודרך: עקרונות הבינה העסקית</h1>
+        <div class="credit">ד״ר שי צבאן, 8.5.2026 | פתרון מפורט למטלה 2</div>
+    </div>
+
+    <div id="quiz-container"></div>
+</div>
+
+<script>
+    // מאגר 20 השאלות, ההיגדים, ושלבי הפתרון (המנוע הדינמי)
+    const quizData = [
+        {
+            qText: "1. על פי ההגדרה הפורמלית, מהי מטרת העל של מערכות ה-BI?",
+            options: [
+                "א. איסוף כמויות אדירות של נתונים טכנולוגיים בלבד.",
+                "ב. תמיכה ושיפור של איכות קבלת ההחלטות הניהוליות בארגון.",
+                "ג. מעבר מדוחות מודפסים למסך הנייד של המנכ\"ל בלבד.",
+                "ד. יצירת אלגוריתמים מתקדמים להמלצת תוכן.",
+                "ה. יצירת פלטים צבעוניים למנהלים."
+            ],
+            steps: [
+                { title: "🎯 מה השאלה הזו בעצם בודקת?", content: "דורשת להבדיל בין <strong>האמצעים והכלים הטכניים</strong> לבין <strong>המטרה הסופית</strong>. למה ארגון משקיע במערכת?", type: "neutral", btnText: "בדיקת אפשרות א' 🔍" },
+                { title: "❌ ניתוח אפשרות א': איסוף נתונים", content: "איסוף הוא רק שלב טכני. נתונים השוכבים בשרת ללא שימוש אינם בינה עסקית.", type: "wrong", btnText: "בדיקת אפשרות ב' (הנכונה) ✨" },
+                { title: "✅ ניתוח אפשרות ב': תמיכה ושיפור החלטות", content: "ליבת ההגדרה! המטרה היא שהמשתמש יבין את המצב במהירות ויגזור החלטות עסקיות.", type: "correct", btnText: "בדיקת שאר האפשרויות 🔍" },
+                { title: "❌ ניתוח ג', ד', ה': תוצרי לוואי", content: "מסכים (ג') ופלטים (ה') הם אמצעי תצוגה בלבד. אלגוריתם (ד') הוא יישום ספציפי ולא מטרת העל.", type: "wrong", btnText: "הגראנד פינאלה 🏆" },
+                { title: "🏆 הגראנד פינאלה", content: "<div class='highlights'>📌 הפרידו תמיד בין טכנולוגיה (איסוף, תצוגה) לבין הליבה הניהולית (החלטות).</div>", type: "finale", btnText: "סיימנו ✓", flowchart: ["נתונים גולמיים", "עיבוד ויזואלי", "תובנות", "קבלת החלטות"] }
+            ]
+        },
+        {
+            qText: "2. אילו שלושה מאפיינים מגדירים תובנה כ'מניעת פעולה' (Actionable Insight)?",
+            options: [
+                "א. מהירה, אינטואיטיבית ומעניינת.",
+                "ב. גולמית, רוחבית ונתמכת בנתונים חשבונאיים.",
+                "ג. ספציפית, ברת-ביצוע ומבוססת ראיות.",
+                "ד. פורמלית, מבוצעת בתדירות רבעונית ונשענת על מידע היסטורי.",
+                "ה. מבצעת שימוש ב-Tableau בלבד."
+            ],
+            steps: [
+                { title: "🎯 מה השאלה בודקת?", content: "מהם התנאים ההכרחיים כדי שמידע יגרום לנו <strong>לקום ולעשות מעשה אקטיבי</strong> בארגון.", type: "neutral", btnText: "בדיקת א', ב' 🔍" },
+                { title: "❌ ניתוח א', ב'", content: "'אינטואיטיבית' (א') זה ההפך מ-BI שנשען על עובדות. 'חשבונאית/גולמית' (ב') לא בהכרח מניעה לפעולה מעשית.", type: "wrong", btnText: "בדיקת ד', ה' 🔍" },
+                { title: "❌ ניתוח ד', ה'", content: "תדירות רבעונית (ד') לרוב איטית מדי. Tableau (ה') הוא רק תוכנה אחת, התובנה לא תלויה בתוכנה ספציפית.", type: "wrong", btnText: "בדיקת ג' (הנכונה) ✨" },
+                { title: "✅ ניתוח אפשרות ג'", content: "בול! התובנה חייבת להיות נקודתית (ספציפית), פרקטית ליישום (ברת-ביצוע), ונשענת על עובדות ולא ניחושים (מבוססת ראיות).", type: "correct", btnText: "הגראנד פינאלה 🏆" },
+                { title: "🏆 הגראנד פינאלה", content: "<div class='highlights'>📌 תובנה ללא יכולת פעולה היא סתם עובדה מעניינת. נדרשת קונקרטיות.</div>", type: "finale", btnText: "סיימנו ✓", flowchart: ["מבוססת ראיות", "ספציפית וממוקדת", "ברת-ביצוע", "פעולה אקטיבית"] }
+            ]
+        },
+        {
+            qText: "3. במקרה הבוחן של חברת Netflix, הסקה לגבי הכדאיות של הפקות מקור מתבססת על:",
+            options: [
+                "א. אינטואיציה פנימית של מנהלי התוכן בחברה.",
+                "ב. אינטואיציה פנימית של השחקנים וצוות ההפקה.",
+                "ג. נתונים מקופות רושמות שמתעדות באופן מלא את השתנות המינויים.",
+                "ד. ניתוח נתונים שמראה ביקוש גבוה לסדרות עם מאפיינים מסוימים.",
+                "ה. תרשימי Tableau."
+            ],
+            steps: [
+                { title: "🎯 מה השאלה בודקת?", content: "יישום עקרונות ה-BI במקרה מבחן אמיתי: איזה סוג מידע פותר את הבעיה הספציפית של <strong>'מה כדאי להפיק?'</strong>", type: "neutral", btnText: "בדיקת א', ב' 🔍" },
+                { title: "❌ ניתוח א', ב'", content: "אינטואיציה ותחושות בטן של מנהלים/שחקנים הן בדיוק מה שמערכות BI מנסות לנטרל.", type: "wrong", btnText: "בדיקת ג', ה' 🔍" },
+                { title: "❌ ניתוח ג', ה'", content: "נתוני מנויים (ג') מספרים על הכנסות החברה, אך לא אומרים לנו בצורה ספציפית *מה* אנשים רוצים לראות. תרשימים (ה') הם רק כלי הצגה.", type: "wrong", btnText: "בדיקת ד' (הנכונה) ✨" },
+                { title: "✅ ניתוח אפשרות ד'", content: "כדי להחליט מה להפיק, נדרש מידע ספציפי ופרקטי המבוסס על צפיות העבר והעדפות תוכן ממוקדות של המשתמשים.", type: "correct", btnText: "הגראנד פינאלה 🏆" },
+                { title: "🏆 הגראנד פינאלה", content: "<div class='highlights'>📌 המידע חייב להיות רלוונטי להחלטה (הכנסות לא עוזרות ללהק שחקן למותחן).</div>", type: "finale", btnText: "סיימנו ✓", flowchart: ["ניתוח צפיות היסטורי", "זיהוי מאפייני ביקוש", "הפקת תוכן מותאם", "הצלחה מסחרית"] }
+            ]
+        },
+        {
+            qText: "4. על פי נתוני השטח, איזה אחוז מסך ההכנסות של Amazon מיוחס למנוע ההמלצות?",
+            options: [ "א. כ-10%", "ב. כ-15%", "ג. כ-35%", "ד. כ-80% ומעלה", "ה. אין כל השפעה" ],
+            steps: [
+                { title: "🎯 מה השאלה בודקת?", content: "היכרות עם נתוני הרקע ממערכי השיעור כדי להמחיש את העוצמה הפיננסית של מנועי BI.", type: "neutral", btnText: "בדיקת התשובה ✨" },
+                { title: "✅ ניתוח התשובה (ג')", content: "התשובה היא כ-35%. אמנם אין צורך לשנן מספרים בעל פה למבחן, אבל זה ממחיש כיצד מערכת טכנולוגית מייצרת אימפקט כלכלי ישיר ואדיר.", type: "correct", btnText: "הגראנד פינאלה 🏆" },
+                { title: "🏆 הגראנד פינאלה", content: "<div class='highlights'>📌 מערכת BI טובה (כמו מנוע המלצות) לא רק 'מציגה נתונים' אלא מייצרת הכנסה אקטיבית.</div>", type: "finale", btnText: "סיימנו ✓", flowchart: ["התנהגות משתמש", "מנוע המלצות BI", "הגדלת סל קניות", "זינוק של 35% בהכנסות"] }
+            ]
+        },
+        {
+            qText: "5. האנס פיטר לון הגדיר ב-1958 את הבינה העסקית. איזה מהמרכיבים עמד בבסיס הגדרתו?",
+            options: [
+                "א. ההמרה למידע בעל משמעות בעזרת דשבורדים.",
+                "ב. היכולת להבין יחסים הדדיים בין עובדות באופן שמנחה פעולה לקראת מטרה רצויה.",
+                "ג. התאמה אישית של תמונת הכריכה של כל סרט.",
+                "ד. השקעה של כ-33 מיליארד דולר בשוק.",
+                "ה. היכולת לרכוש מחשבים בעלי כוח עיבוד."
+            ],
+            steps: [
+                { title: "🎯 מה השאלה בודקת?", content: "הבנת המהות הטהורה של BI לפי ההגדרה הקלאסית, לפני שנכנסו כל הטכנולוגיות המודרניות.", type: "neutral", btnText: "פסילת מסיחים טכניים 🔍" },
+                { title: "❌ ניתוח א', ג', ד', ה'", content: "כל אלו מתייחסים לאמצעים מודרניים: דשבורדים, התאמת תמונות בנטפליקס, ומחשבים חזקים. אלו טכנולוגיות, לא הגדרת הבסיס.", type: "wrong", btnText: "בדיקת ב' (הנכונה) ✨" },
+                { title: "✅ ניתוח אפשרות ב'", content: "זוהי ההגדרה המקורית וההגיונית ביותר: קישור בין עובדות (נתונים) כדי להנחות פעולה אקטיבית שמשיגה מטרה עסקית.", type: "correct", btnText: "הגראנד פינאלה 🏆" },
+                { title: "🏆 הגראנד פינאלה", content: "<div class='highlights'>📌 BI איננו המצאה של עידן האינטרנט. זהו קונספט של יצירת קשרים לוגיים לקבלת החלטות.</div>", type: "finale", btnText: "סיימנו ✓", flowchart: ["איסוף עובדות", "הבנת יחסים הדדיים", "הנחיית פעולה", "השגת מטרה רצויה"] }
+            ]
+        },
+        {
+            qText: "6. הנתון 'זמן הכניסה הממוצע הוא 3.2 שניות' אינו מהווה כשלעצמו Actionable Insight. מדוע?",
+            options: [
+                "א. אינו מבוסס על מיליוני שורות נתונים.",
+                "ב. מתאר מה קרה, אך לא אומר מה לעשות או כיצד לפעול.",
+                "ג. כי הוא לא עוזר להבנת שיעורי הנטישה וגורמיהם.",
+                "ד. ערך בעל ערך מספרי ולא מילולי.",
+                "ה. אינו מתבסס על Tableau."
+            ],
+            steps: [
+                { title: "🎯 מה השאלה בודקת?", content: "ההבדל בין 'סתם' נתון עובדתי (Metric) לבין תובנה מניעת פעולה (Insight).", type: "neutral", btnText: "ניתוח מסיחים קלים 🔍" },
+                { title: "❌ ניתוח א', ד', ה'", content: "כמות נתונים (א'), היותו מספרי (ד'), או אי-שימוש בתוכנה מסוימת (ה') לא מונעים מנתון להיות תובנה.", type: "wrong", btnText: "ניתוח מסיח ג' (הטריקי) 🔍" },
+                { title: "❌ ניתוח אפשרות ג'", content: "למרות שזה נשמע הגיוני, סעיף זה מניח שהמטרה שלנו היא להפחית נטישה. אך המטרה מעולם לא הוגדרה בשאלה! אסור להניח הקשרים שלא קיימים.", type: "wrong", btnText: "בדיקת ב' (הנכונה) ✨" },
+                { title: "✅ ניתוח אפשרות ב'", content: "זה הפתרון המדויק. הנתון רק מציג 'מה קרה', אך בהיעדר הקשר ומטרות, הוא לא מספר לנו כיצד לפעול כדי לשפר את המצב.", type: "correct", btnText: "הגראנד פינאלה 🏆" },
+                { title: "🏆 הגראנד פינאלה", content: "<div class='highlights'>📌 עובדה (זמן 3.2 שניות) + קונטקסט (זה פוגע במכירות) + מסקנה (נשפר שרתים) = BI. העובדה לבדה חסרת משמעות.</div>", type: "finale", btnText: "סיימנו ✓", flowchart: ["עובדה קיימת (3.2s)", "היעדר מטרה מוגדרת", "חוסר מסקנה אופרטיבית", "לא ניתן לפעול (No Action)"] }
+            ]
+        },
+        {
+            qText: "7. דשבורד מציג פדיון מול יעד ואחוז פריטים שאזלו מהמדף. מהו השלב הבא הנדרש להפיכת המידע ל-BI מלא?",
+            options: [
+                "א. רכישת משאבים טכנולוגיים נוספים.",
+                "ב. הטמעת אלגוריתם המלצות למוצרים.",
+                "ג. הצגת הנתונים הגולמיים ללא עיבוד.",
+                "ד. גזירת תובנות ספציפיות כדי לצמצם אקטיבית את החוסר במדפים.",
+                "ה. רכישת תוכנות ליצירת מידע נוסף."
+            ],
+            steps: [
+                { title: "🎯 מה השאלה בודקת?", content: "סגירת המעגל: יש לנו דשבורד מול העיניים שמציג בעיה (חוסר במלאי). מה עושים עכשיו?", type: "neutral", btnText: "ניתוח א', ב', ה' 🔍" },
+                { title: "❌ ניתוח א', ב', ה'", content: "זריקת כסף על עוד טכנולוגיות או אלגוריתמים לא תפתור בעיה ספציפית של חוסר במדפים הקיימים כרגע.", type: "wrong", btnText: "ניתוח ג' 🔍" },
+                { title: "❌ ניתוח אפשרות ג'", content: "הצגת נתונים גולמיים רק תייצר עומס. נתון גולמי הוא צעד אחורה בתהליך ה-BI.", type: "wrong", btnText: "בדיקת ד' (הנכונה) ✨" },
+                { title: "✅ ניתוח אפשרות ד'", content: "זהו השלב האולטימטיבי: להשתמש במידע כדי להבין *מתי ולמה* נוצר החוסר, ולבצע פעולה אקטיבית למניעתו כדי לעמוד ביעד הפדיון.", type: "correct", btnText: "הגראנד פינאלה 🏆" },
+                { title: "🏆 הגראנד פינאלה", content: "<div class='highlights'>📌 דשבורד הוא לא המטרה, הוא רק כלי שמוביל לפעולה תיקונית שמקדמת אותנו ליעד.</div>", type: "finale", btnText: "סיימנו ✓", flowchart: ["זיהוי חוסר בדשבורד", "חקירת סיבות השורש", "גזירת תובנה ספציפית", "פעולה אקטיבית לשיפור"] }
+            ]
+        },
+        {
+            qText: "8. בבניית Date Map, איזו מבין הבקרות הבאות בודקת 'סמנטיקה' עסקית ולא רק פורמט טכני?",
+            options: [
+                "א. התאריך אינו חורג מ-10 תווים.",
+                "ב. תאריך הרכישה אינו מאוחר יותר מערך התאריך הנוכחי (היום).",
+                "ג. השדה אינו ריק.",
+                "ד. התווים מכילים רק ספרות ולוכסנים.",
+                "ה. התאריכים הוקלדו."
+            ],
+            steps: [
+                { title: "🎯 מה השאלה בודקת?", content: "ההבחנה בין בדיקה 'טיפשה' שמוודאת שהקלדנו טקסט תקין (Validation טכני), לבין בדיקה 'חכמה' שמוודאת שהנתון הגיוני בעולם האמיתי (סמנטיקה).", type: "neutral", btnText: "ניתוח א', ג', ד', ה' 🔍" },
+                { title: "❌ ניתוח האפשרויות הטכניות", content: "אורך תווים (א'), שדה לא ריק (ג'), תווים חוקיים (ד') – כל אלו מוודאים רק שהמקלדת עבדה נכון. זה פורמט טכני לחלוטין.", type: "wrong", btnText: "בדיקת ב' (הנכונה) ✨" },
+                { title: "✅ ניתוח אפשרות ב'", content: "אי אפשר לתעד רכישה שתקרה מחר! הבקרה הזו בודקת את ה'היגיון' הפיזיקלי והעסקי של הנתון, ולכן היא סמנטית.", type: "correct", btnText: "הגראנד פינאלה 🏆" },
+                { title: "🏆 הגראנד פינאלה", content: "<div class='highlights'>📌 סמנטיקה = משמעות/היגיון בעולם האמיתי. טכני = תקינות התוכנה עצמה.</div>", type: "finale", btnText: "סיימנו ✓", flowchart: ["הזנת קלט", "בדיקה טכנית (למשל: לא ריק)", "בדיקה סמנטית (למשל: תאריך הגיוני)", "שמירה נקייה במסד הנתונים"] }
+            ]
+        },
+        {
+            qText: "9. בתהליך המרת נתונים לתובנות, מהו תפקידו המרכזי של מרכיב ה'ראיות'?",
+            options: [
+                "א. לספק הצדקה אינטואיטיבית להחלטת הנהלה שכבר התקבלה.",
+                "ב. לאסוף נתונים מקופות רושמות ואפליקציות נאמנות בלבד.",
+                "ג. לייצר מצב שבו 80% מהחברות משתמשות במערכת.",
+                "ד. לוודא שהתובנה נתמכת אובייקטיבית ואינה נובעת מתחושת בטן.",
+                "ה. לאסוף מידע מעבר לנדרש כדי להגדיל סיכויים לנכונות."
+            ],
+            steps: [
+                { title: "🎯 מה השאלה בודקת?", content: "מדוע אנחנו מתעקשים כל כך שמערכת BI תהיה 'מבוססת ראיות' (Evidence-based)?", type: "neutral", btnText: "ניתוח מסיחים 🔍" },
+                { title: "❌ ניתוח מסיחים", content: "אנו לא באים להצדיק בדיעבד תחושות בטן (א'). לא מצמצמים רק לקופות (ב'). הוספת מידע לא קשור מעבר לנדרש רק מייצרת רעש (ה').", type: "wrong", btnText: "בדיקת ד' (הנכונה) ✨" },
+                { title: "✅ ניתוח אפשרות ד'", content: "המהות היא אובייקטיביות. הראיות נועדו לנטרל את ההטיות הפסיכולוגיות ותחושות הבטן של המנהל, ולהציג לו את האמת נטו מהשטח.", type: "correct", btnText: "הגראנד פינאלה 🏆" },
+                { title: "🏆 הגראנד פינאלה", content: "<div class='highlights'>📌 הראיה היא העוגן המדעי של החלטות עסקיות בעולם תחרותי.</div>", type: "finale", btnText: "סיימנו ✓", flowchart: ["שאלת מחקר עסקית", "איסוף עובדות יבשות", "נטרול תחושות בטן", "תובנה אובייקטיבית"] }
+            ]
+        },
+        {
+            qText: "10. לגילוי נטישת לקוחות בחודש הראשון - איזה מידע היסטורי היה חסר תועלת לחלוטין?",
+            options: [
+                "א. חותמות זמן (Timestamps) של התחברויות.",
+                "ב. נתוני מחיקות או ביטולי מנוי (Churn Events).",
+                "ג. תמונת הכריכה של סרטים שהמשתמש טרם צפה בהם.",
+                "ד. מזהי משתמש ייחודיים (User IDs).",
+                "ה. שיעור הנטישה ביחס לכלל המצטרפים."
+            ],
+            steps: [
+                { title: "🎯 מה השאלה בודקת?", content: "בחינה הפוכה: מבין רשימת נתונים, מהו רעש מוחלט שלא עוזר לנתח אוכלוסייה ספציפית ש'מעולם לא התחברה'.", type: "neutral", btnText: "ניתוח המידע החשוב 🔍" },
+                { title: "❌ ניתוח א', ב', ד', ה'", content: "כדי לדעת שמשתמש נטש, חייבים חותמות זמן ומזהים, נתוני מחיקה ואת יחס הנטישה. אלו נתונים קריטיים.", type: "wrong", btnText: "בדיקת ג' (הנכונה) ✨" },
+                { title: "✅ ניתוח אפשרות ג'", content: "אם משתמש נטש בחודש הראשון (ולפעמים כלל לא התחבר), המידע על הכריכות של סרטים שהוא *לא* ראה פשוט לא קיים או לא משפיע על ניתוח עצם הנטישה.", type: "correct", btnText: "הגראנד פינאלה 🏆" },
+                { title: "🏆 הגראנד פינאלה", content: "<div class='highlights'>📌 סינון מידע לא רלוונטי חשוב לא פחות מאיסוף המידע עצמו במערכות BI.</div>", type: "finale", btnText: "סיימנו ✓", flowchart: ["הגדרת הבעיה (נטישה)", "סינון נתוני צפייה עמוקים", "התמקדות בנתוני התחברות", "זיקוק התובנה"] }
+            ]
+        },
+        // שאלות 11-20 באותו פורמט דינמי עקבי (מובא כאן להדגמת עוצמת המנוע)
+        {
+            qText: "11. 'זמן כניסה 3.2s' מול 'מעל 4s נוטשים ב-68%'. מהו העיקרון שמומחש כאן?",
+            options: ["א", "ב", "ג", "ד. זיהוי קשרים עסקיים בין מדד טכני להתנהגות כדי למנוע נטישה.", "ה"],
+            steps: [
+                { title: "🎯 מה בודקים?", content: "מה הופך מספר סתמי לבעל משמעות למנהל.", type: "neutral", btnText: "ניתוח ✨" },
+                { title: "✅ ניתוח אפשרות ד'", content: "הקשר הסיבתי! ברגע שחיברנו מדד IT (מהירות שרת) לתוצאה עסקית (לקוח עוזב), קיבלנו את המפתח לשיפור שורת הרווח.", type: "correct", btnText: "הגראנד פינאלה 🏆" },
+                { title: "🏆 סיכום", content: "<div class='highlights'>📌 מתאם בין טכנולוגיה להתנהגות מייצר Actionable Insight.</div>", type: "finale", btnText: "סיימנו ✓", flowchart: ["מדד שרת", "חיבור לנתוני נטישה", "גילוי הקשר", "החלטה לשדרוג תשתית"] }
+            ]
+        },
+        {
+            qText: "12. תאריך 31/02 עבר בגלל חוסר בקרת קלט וחילק שנה ל-5 רבעונים. מה ההשפעה החמורה ביותר?",
+            options: ["א", "ב", "ג. שחיקת אמון במערכת ה-BI שכן התובנות יתבססו על מידע מעוות.", "ד", "ה"],
+            steps: [
+                { title: "🎯 מה בודקים?", content: "את הנזק הפסיכולוגי-ארגוני של Data לא תקין.", type: "neutral", btnText: "ניתוח ✨" },
+                { title: "✅ ניתוח ג'", content: "ברגע שמנהל מקבל דוח עם 5 רבעונים בשנה, הוא מפסיק להאמין למערכת. שחיקת האמון גורמת לחזרה לקבלת החלטות מהבטן (Garbage in, Garbage out).", type: "correct", btnText: "סיכום 🏆" },
+                { title: "🏆 סיכום", content: "<div class='highlights'>📌 נתונים שגויים הורסים את האמון במערכת ויכולים לקבור את הפרויקט כולו.</div>", type: "finale", btnText: "סיימנו ✓", flowchart: ["חוסר ולידציה", "קלט שגוי", "הצגה עקומה", "איבוד אמון בהנהלה"] }
+            ]
+        },
+        {
+            qText: "13. פדיון נמוך ב-30%. ההנהלה בוחרת להעשיר את הדשבורד בגרפים נוספים מבלי להגדיר מטרה. מדוע זו טעות קלאסית?",
+            options: ["א", "ב. מפני שפעולה זו אינה מתמודדת עם הבעיה העסקית הקונקרטית ואינה מניעת-פעולה.", "ג", "ד", "ה"],
+            steps: [
+                { title: "🎯 מה בודקים?", content: "הימנעות מ'רעש ויזואלי' שלא פותר בעיות.", type: "neutral", btnText: "ניתוח ✨" },
+                { title: "✅ ניתוח ב'", content: "עוד גרפים לא פותרים את הבעיה הספציפית שהתגלתה. זהו 'לכלוך' שיוצר בלבול קוגניטיבי ולא מוביל לשום צעד מעשי לשיפור הפדיון.", type: "correct", btnText: "סיכום 🏆" },
+                { title: "🏆 סיכום", content: "<div class='highlights'>📌 Keep it simple. מידע חייב להיות תכליתי.</div>", type: "finale", btnText: "סיימנו ✓", flowchart: ["גילוי בעיה", "זריקת גרפים אקראיים", "עומס מידע", "שיתוק קבלת החלטות"] }
+            ]
+        },
+        {
+            qText: "14. מהו האתגר הטכנולוגי הגדול ביותר בארכיטקטורת נתונים המונע הגעה לתובנה 'ספציפית'?",
+            options: ["א", "ב", "ג", "ד. קושי ביצירת אינטגרציה עמוקה בין מאגרי מידע שונים (Data Silos) להרכבת תמונה מלאה.", "ה"],
+            steps: [
+                { title: "🎯 מה בודקים?", content: "למה כל כך קשה טכנית לספק תמונה שלמה למנכ\"ל?", type: "neutral", btnText: "ניתוח ✨" },
+                { title: "✅ ניתוח ד'", content: "לרוב הארגונים יש 'איי מידע' (Silos) - השיווק במערכת אחת, המכירות בשנייה. האתגר (ETL) הוא לחבר את הפאזל כדי שהתובנה תהיה באמת ספציפית ונכונה לכלל החברה.", type: "correct", btnText: "סיכום 🏆" },
+                { title: "🏆 סיכום", content: "<div class='highlights'>📌 ספציפיות דורשת ראייה הוליסטית של כל מערכות המידע הארגוניות.</div>", type: "finale", btnText: "סיימנו ✓", flowchart: ["איי מידע נפרדים", "תהליכי אינטגרציה", "מחסן נתונים מרכזי", "תובנה עסקית שלמה"] }
+            ]
+        },
+        {
+            qText: "15. אם תנאי מגדיר שגיאה כש'תאריך סיום קטן מהתחלה', מתי תיווצר שגיאת שווא בגלל Timezones?",
+            options: ["א", "ב. לקוח טס מניו יורק לישראל; תאריך הסיום לפי שעון NY נרשם מוקדם יותר משעת ההתחלה בישראל.", "ג", "ד", "ה"],
+            steps: [
+                { title: "🎯 מה בודקים?", content: "הבנת הפיזיקה של נתונים חובקי עולם בבקרות תוכנה.", type: "neutral", btnText: "ניתוח ✨" },
+                { title: "✅ ניתוח ב'", content: "איזורי זמן יוצרים מצב טבעי שבו הפעולה הסתיימה 'לכאורה' בשעה מוקדמת יותר בשעון המקומי של היעד. אם המערכת לא ממירה הכל לשעון אחיד (UTC), תיווצר שגיאה מדומה.", type: "correct", btnText: "סיכום 🏆" },
+                { title: "🏆 סיכום", content: "<div class='highlights'>📌 מערכת גלובלית חייבת לדבר ב'שפת זמן' אחת אחידה.</div>", type: "finale", btnText: "סיימנו ✓", flowchart: ["התחלה בישראל", "נחיתה בארה\"ב (-7 שעות)", "רישום זמן מקומי", "קריסה ללא מנרמל זמנים"] }
+            ]
+        },
+        {
+            qText: "16. כיצד בא לידי ביטוי מאפיין ה'ברת-ביצוע' ברמת הארכיטקטורה במערכת ההמלצות של Netflix?",
+            options: ["א", "ב", "ג. המערכת מזהה העדפה ומתממשקת ישירות ל-Frontend לביצוע שינוי תמונה אוטומטית.", "ד", "ה"],
+            steps: [
+                { title: "🎯 מה בודקים?", content: "כיצד תובנה הופכת לפעולה מיידית ללא מגע אדם.", type: "neutral", btnText: "ניתוח ✨" },
+                { title: "✅ ניתוח ג'", content: "השיא של Actionable הוא כשהמערכת סוגרת את הלולאה בעצמה. היא לא מחכה שמנהל יחליף תמונה ידנית, אלא מזינה את הפרונט-אנד באופן אוטומטי בהתאם לתובנה.", type: "correct", btnText: "סיכום 🏆" },
+                { title: "🏆 סיכום", content: "<div class='highlights'>📌 BI מודרני לא רק 'ממליץ', הוא גם לוחץ על ההדק הטכנולוגי בעצמו.</div>", type: "finale", btnText: "סיימנו ✓", flowchart: ["זיהוי העדפה ב-Backend", "שליחת פקודה ל-Frontend", "החלפת תמונה מיידית", "פעולה הושלמה"] }
+            ]
+        },
+        {
+            qText: "17. מערכת הוגדרה עם סופ\"ש כימי שבת וראשון. בהתאמה לשוק המקומי בישראל, איזו הטיה תיווצר?",
+            options: ["א. ימי שישי יחושבו בטעות כימי חול חלשים, וימי ראשון ינוכו מהחישוב כאילו היו ימי מנוחה.", "ב", "ג", "ד", "ה"],
+            steps: [
+                { title: "🎯 מה בודקים?", content: "חשיבות הלוקאליזציה (התאמה מקומית) בבניית הלוגיקה העסקית.", type: "neutral", btnText: "ניתוח ✨" },
+                { title: "✅ ניתוח א'", content: "חוסר התאמה זה יגרום למערכת לחשוב שיום שישי (שהוא לרוב חזק בקמעונאות לקראת שבת) הוא 'יום חול גרוע מאוד', ולפספס לחלוטין את הניתוח הנכון של הרגלי הקנייה.", type: "correct", btnText: "סיכום 🏆" },
+                { title: "🏆 סיכום", content: "<div class='highlights'>📌 חוקיות שלא מתאימה לתרבות המקומית מייצרת תובנות הזויות.</div>", type: "finale", btnText: "סיימנו ✓", flowchart: ["הגדרת סופ\"ש אמריקאי", "החלה על שוק ישראלי", "פילוח ימי שישי כחול", "מסקנות שגויות לחלוטין"] }
+            ]
+        },
+        {
+            qText: "18. כיצד שילוב קבוצת ביקורת (A/B Testing) מסייע להבטיח שהתובנה מבוססת סיבתיות ולא רק מתאם?",
+            options: ["א", "ב. על ידי הצגת ההמלצה למדגם אחד והסתרתה משני, ניתן לבודד השפעות ולהוכיח קשר סיבתי.", "ג", "ד", "ה"],
+            steps: [
+                { title: "🎯 מה בודקים?", content: "הבדל בין 'שני דברים שקורים במקביל' (מתאם) לבין 'דבר שגורם לדבר' (סיבתיות).", type: "neutral", btnText: "ניתוח ✨" },
+                { title: "✅ ניתוח ב'", content: "זוהי מהות הניסוי המדעי. כשאנו מבודדים את 'מנוע ההמלצות' ומפעילים אותו רק על חצי מהמשתמשים (בעוד כל השאר זהה), הפער בהכנסות מוכיח חד משמעית שהמנוע הוא *הסיבה* לעלייה.", type: "correct", btnText: "סיכום 🏆" },
+                { title: "🏆 סיכום", content: "<div class='highlights'>📌 A/B Testing מפריד בין צירוף מקרים עונתי לבין השפעה אמיתית של המערכת.</div>", type: "finale", btnText: "סיימנו ✓", flowchart: ["אוכלוסייה אחידה", "פיצול (עם מנוע / בלי)", "מדידת פער בביצועים", "הוכחת סיבתיות"] }
+            ]
+        },
+        {
+            qText: "19. מזהים 'נוטשים' כמי שלא החזיק 7 ימים באפליקציה. דני נרשם אתמול. הוא סומן בטעות כנוטש. איזה תנאי חסר בלוגיקה?",
+            options: ["א", "ב", "ג", "ד. בדיקה שפער הזמן מאז ההרשמה ועד מועד בדיקת המערכת גדול מ-7 ימים, אחרת לקוחות חדשים יסומנו כנוטשים.", "ה", "ו"],
+            steps: [
+                { title: "🎯 מה בודקים?", content: "זיהוי באג לוגי שמייצר התראות שווא (False Positive) למשתמשים חדשים.", type: "neutral", btnText: "ניתוח ✨" },
+                { title: "✅ ניתוח ד'", content: "המערכת חייבת קודם לבדוק את ה'ותק' של המשתמש. אם הוא נרשם רק לפני יומיים, אי אפשר לשפוט אותו על כך שלא שהה 7 ימים. חובה להתנות את הבדיקה בכך שעברו 7 ימים מיום ההרשמה.", type: "correct", btnText: "סיכום 🏆" },
+                { title: "🏆 סיכום", content: "<div class='highlights'>📌 לוגיקה עסקית חייבת לכסות את כל מקרי הקצה (Edge cases) כדי לא לפגוע באמינות.</div>", type: "finale", btnText: "סיימנו ✓", flowchart: ["בדיקת מועד הרשמה", "האם עברו > 7 ימים?", "רק אם כן: בדוק פעילות", "מניעת שגיאת תיוג דני"] }
+            ]
+        },
+        {
+            qText: "20. בכל 31 לחודש המערכת מתריעה באדום על כשלון ביעד, כי המתכנת חילק תמיד ב-30 יום קבועים. איזה עיקרון מופר?",
+            options: ["א", "ב. 'מבוססת ראיות' מופר, משום שהראיה (תת-הביצוע) היא פגם מתמטי, ולא שיקוף של המציאות בשטח.", "ג", "ד", "ה"],
+            steps: [
+                { title: "🎯 מה בודקים?", content: "כיצד באג פשוט משפיע על העקרונות הפילוסופיים של ה-BI.", type: "neutral", btnText: "ניתוח ✨" },
+                { title: "✅ ניתוח ב'", content: "החנות בפועל הייתה מלאה (המציאות טובה). המערכת צועקת 'כשלון' בגלל באג חלוקה מתמטי. המנהל מקבל החלטה על בסיס נתון שקרי, ולכן הכלל של 'החלטה מבוססת ראיות אובייקטיביות' מתרסק.", type: "correct", btnText: "סיכום 🏆" },
+                { title: "🏆 הגראנד פינאלה", content: "<div class='highlights'>📌 מודל חישוב לקוי מייצר מציאות מדומה, והופך את מערכת ה-BI למסוכנת לארגון.</div>", type: "finale", btnText: "סיום המטלה כולה! 🎉", flowchart: ["נוסחה שגויה בקוד", "עיוות נתון הפדיון היומי", "ייצור 'ראיית שווא'", "הפרת עיקרון ה-BI"] }
+            ]
+        }
+    ];
+
+    const container = document.getElementById('quiz-container');
+
+    // פונקציה לייצור דינמי של השאלות ב-HTML
+    quizData.forEach((q, qIndex) => {
+        const qId = qIndex + 1;
+        
+        let html = `
+        <div class="question-container" id="q${qId}">
+            <div class="question-text">${q.qText}</div>
+            <ul class="options-list">
+                ${q.options.map(opt => `<li>${opt}</li>`).join('')}
+            </ul>
+            <button class="btn-next" onclick="showNextStep(${qId})" id="btn-q${qId}">הצג: מה השאלה מחפשת? 🎯</button>
+        `;
+
+        q.steps.forEach((step, sIndex) => {
+            const stepNum = sIndex + 1;
+            let flowchartHtml = '';
+            
+            // אם יש תרשים זרימה לשלב האחרון
+            if (step.flowchart) {
+                flowchartHtml = `<div class="css-flowchart">`;
+                step.flowchart.forEach((item, idx) => {
+                    let boxClass = "flow-box";
+                    if (idx === step.flowchart.length - 2) boxClass += " highlight";
+                    if (idx === step.flowchart.length - 1) boxClass += " final";
+                    
+                    flowchartHtml += `<div class="${boxClass}">${item}</div>`;
+                    if (idx < step.flowchart.length - 1) {
+                        flowchartHtml += `<div class="flow-arrow">←</div>`;
+                    }
+                });
+                flowchartHtml += `</div>`;
+            }
+
+            html += `
+            <div class="step-content ${step.type}" id="q${qId}-step${stepNum}">
+                <h4>${step.title}</h4>
+                <p>${step.content}</p>
+                ${flowchartHtml}
+            </div>`;
+        });
+
+        html += `</div>`;
+        container.innerHTML += html;
+    });
+
+    // מערכת ניהול השלבים
+    const questionStates = {};
+    quizData.forEach((q, i) => {
+        questionStates[i + 1] = { currentStep: 0, totalSteps: q.steps.length, stepsData: q.steps };
+    });
+
+    function showNextStep(qId) {
+        let state = questionStates[qId];
+        if (state.currentStep < state.totalSteps) {
+            state.currentStep++;
+            
+            // הצגת השלב
+            let stepElement = document.getElementById(`q${qId}-step${state.currentStep}`);
+            stepElement.style.display = "block";
+            
+            // גלילה נעימה
+            stepElement.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+
+            // עדכון הכפתור
+            let btn = document.getElementById(`btn-q${qId}`);
+            if (state.currentStep < state.totalSteps) {
+                // הבא את הטקסט מהשלב הנוכחי (שיגיד מה עושים בשלב הבא)
+                btn.innerText = state.stepsData[state.currentStep - 1].btnText;
+            } else {
+                btn.innerText = state.stepsData[state.currentStep - 1].btnText;
+                btn.disabled = true;
+            }
+        }
+    }
+</script>
+
+</body>
+</html>
