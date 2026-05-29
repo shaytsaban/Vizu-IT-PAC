@@ -1,0 +1,483 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>מדריך מקיף: איחוד טבלאות (Joins) - תיאוריה ותרגול</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;600;700;800&display=swap');
+        body {
+            font-family: 'Heebo', sans-serif;
+            background-color: #f3f4f6;
+        }
+        .solution-content {
+            display: none;
+            transition: all 0.3s ease-in-out;
+        }
+        .solution-content.active {
+            display: block;
+        }
+        .venn-svg {
+            max-width: 250px;
+            margin: 0 auto;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 1rem;
+            background-color: white;
+            box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1);
+        }
+        th, td {
+            border: 1px solid #e5e7eb;
+            padding: 0.5rem 1rem;
+            text-align: right;
+        }
+        th {
+            background-color: #f9fafb;
+            font-weight: 600;
+            color: #374151;
+        }
+        .null-val {
+            color: #ef4444;
+            font-style: italic;
+            font-weight: bold;
+        }
+        .match-row {
+            background-color: #ecfdf5;
+        }
+    </style>
+</head>
+<body class="text-gray-800 leading-relaxed">
+
+    <div class="max-w-5xl mx-auto px-4 py-12">
+        
+        <!-- Header -->
+        <header class="text-center mb-16 bg-white p-8 rounded-2xl shadow-sm border-t-4 border-blue-600">
+            <h1 class="text-4xl md:text-5xl font-extrabold text-blue-900 mb-4">איחוד טבלאות (Joins)</h1>
+            <h2 class="text-2xl text-gray-600 mb-6">ממסד נתונים ל-Tableau: תיאוריה, המחשות ופתרון מבחנים</h2>
+            <p class="text-lg text-gray-500 max-w-3xl mx-auto">
+                מסמך זה מהווה סיכום מקיף להרצאה. הוא כולל את כל הבסיס התיאורטי הנדרש להבנת פעולות איחוד נתונים, המחשות גרפיות וטבלאיות, ולסיום - סדנת תרגול הכוללת 10 שאלות בסגנון מבחן עם פתרונות מפורטים ("פיתה-רון").
+            </p>
+        </header>
+
+        <!-- Section 1: Theory -->
+        <section class="bg-white p-8 rounded-2xl shadow-sm mb-12">
+            <h2 class="text-3xl font-bold text-gray-800 mb-6 border-b-2 border-blue-100 pb-2">חלק א': דגשים מרכזיים לגבי Join</h2>
+            
+            <div class="space-y-4 text-lg">
+                <p>
+                    <strong class="text-blue-700">מה זה בעצם?</strong> זהו כלי שמאפשר לאחד טבלאות שונות לטבלה אחת. התנאי ההכרחי לכך הוא שיהיה <strong>שדה מקשר (מזהה)</strong> ביניהן (למשל חיבור בין טבלת הזמנות לטבלת לקוחות יתאפשר רק אם שתי הטבלאות כוללות שדה מזהה של "מספר לקוח"). השדה הזה הוא ה"דבק" שלנו.
+                </p>
+                <p>
+                    <strong class="text-blue-700">למה אנחנו צריכים את זה ב-Tableau?</strong> הצורך לבצע Join עולה מכך שיצירת התרשימים תבוצע בצורה הנוחה והנכונה ביותר אם תהיה לנו טבלה אחת שטוחה ורחבה שכוללת את כל השדות הרלוונטיים, על מנת שנוכל לגרור אותם למדפים המתאימים (Rows/Columns/Marks) ללא מגבלות של מקורות נתונים נפרדים.
+                </p>
+                <div class="bg-blue-50 p-6 rounded-lg border border-blue-100 mt-6">
+                    <h3 class="font-bold text-xl mb-3 text-blue-900">הביצוע הטכני ב-Tableau:</h3>
+                    <ul class="list-decimal list-inside space-y-2">
+                        <li>בלשונית <code>Data Source</code>, גוררים את הטבלה הראשונה לאזור התווית הנתונים (הקנבס המרכזי).</li>
+                        <li><strong>לוחצים דאבל קליק</strong> על הטבלה שגררנו (שלב קריטי כדי להיכנס לשכבה הפיזית של הנתונים). רק אז נפתח מסך ה-Join.</li>
+                        <li>גוררים למסך זה טבלאות נוספות. Tableau ינסה לזהות אוטומטית שדות מקשרים ויבצע כברירת מחדל <strong>Inner Join</strong>.</li>
+                        <li>לוחצים על סמל האיחוד שנוצר (העיגולים) כדי לשנות את סוג ה-Join או את השדות המקשרים.</li>
+                        <li>בסיום, סוגרים ב-X וחוזרים ל-Sheets להתחיל לעבוד.</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 2: Visualizations -->
+        <section class="mb-12">
+            <h2 class="text-3xl font-bold text-gray-800 mb-8 px-4">חלק ב': סוגי Joins והמחשות</h2>
+            <p class="px-4 text-lg mb-8">כדי להבין כיצד הנתונים מתנהגים, נשתמש בשתי טבלאות דוגמה קטנות: <br>
+            <strong>טבלה שמאלית (לקוחות):</strong> מכילה מס' לקוח ושם.<br>
+            <strong>טבלה ימנית (הזמנות):</strong> מכילה מס' הזמנה, מס' לקוח (השדה המקשר) וסכום.</p>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <!-- Data Source Tables (Reference) -->
+                <div class="bg-gray-50 p-6 rounded-xl border border-gray-200 col-span-1 md:col-span-2 flex flex-col md:flex-row gap-8">
+                    <div class="flex-1">
+                        <h4 class="font-bold text-center mb-2 bg-blue-100 py-1 rounded">טבלה שמאלית: לקוחות</h4>
+                        <table>
+                            <tr><th>מס' לקוח (ID)</th><th>שם לקוח</th></tr>
+                            <tr><td>1</td><td>אבי</td></tr>
+                            <tr><td>2</td><td>בני</td></tr>
+                            <tr><td>3</td><td>גדי (ללא הזמנות)</td></tr>
+                        </table>
+                    </div>
+                    <div class="flex-1">
+                        <h4 class="font-bold text-center mb-2 bg-green-100 py-1 rounded">טבלה ימנית: הזמנות</h4>
+                        <table>
+                            <tr><th>מס' הזמנה</th><th>מס' לקוח (ID)</th><th>סכום</th></tr>
+                            <tr><td>A100</td><td>1</td><td>₪50</td></tr>
+                            <tr><td>A101</td><td>2</td><td>₪75</td></tr>
+                            <tr><td>A102</td><td>99 (לקוח מחוק)</td><td>₪200</td></tr>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Inner Join -->
+                <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
+                    <h3 class="text-2xl font-bold text-center mb-4">Inner Join (חיתוך)</h3>
+                    <div class="venn-svg">
+                        <svg viewBox="0 0 200 120" xmlns="http://www.w3.org/2000/svg">
+                            <circle cx="70" cy="60" r="50" fill="#e5e7eb" stroke="#9ca3af" stroke-width="2"/>
+                            <circle cx="130" cy="60" r="50" fill="#e5e7eb" stroke="#9ca3af" stroke-width="2"/>
+                            <path d="M 100 20 A 50 50 0 0 0 100 100 A 50 50 0 0 0 100 20 Z" fill="#3b82f6"/>
+                            <text x="45" y="65" font-size="12" fill="#6b7280">שמאל</text>
+                            <text x="145" y="65" font-size="12" fill="#6b7280">ימין</text>
+                            <text x="92" y="65" font-size="12" fill="white" font-weight="bold">Inner</text>
+                        </svg>
+                    </div>
+                    <p class="text-sm mt-4 mb-4"><strong>הסבר:</strong> מביא <u>רק</u> רשומות שיש להן התאמה בשתי הטבלאות. רשומות ללא התאמה (גדי, או לקוח 99) נמחקות מהתוצאה הסופית.</p>
+                    <table class="text-sm">
+                        <tr><th>ID</th><th>שם</th><th>הזמנה</th><th>סכום</th></tr>
+                        <tr class="match-row"><td>1</td><td>אבי</td><td>A100</td><td>₪50</td></tr>
+                        <tr class="match-row"><td>2</td><td>בני</td><td>A101</td><td>₪75</td></tr>
+                    </table>
+                </div>
+
+                <!-- Left Join -->
+                <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
+                    <h3 class="text-2xl font-bold text-center mb-4">Left (Outer) Join</h3>
+                    <div class="venn-svg">
+                        <svg viewBox="0 0 200 120" xmlns="http://www.w3.org/2000/svg">
+                            <circle cx="130" cy="60" r="50" fill="#e5e7eb" stroke="#9ca3af" stroke-width="2"/>
+                            <circle cx="70" cy="60" r="50" fill="#3b82f6" stroke="#2563eb" stroke-width="2"/>
+                            <path d="M 100 20 A 50 50 0 0 0 100 100 A 50 50 0 0 0 100 20 Z" fill="#3b82f6"/>
+                            <text x="45" y="65" font-size="12" fill="white" font-weight="bold">שמאל</text>
+                            <text x="145" y="65" font-size="12" fill="#6b7280">ימין</text>
+                        </svg>
+                    </div>
+                    <p class="text-sm mt-4 mb-4"><strong>הסבר:</strong> שומר את <u>כל</u> הרשומות מהטבלה השמאלית. אם יש התאמה בימין - מביא נתונים. אם אין - מציג Null בשדות של הטבלה הימנית.</p>
+                    <table class="text-sm">
+                        <tr><th>ID</th><th>שם</th><th>הזמנה</th><th>סכום</th></tr>
+                        <tr class="match-row"><td>1</td><td>אבי</td><td>A100</td><td>₪50</td></tr>
+                        <tr class="match-row"><td>2</td><td>בני</td><td>A101</td><td>₪75</td></tr>
+                        <tr><td>3</td><td>גדי</td><td class="null-val">Null</td><td class="null-val">Null</td></tr>
+                    </table>
+                </div>
+
+                <!-- Right Join -->
+                <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
+                    <h3 class="text-2xl font-bold text-center mb-4">Right (Outer) Join</h3>
+                    <div class="venn-svg">
+                        <svg viewBox="0 0 200 120" xmlns="http://www.w3.org/2000/svg">
+                            <circle cx="70" cy="60" r="50" fill="#e5e7eb" stroke="#9ca3af" stroke-width="2"/>
+                            <circle cx="130" cy="60" r="50" fill="#3b82f6" stroke="#2563eb" stroke-width="2"/>
+                            <path d="M 100 20 A 50 50 0 0 0 100 100 A 50 50 0 0 0 100 20 Z" fill="#3b82f6"/>
+                            <text x="45" y="65" font-size="12" fill="#6b7280">שמאל</text>
+                            <text x="145" y="65" font-size="12" fill="white" font-weight="bold">ימין</text>
+                        </svg>
+                    </div>
+                    <p class="text-sm mt-4 mb-4"><strong>הסבר:</strong> שומר את <u>כל</u> הרשומות מהטבלה הימנית. אם אין התאמה בשמאלית, יציג Null בשדות השמאליים (כמו בהזמנה A102 שלקוח 99 לא קיים).</p>
+                    <table class="text-sm">
+                        <tr><th>ID</th><th>שם</th><th>הזמנה</th><th>סכום</th></tr>
+                        <tr class="match-row"><td>1</td><td>אבי</td><td>A100</td><td>₪50</td></tr>
+                        <tr class="match-row"><td>2</td><td>בני</td><td>A101</td><td>₪75</td></tr>
+                        <tr><td class="null-val">Null</td><td class="null-val">Null</td><td>A102</td><td>₪200</td></tr>
+                    </table>
+                </div>
+
+                <!-- Full Outer Join -->
+                <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
+                    <h3 class="text-2xl font-bold text-center mb-4">Full Outer Join</h3>
+                    <div class="venn-svg">
+                        <svg viewBox="0 0 200 120" xmlns="http://www.w3.org/2000/svg">
+                            <circle cx="70" cy="60" r="50" fill="#3b82f6" stroke="#2563eb" stroke-width="2"/>
+                            <circle cx="130" cy="60" r="50" fill="#3b82f6" stroke="#2563eb" stroke-width="2"/>
+                            <text x="45" y="65" font-size="12" fill="white">שמאל</text>
+                            <text x="145" y="65" font-size="12" fill="white">ימין</text>
+                            <text x="90" y="65" font-size="12" fill="white" font-weight="bold">מלא</text>
+                        </svg>
+                    </div>
+                    <p class="text-sm mt-4 mb-4"><strong>הסבר:</strong> מביא את <u>הכל מהכל</u>. אף רשומה לא הולכת לאיבוד. איפה שיש חפיפה - יאוחד. איפה שחסר - יושלם ב-Null.</p>
+                    <table class="text-sm">
+                        <tr><th>ID (שמאל)</th><th>שם</th><th>הזמנה</th><th>סכום</th></tr>
+                        <tr class="match-row"><td>1</td><td>אבי</td><td>A100</td><td>₪50</td></tr>
+                        <tr class="match-row"><td>2</td><td>בני</td><td>A101</td><td>₪75</td></tr>
+                        <tr><td>3</td><td>גדי</td><td class="null-val">Null</td><td class="null-val">Null</td></tr>
+                        <tr><td class="null-val">Null</td><td class="null-val">Null</td><td>A102</td><td>₪200</td></tr>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 3: Quiz -->
+        <section>
+            <h2 class="text-3xl font-bold text-gray-800 mb-2 px-4">חלק ג': תרגול מסכם ממבחני עבר (וחדשים)</h2>
+            <p class="px-4 text-lg mb-8 text-gray-600">קראו את השאלות בעיון, נסו לענות בעצמכם, ולאחר מכן לחצו על "הצג את הפתרון של פיתה-רון" כדי לבדוק את עצמכם.</p>
+
+            <div class="space-y-6">
+
+                <!-- Q1 -->
+                <div class="bg-white p-6 rounded-xl shadow-md border-r-4 border-blue-500">
+                    <h3 class="text-xl font-bold mb-3">שאלה 1</h3>
+                    <p class="mb-4">לפניכם מספר טענות:</p>
+                    <ul class="list-none space-y-2 mb-4 pl-4">
+                        <li><strong>טענה 1:</strong> כלי ה-JOIN מאפשר לשלב מידע מטבלאות שונות לכדי טבלה מאוחדת.</li>
+                        <li><strong>טענה 2:</strong> כלי ה-JOIN דורש שימוש בשדות מזהים משותפים.</li>
+                        <li><strong>טענה 3:</strong> לעתים, שימוש בכלי ה-JOIN יוצר תוצר המעניק תמונה מקיפה ומלאה יותר של הנתונים.</li>
+                    </ul>
+                    <p class="font-semibold mb-2">הטענה / הטענות הנכונה / הנכונות:</p>
+                    <ol class="list-[hebrew] list-inside mb-4 space-y-1">
+                        <li>טענה 1 בלבד</li>
+                        <li>טענה 2 בלבד</li>
+                        <li>טענות 1 ו-2</li>
+                        <li>טענות 2 ו-3</li>
+                        <li>כל הטענות נכונות</li>
+                    </ol>
+                    <button onclick="toggleSolution('sol1')" class="bg-blue-100 hover:bg-blue-200 text-blue-800 font-semibold py-2 px-4 rounded transition">הצג את הפתרון של פיתה-רון 💡</button>
+                    <div id="sol1" class="solution-content mt-4 p-4 bg-gray-50 border border-gray-200 rounded-lg text-gray-700">
+                        <strong class="text-blue-900 block mb-2">פיתה-רון אומר:</strong>
+                        <p><strong>טענה 1</strong> – נכונה בהגדרה.</p>
+                        <p><strong>טענה 2</strong> – נכונה. ביצוע Join דורש שיהיה ״דבק״ רלוונטי לחיבור. הדבק הזה הוא שדה מזהה משותף בקרב הטבלאות שמחברים (כגון מספר לקוח).</p>
+                        <p><strong>טענה 3</strong> – נכונה. במובן זה ששימוש ב-Join מחבר את הנתונים יחד לטבלה אחת... מתקבלת תמונה מקיפה ומלאה יותר בהשוואה לשימוש בטבלאות הנפרדות, במיוחד לצרכים של יצירת תרשימים ב-Tableau.</p>
+                        <p class="font-bold mt-2">התשובה הנכונה: ה (כל הטענות נכונות).</p>
+                    </div>
+                </div>
+
+                <!-- Q2 -->
+                <div class="bg-white p-6 rounded-xl shadow-md border-r-4 border-blue-500">
+                    <h3 class="text-xl font-bold mb-3">שאלה 2</h3>
+                    <p class="mb-4 font-semibold">סמנו את הטענה הנכונה:</p>
+                    <ol class="list-[hebrew] list-inside mb-4 space-y-2">
+                        <li>ביצוע Join מסוג Full Outer גורם לכך שייכללו <u>רק</u> רשומות לגביהן אותר ערך מזהה רלוונטי בשתי הטבלאות המאוחדות.</li>
+                        <li>ביצוע Join מסוג Full Outer מבטיח שאם יושמטו רשומות, הן תהיינה רק מהטבלה הימנית, ולא מהשמאלית.</li>
+                        <li>ביצוע Join מסוג Full Outer יבטיח <u>שלא מושמטות רשומות</u> מהטבלאות ביניהן מבוצע האיחוד.</li>
+                        <li>ביצוע Join מסוג Full Outer שקול לביצוע Inner Join.</li>
+                        <li>כל יתר הטענות שגויות.</li>
+                    </ol>
+                    <button onclick="toggleSolution('sol2')" class="bg-blue-100 hover:bg-blue-200 text-blue-800 font-semibold py-2 px-4 rounded transition">הצג את הפתרון של פיתה-רון 💡</button>
+                    <div id="sol2" class="solution-content mt-4 p-4 bg-gray-50 border border-gray-200 rounded-lg text-gray-700">
+                        <strong class="text-blue-900 block mb-2">פיתה-רון אומר:</strong>
+                        <p>Outer Join מתייחס לצירוף טבלאות תוך הכללה מלאה של כל הרשומות משתיהן (ללא השמטה כלשהי של מידע). במקרה שבו לרשומה אין התאמה - יוצגו ערכי Null, אבל ערכים מושמטים לא יתקיימו לעולם.</p>
+                        <ul class="list-disc list-inside mt-2 space-y-1">
+                            <li>טענה א – שגויה (זה התיאור של Inner).</li>
+                            <li>טענה ב – שגויה (זה התיאור של Left).</li>
+                            <li>טענה ג – נכונה בהגדרה!</li>
+                            <li>טענה ד – שגויה לחלוטין.</li>
+                        </ul>
+                        <p class="font-bold mt-2">התשובה הנכונה: ג.</p>
+                    </div>
+                </div>
+
+                <!-- Q3 -->
+                <div class="bg-white p-6 rounded-xl shadow-md border-r-4 border-blue-500">
+                    <h3 class="text-xl font-bold mb-3">שאלה 3</h3>
+                    <p class="mb-4">לפניכם נתונים לגבי 2 טבלאות נפרדות הקיימות בקובץ Excel שקושר ל-Tableau:</p>
+                    
+                    <div class="flex gap-4 mb-4 text-sm justify-center max-w-lg mx-auto">
+                        <table class="w-1/2 text-center">
+                            <tr><th class="text-center">Employee ID</th><th class="text-center">Salary</th></tr>
+                            <tr><td>4</td><td>46537</td></tr>
+                            <tr><td>8</td><td>55545</td></tr>
+                            <tr><td>13</td><td>58780</td></tr>
+                            <tr><td>17</td><td>35995</td></tr>
+                            <tr><td>18</td><td>30999</td></tr>
+                            <tr><td>26</td><td>39121</td></tr>
+                            <tr><td>27</td><td>31901</td></tr>
+                            <tr class="bg-red-50"><td>29</td><td>46053</td></tr>
+                            <tr class="bg-red-50"><td>30</td><td>58071</td></tr>
+                            <tr class="bg-red-50"><td>33</td><td>51200</td></tr>
+                        </table>
+                        <table class="w-1/2 text-center">
+                            <tr><th class="text-center">Employee ID</th><th class="text-center">Address</th></tr>
+                            <tr><td>4</td><td>TA</td></tr>
+                            <tr><td>8</td><td>CS</td></tr>
+                            <tr><td>13</td><td>MK</td></tr>
+                            <tr><td>17</td><td>JD</td></tr>
+                            <tr><td>18</td><td>US</td></tr>
+                            <tr><td>26</td><td>VF</td></tr>
+                            <tr><td>27</td><td>LK</td></tr>
+                            <tr class="bg-red-50"><td class="null-val">Null</td><td>WQ</td></tr>
+                            <tr class="bg-red-50"><td class="null-val">Null</td><td>PI</td></tr>
+                            <tr class="bg-red-50"><td class="null-val">Null</td><td>AP</td></tr>
+                        </table>
+                    </div>
+
+                    <p class="mb-4">משתמש ביצע <strong>Outer Join</strong> בין שתי הטבלאות כשהשדה המזהה הוא <code>Employee ID</code>. מספר השורות בטבלה המאוחדת יהיה (לא כולל כותרות):</p>
+                    <ol class="list-[hebrew] list-inside mb-4 space-y-1">
+                        <li>13</li>
+                        <li>7</li>
+                        <li>10</li>
+                        <li>17</li>
+                        <li>כל יתר התשובות שגויות.</li>
+                    </ol>
+                    <button onclick="toggleSolution('sol3')" class="bg-blue-100 hover:bg-blue-200 text-blue-800 font-semibold py-2 px-4 rounded transition">הצג את הפתרון של פיתה-רון 💡</button>
+                    <div id="sol3" class="solution-content mt-4 p-4 bg-gray-50 border border-gray-200 rounded-lg text-gray-700">
+                        <strong class="text-blue-900 block mb-2">פיתה-רון אומר:</strong>
+                        <p>הדרך הנעימה לפתור שאלה זו היא פשוט לומר: בגין שורות שבהן יש Match מלא בשדה המזהה – ספציפית, 7 שורות הנתונים הראשונות בכל טבלה, תיווצרנה <strong>7 שורות</strong>.</p>
+                        <p>בגין השורות הנוספות (3 שורות אחרונות בשמאל עם ID 29,30,33 ו-3 שורות בימין עם ID Null) - בגינן אין התאמה. הואיל ומדובר ב-Outer Join ששומר הכל, נפתח 3 שורות נפרדות לטבלה הראשונה, ועוד 3 שורות נפרדות לטבלה השנייה.</p>
+                        <p>סך הכל מתמטית: <code>7 + 3 + 3 = 13</code>.</p>
+                        <p class="font-bold mt-2">התשובה הנכונה: א.</p>
+                    </div>
+                </div>
+
+                <!-- Q4 -->
+                <div class="bg-white p-6 rounded-xl shadow-md border-r-4 border-blue-500">
+                    <h3 class="text-xl font-bold mb-3">שאלה 4</h3>
+                    <p class="mb-4">בהתבסס על אותן הטבלאות מהשאלה הקודמת (שאלה 3):</p>
+                    <p class="mb-4">משתמש ביצע <strong>Inner Join</strong> בין שתי הטבלאות כשהשדה המזהה הוא <code>Employee ID</code> בשתי הטבלאות. מספר השורות בטבלה המאוחדת יהיה (לא כולל כותרות):</p>
+                    <ol class="list-[hebrew] list-inside mb-4 space-y-1">
+                        <li>7</li>
+                        <li>13</li>
+                        <li>12</li>
+                        <li>17</li>
+                        <li>כל יתר התשובות שגויות</li>
+                    </ol>
+                    <button onclick="toggleSolution('sol4')" class="bg-blue-100 hover:bg-blue-200 text-blue-800 font-semibold py-2 px-4 rounded transition">הצג את הפתרון של פיתה-רון 💡</button>
+                    <div id="sol4" class="solution-content mt-4 p-4 bg-gray-50 border border-gray-200 rounded-lg text-gray-700">
+                        <strong class="text-blue-900 block mb-2">פיתה-רון אומר:</strong>
+                        <p>כזכור, Inner Join מחייב התאמה מלאה בשדה המזהה בשתי הטבלאות כדי שהרשומה תשרוד את האיחוד. היעדר התאמה כזו מוביל להשמטה של הרשומה מהטבלה המאוחדת.</p>
+                        <p>במקרה שלנו, 3 השורות האחרונות בכל אחת מהטבלאות לא מאפשרות התאמה לפי Employee ID. לכן, אנו נשארים רק עם השורות בהן יש התאמה מלאה - אלו הן 7 השורות הראשונות בלבד.</p>
+                        <p class="font-bold mt-2">התשובה הנכונה: א.</p>
+                    </div>
+                </div>
+
+                <!-- Q5 (New) -->
+                <div class="bg-white p-6 rounded-xl shadow-md border-r-4 border-green-500">
+                    <span class="bg-green-100 text-green-800 text-xs font-bold px-2 py-1 rounded uppercase tracking-wider mb-2 inline-block">שאלה חדשה</span>
+                    <h3 class="text-xl font-bold mb-3">שאלה 5</h3>
+                    <p class="mb-4">ידוע כי טבלת "לקוחות" (השמאלית ב-Tableau) כוללת 100 רשומות ייחודיות של לקוחות. טבלת "תלונות ציבור" (הימנית) כוללת 20 רשומות, מתוכן רק 15 מקושרות ללקוחות קיימים בטבלה השמאלית (5 הנותרות הן תלונות אנונימיות ללא מזהה לקוח).</p>
+                    <p class="mb-4">המשתמש בחר לבצע <strong>Left Join</strong>. כמה שורות יופיעו בטבלה המאוחדת?</p>
+                    <ol class="list-[hebrew] list-inside mb-4 space-y-1">
+                        <li>15</li>
+                        <li>100</li>
+                        <li>105</li>
+                        <li>120</li>
+                        <li>לא ניתן לדעת מהנתונים.</li>
+                    </ol>
+                    <button onclick="toggleSolution('sol5')" class="bg-blue-100 hover:bg-blue-200 text-blue-800 font-semibold py-2 px-4 rounded transition">הצג את הפתרון של פיתה-רון 💡</button>
+                    <div id="sol5" class="solution-content mt-4 p-4 bg-gray-50 border border-gray-200 rounded-lg text-gray-700">
+                        <strong class="text-blue-900 block mb-2">פיתה-רון אומר:</strong>
+                        <p>בואו נפרק את זה. פעולת Left Join מבטיחה לנו שכל הרשומות מהטבלה השמאלית יישמרו. יש לנו 100 לקוחות בשמאל. כולם יהיו שם.</p>
+                        <p>עבור 15 מהם יש התאמה בימין (תלונות) - הנתונים יצורפו. עבור 85 הנותרים שאין להם תלונות - השדות מהטבלה הימנית יקבלו Null. ה-5 תלונות האנונימיות מהטבלה הימנית ייזרקו לפח כי אין להן לקוח מתאים משמאל וב-Left Join טבלה ימנית היא "האורחת" ולא "בעלת הבית".</p>
+                        <p>לכן, מספר השורות יישאר בדיוק כמספר השורות בטבלה השמאלית (בהנחה שאין ללקוח אחד מספר תלונות, וכאן לפי הניסוח מדובר ב-1:1).</p>
+                        <p class="font-bold mt-2">התשובה הנכונה: ב (100).</p>
+                    </div>
+                </div>
+
+                <!-- Q6 (New) -->
+                <div class="bg-white p-6 rounded-xl shadow-md border-r-4 border-green-500">
+                    <span class="bg-green-100 text-green-800 text-xs font-bold px-2 py-1 rounded uppercase tracking-wider mb-2 inline-block">שאלה חדשה</span>
+                    <h3 class="text-xl font-bold mb-3">שאלה 6</h3>
+                    <p class="mb-4">משתמש ב-Tableau גרר את טבלת "Sales" ראשונה (שמאל) ולאחר מכן את טבלת "Products" שנייה (ימין). הוא הגדיר <strong>Right Join</strong>.</p>
+                    <p class="mb-4">אילו הוא היה הופך את הסדר (גורר את Products ראשונה ואת Sales שנייה) ומגדיר <strong>Left Join</strong>, מה היה קורה לתוצאה המאוחדת הסופית?</p>
+                    <ol class="list-[hebrew] list-inside mb-4 space-y-1">
+                        <li>התוצאה תהיה שונה לחלוטין.</li>
+                        <li>התוצאה תהיה זהה לחלוטין מבחינת הרשומות שיוחזרו וערכיהן.</li>
+                        <li>התוצאה תציג שגיאת שדות מקשרים.</li>
+                        <li>זה תלוי אם מוגדר שדה מזהה מסוג Primary Key.</li>
+                        <li>ב-Tableau לא ניתן לגרור טבלאות בסדר הפוך.</li>
+                    </ol>
+                    <button onclick="toggleSolution('sol6')" class="bg-blue-100 hover:bg-blue-200 text-blue-800 font-semibold py-2 px-4 rounded transition">הצג את הפתרון של פיתה-רון 💡</button>
+                    <div id="sol6" class="solution-content mt-4 p-4 bg-gray-50 border border-gray-200 rounded-lg text-gray-700">
+                        <strong class="text-blue-900 block mb-2">פיתה-רון אומר:</strong>
+                        <p>שאלה קלאסית בהבנת הלוגיקה של הקבוצות! מתמטית, לבקש "את כל מה שיש ב-B (ימין) פלוס מה שתואם מ-A (שמאל)" (שזה Right Join), זה בדיוק אותו הדבר כמו להפוך את המיקומים ולבקש "את כל מה שיש ב-B (שמאל) פלוס מה שתואם מ-A (ימין)" (שזה Left Join).</p>
+                        <p>סדר העמודות במסך אולי ייראה אחרת, אבל מבחינת מאגר הנתונים שניצור – <strong>השורות והערכים יהיו זהים לחלוטין</strong>. כלים כמו Right Join נוצרו בעיקר מטעמי נוחות כדי לא לאלץ משתמשים למחוק ולגרור מחדש טבלאות אם טעו בסדר.</p>
+                        <p class="font-bold mt-2">התשובה הנכונה: ב.</p>
+                    </div>
+                </div>
+
+                <!-- Q7 (New) -->
+                <div class="bg-white p-6 rounded-xl shadow-md border-r-4 border-green-500">
+                    <span class="bg-green-100 text-green-800 text-xs font-bold px-2 py-1 rounded uppercase tracking-wider mb-2 inline-block">שאלה חדשה</span>
+                    <h3 class="text-xl font-bold mb-3">שאלה 7</h3>
+                    <p class="mb-4">ניסיתם לבצע Join בין טבלת "עובדים" לטבלת "רכבי חברה". בטעות, בחרתם לקשר את שדה "שם העובד" לטבלה השנייה על שדה "מספר רישוי הרכב". אף שם לא זהה למספר רישוי. הגדרתם <strong>Inner Join</strong>. התוצאה שתקבלו ב-Tableau תהיה:</p>
+                    <ol class="list-[hebrew] list-inside mb-4 space-y-1">
+                        <li>הודעת שגיאה על אי תאימות סוגי נתונים (Data Types).</li>
+                        <li>טבלה שכוללת את כל העובדים, אך שדות הרכב יציגו Null.</li>
+                        <li>טבלה מאוחדת ריקה לחלוטין (0 שורות).</li>
+                        <li>מכפלה קרטזית של כל עובד עם כל רכב (Cross Join).</li>
+                    </ol>
+                    <button onclick="toggleSolution('sol7')" class="bg-blue-100 hover:bg-blue-200 text-blue-800 font-semibold py-2 px-4 rounded transition">הצג את הפתרון של פיתה-רון 💡</button>
+                    <div id="sol7" class="solution-content mt-4 p-4 bg-gray-50 border border-gray-200 rounded-lg text-gray-700">
+                        <strong class="text-blue-900 block mb-2">פיתה-רון אומר:</strong>
+                        <p>כפי שלמדנו, Inner Join אכזרי ודורש התאמה מלאה כדי להציג רשומה. מכיוון שהגדרנו תנאי שקר (שם העובד לעולם לא יהיה זהה למספר רישוי, נניח "יוסי" שווה ל-"88-123-55"), לא תימצא אף התאמה. </p>
+                        <p>Tableau יריץ את השאילתה, יחפש התאמות, לא ימצא, ויחזיר לנו קנבס נתונים ריק לחלוטין. (הערה: סעיף 1 אפשרי טכנית אם בסיס הנתונים מונע השוואת טקסט למספר במקור, אך ברוב המקרים ב-Tableau ההשוואה תבוצע ותחזיר פשוט קבוצה ריקה).</p>
+                        <p class="font-bold mt-2">התשובה הנכונה: ג.</p>
+                    </div>
+                </div>
+
+                <!-- Q8 (New) -->
+                <div class="bg-white p-6 rounded-xl shadow-md border-r-4 border-green-500">
+                    <span class="bg-green-100 text-green-800 text-xs font-bold px-2 py-1 rounded uppercase tracking-wider mb-2 inline-block">שאלה חדשה</span>
+                    <h3 class="text-xl font-bold mb-3">שאלה 8</h3>
+                    <p class="mb-4">בהקשר הטכני של בניית מודל הנתונים ב-Tableau: כיצד ניתן לגשת למסך ה-Physical Layer כדי לבצע Joins קלאסיים (ולא Relationships)?</p>
+                    <ol class="list-[hebrew] list-inside mb-4 space-y-1">
+                        <li>גרירת הטבלה השנייה ישירות על גבי הטבלה הראשונה בחלל המרכזי.</li>
+                        <li>לחיצה כפולה (Double-Click) על הטבלה הראשונה שנגררה למסך ה-Data Source.</li>
+                        <li>לחיצה ימנית על הטבלה ובחירה ב- Create Join.</li>
+                        <li>Tableau מבצע אוטומטית Join קלאסי לכל טבלה שנגררת לקנבס, אין צורך בפעולה מיוחדת.</li>
+                    </ol>
+                    <button onclick="toggleSolution('sol8')" class="bg-blue-100 hover:bg-blue-200 text-blue-800 font-semibold py-2 px-4 rounded transition">הצג את הפתרון של פיתה-רון 💡</button>
+                    <div id="sol8" class="solution-content mt-4 p-4 bg-gray-50 border border-gray-200 rounded-lg text-gray-700">
+                        <strong class="text-blue-900 block mb-2">פיתה-רון אומר:</strong>
+                        <p>שאלה טכנית מתוך הדגשים שבתחילת המסמך. בגרסאות החדשות של Tableau, גרירה רגילה של טבלאות יוצרת "קשרים" (Relationships או Noodle) בשכבה הלוגית. כדי להיכנס לשכבה הפיזית שבה מבוצעים ה-Joins האמיתיים עם עיגולי ה-Venn שאנחנו מכירים, חייבים לבצע לחיצה כפולה על אובייקט הטבלה הראשון שגררנו.</p>
+                        <p class="font-bold mt-2">התשובה הנכונה: ב.</p>
+                    </div>
+                </div>
+
+                <!-- Q9 (New) -->
+                <div class="bg-white p-6 rounded-xl shadow-md border-r-4 border-green-500">
+                    <span class="bg-green-100 text-green-800 text-xs font-bold px-2 py-1 rounded uppercase tracking-wider mb-2 inline-block">שאלה חדשה</span>
+                    <h3 class="text-xl font-bold mb-3">שאלה 9</h3>
+                    <p class="mb-4">חברת "דור נקניק" מבצעת <strong>Inner Join</strong> בין טבלת ה"עובדים" (שמאל) לטבלת "צריכת נקניק" (ימין). ידוע כי לעובד "מתן" יש רשומה <u>אחת</u> בטבלת העובדים, אך בטבלת צריכת הנקניק מופיעות <u>3 רשומות</u> שונות המקושרות למתן (בימים שונים). כמה רשומות המכילות את שמו של מתן יופיעו בטבלה המאוחדת הסופית?</p>
+                    <ol class="list-[hebrew] list-inside mb-4 space-y-1">
+                        <li>1 - משום שבטבלה השמאלית הוא מופיע פעם אחת.</li>
+                        <li>3 - הטבלה משכפלת את נתוני העובד כך שיתאימו לכל שורות הצריכה שלו.</li>
+                        <li>0 - בשל חוסר איזון (1 לעומת 3) נוצרת שגיאה והוא נשמט.</li>
+                        <li>4 - חיבור של השורה מהטבלה הראשונה והשלוש מהשנייה.</li>
+                    </ol>
+                    <button onclick="toggleSolution('sol9')" class="bg-blue-100 hover:bg-blue-200 text-blue-800 font-semibold py-2 px-4 rounded transition">הצג את הפתרון של פיתה-רון 💡</button>
+                    <div id="sol9" class="solution-content mt-4 p-4 bg-gray-50 border border-gray-200 rounded-lg text-gray-700">
+                        <strong class="text-blue-900 block mb-2">פיתה-רון אומר:</strong>
+                        <p>הכפל שורות! זוהי תופעה חשובה מאוד ב-Joins מסוג יחס של 1-ל-רבים (One-to-Many). כאשר טבלה אחת מכילה מופע יחיד (מתן) והשנייה מכילה מספר מופעים, ה-Join ישכפל את פרטי העובד מתן לכל אורך 3 שורות צריכת הנקניק שלו, כך שלא נאבד שום נתון צריכה. זהו הליך תקין, אך חשוב להיות מודעים אליו כשעושים סכימות (Sum) כדי לא לסכום את משכורתו של מתן 3 פעמים בטעות ב-Tableau.</p>
+                        <p class="font-bold mt-2">התשובה הנכונה: ב.</p>
+                    </div>
+                </div>
+
+                <!-- Q10 (New) -->
+                <div class="bg-white p-6 rounded-xl shadow-md border-r-4 border-green-500">
+                    <span class="bg-green-100 text-green-800 text-xs font-bold px-2 py-1 rounded uppercase tracking-wider mb-2 inline-block">שאלה חדשה</span>
+                    <h3 class="text-xl font-bold mb-3">שאלה 10</h3>
+                    <p class="mb-4">אנו רוצים לאחד בין טבלת "מוצרים" לטבלת "יעדי מכירות", אך המנהל דורש במפורש: "אני רוצה לראות את הדו"ח הסופי מציג כל מוצר שקיים (גם אם אין לו יעד), ואת כל יעדי המכירות שיש במערכת (גם אם בטעות לא שויך אליהם אף מוצר). אסור שאף נתון ייזרק!"</p>
+                    <p class="font-semibold mb-2">איזה מסוגי ה-Join יתאים באופן המושלם לדרישה זו?</p>
+                    <ol class="list-[hebrew] list-inside mb-4 space-y-1">
+                        <li>Inner Join</li>
+                        <li>Left Join</li>
+                        <li>Right Join</li>
+                        <li>Full Outer Join</li>
+                    </ol>
+                    <button onclick="toggleSolution('sol10')" class="bg-blue-100 hover:bg-blue-200 text-blue-800 font-semibold py-2 px-4 rounded transition">הצג את הפתרון של פיתה-רון 💡</button>
+                    <div id="sol10" class="solution-content mt-4 p-4 bg-gray-50 border border-gray-200 rounded-lg text-gray-700">
+                        <strong class="text-blue-900 block mb-2">פיתה-רון אומר:</strong>
+                        <p>ברגע שהמנהל אמר "את כל... וגם את כל... ואסור שאף נתון ייזרק" הוא למעשה הגדיר את פעולת ה-<strong>Full Outer Join</strong>. זהו ה-Join היחיד שלוקח את המקסימום משני העולמות ללא פילטרים. מה שאין לו בן-זוג בשני הצדדים יקבל Null, אבל הוא יופיע בטבלה. Inner היה זורק את המידע החלקי, Left היה מתעלם מיעדים ללא מוצר, ו-Right היה מתעלם ממוצרים ללא יעד.</p>
+                        <p class="font-bold mt-2">התשובה הנכונה: ד.</p>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <footer class="mt-16 text-center text-gray-500 text-sm py-8 border-t border-gray-200">
+            <p>חומר עזר לקורס Tableau. נכתב והותאם למטרות למידה ותרגול אינטראקטיבי.</p>
+        </footer>
+
+    </div>
+
+    <!-- Script for Toggling Answers -->
+    <script>
+        function toggleSolution(id) {
+            const el = document.getElementById(id);
+            if (el.classList.contains('active')) {
+                el.classList.remove('active');
+            } else {
+                el.classList.add('active');
+            }
+        }
+    </script>
+</body>
+</html>
