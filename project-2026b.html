@@ -1,0 +1,491 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>פרויקט גמר חלף בחינה - ויזואליזציה של מידע</title>
+<link href="https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;500;600;700;800;900&family=Assistant:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#172033; --ink2:#41506b; --ink3:#8090a8;
+  --primary:#1e3a8a; --primary2:#2563eb; --primary-soft:#eef3ff;
+  --gold:#b45309; --gold-soft:#fff7ed;
+  --danger:#b91c1c; --danger-soft:#fef2f2; --danger-border:#fca5a5;
+  --ok:#15803d; --ok-soft:#f0fdf4;
+  --bg:#eef1f8; --card:#ffffff; --line:#e1e7f2;
+  --radius:16px; --radius-sm:10px;
+  --shadow:0 6px 28px rgba(30,58,138,.08);
+  --shadow-lg:0 12px 44px rgba(30,58,138,.14);
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Heebo','Assistant',sans-serif;background:var(--bg);color:var(--ink);line-height:1.85;font-size:16px;direction:rtl}
+.wrap{max-width:1000px;margin:0 auto;padding:0 22px}
+
+/* HEADER */
+.hero{background:linear-gradient(135deg,#1e3a8a 0%,#3730a3 55%,#1d4ed8 100%);color:#fff;padding:54px 0 46px;position:relative;overflow:hidden}
+.hero::after{content:'';position:absolute;left:-60px;bottom:-90px;width:280px;height:280px;background:rgba(255,255,255,.06);border-radius:50%}
+.hero::before{content:'';position:absolute;right:-50px;top:-70px;width:230px;height:230px;background:rgba(255,255,255,.05);border-radius:50%}
+.hero .kicker{font-size:.92rem;font-weight:700;letter-spacing:3px;opacity:.85}
+.hero h1{font-size:2.5rem;font-weight:900;margin:10px 0 8px;position:relative;line-height:1.25}
+.hero .course{font-size:1.15rem;font-weight:500;opacity:.92}
+.hero .teacher{font-size:.98rem;opacity:.78;margin-top:6px}
+
+/* INFO CARDS */
+.facts{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-top:-32px;position:relative;z-index:5}
+.fact{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:18px 16px;text-align:center;box-shadow:var(--shadow)}
+.fact .ico{font-size:1.5rem}
+.fact .lbl{font-size:.78rem;color:var(--ink3);font-weight:600;margin-top:6px}
+.fact .val{font-size:1.16rem;font-weight:800;color:var(--primary);margin-top:2px}
+
+/* POLICY STRIP */
+.policy-strip{background:var(--danger-soft);border:1.5px solid var(--danger-border);border-radius:var(--radius);padding:16px 20px;margin:26px 0;display:flex;gap:14px;align-items:flex-start}
+.policy-strip .ico{font-size:1.5rem;flex-shrink:0}
+.policy-strip p{font-size:.96rem;color:#7f1d1d;line-height:1.7}
+.policy-strip strong{color:var(--danger)}
+
+/* SECTIONS */
+section{margin:42px 0}
+.sec-title{font-size:1.5rem;font-weight:800;color:var(--primary);display:flex;align-items:center;gap:12px;margin-bottom:6px}
+.sec-title .num{width:34px;height:34px;border-radius:9px;background:linear-gradient(135deg,var(--primary),var(--primary2));color:#fff;display:flex;align-items:center;justify-content:center;font-size:.95rem;font-weight:800;flex-shrink:0}
+.sec-sub{color:var(--ink2);margin:8px 0 18px;font-size:1rem}
+
+.card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:26px 30px;box-shadow:var(--shadow);margin-bottom:18px}
+.card h3{font-size:1.12rem;font-weight:800;color:var(--ink);margin-bottom:10px}
+.card p{color:var(--ink2);margin-bottom:10px}
+.card ul{margin:8px 22px 12px;color:var(--ink2)}
+.card li{margin-bottom:7px}
+
+/* CALLOUTS */
+.callout{border-radius:var(--radius-sm);padding:16px 20px;margin:16px 0;display:flex;gap:13px;align-items:flex-start;border:1px solid}
+.callout .ico{font-size:1.35rem;flex-shrink:0;margin-top:1px}
+.callout.info{background:var(--primary-soft);border-color:#bfd3ff}
+.callout.warn{background:var(--gold-soft);border-color:#fcd9a8}
+.callout.danger{background:var(--danger-soft);border-color:var(--danger-border)}
+.callout.ok{background:var(--ok-soft);border-color:#a7e3bd}
+.callout .body{font-size:.95rem;line-height:1.75}
+.callout.info .body{color:#1e3a8a}
+.callout.warn .body{color:#7c4a06}
+.callout.danger .body{color:#7f1d1d}
+.callout.ok .body{color:#14532d}
+.callout strong{font-weight:800}
+
+/* QUESTION BLOCKS */
+.q{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);margin-bottom:30px;overflow:hidden}
+.q-head{background:linear-gradient(135deg,#1e3a8a,#2563eb);color:#fff;padding:20px 28px;display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap}
+.q-head .left{display:flex;align-items:center;gap:14px}
+.q-badge{background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.3);width:46px;height:46px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:1.25rem;font-weight:900;flex-shrink:0}
+.q-title{font-size:1.22rem;font-weight:800;line-height:1.35}
+.q-pts{background:rgba(255,255,255,.16);border:1px solid rgba(255,255,255,.3);border-radius:50px;padding:5px 16px;font-size:.9rem;font-weight:800;white-space:nowrap}
+.q-mini{background:#fff7ed;border-bottom:1px solid #fcd9a8;padding:9px 28px;font-size:.83rem;color:#7c4a06;font-weight:600;display:flex;gap:8px;align-items:center}
+.q-body{padding:24px 28px}
+.scenario{background:var(--primary-soft);border-right:4px solid var(--primary2);border-radius:8px;padding:16px 18px;margin-bottom:18px}
+.scenario .tag{font-size:.74rem;font-weight:800;color:var(--primary);letter-spacing:1.5px;margin-bottom:6px}
+.scenario p{color:var(--ink2);font-size:.96rem}
+.parts{list-style:none}
+.parts>li{position:relative;padding:12px 0 12px 0;border-bottom:1px dashed var(--line)}
+.parts>li:last-child{border-bottom:none}
+.parts .pk{display:inline-flex;align-items:center;justify-content:center;min-width:26px;height:26px;border-radius:7px;background:var(--primary-soft);color:var(--primary);font-weight:800;font-size:.85rem;margin-left:8px;padding:0 6px}
+.parts .ptxt{color:var(--ink);font-size:.97rem}
+.parts .open{display:inline-block;background:#fef3c7;color:#92400e;font-size:.72rem;font-weight:800;border-radius:50px;padding:1px 9px;margin-right:6px;vertical-align:middle}
+.dtable{width:100%;border-collapse:collapse;margin:8px 0 4px;font-size:.9rem}
+.dtable th{background:#eef3ff;color:var(--primary);font-weight:800;padding:7px 12px;border:1px solid #d6e2fb;text-align:center}
+.dtable td{padding:6px 12px;border:1px solid var(--line);text-align:center;color:var(--ink2)}
+.dtable td.nul{color:var(--danger);font-weight:700;font-style:italic}
+.tbl-wrap{display:flex;gap:18px;flex-wrap:wrap;margin:6px 0 12px}
+.tbl-wrap>div{flex:1;min-width:240px}
+.tbl-cap{font-size:.82rem;font-weight:800;text-align:center;background:#f1f5fd;border-radius:6px 6px 0 0;padding:6px;color:var(--ink)}
+
+/* STRUCTURE LIST */
+.struct{counter-reset:s;list-style:none}
+.struct li{position:relative;padding:14px 56px 14px 18px;border:1px solid var(--line);border-radius:var(--radius-sm);margin-bottom:10px;background:#fbfcfe}
+.struct li::before{counter-increment:s;content:counter(s);position:absolute;right:14px;top:14px;width:30px;height:30px;border-radius:8px;background:linear-gradient(135deg,var(--primary),var(--primary2));color:#fff;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:.9rem}
+.struct li strong{color:var(--ink)}
+
+/* CHECKLIST */
+.check{list-style:none;margin-top:8px}
+.check li{display:flex;gap:11px;align-items:flex-start;padding:9px 0;border-bottom:1px solid var(--line);font-size:.95rem;color:var(--ink2)}
+.check li:last-child{border-bottom:none}
+.check .box{width:21px;height:21px;border-radius:6px;border:2px solid var(--primary2);flex-shrink:0;margin-top:3px}
+
+/* DECLARATION */
+.declare{background:#0f172a;color:#e2e8f0;border-radius:var(--radius);padding:24px 28px;font-size:.95rem;line-height:1.9}
+.declare h3{color:#fff;margin-bottom:12px;font-size:1.1rem}
+.declare .quote{background:rgba(255,255,255,.06);border-right:3px solid var(--primary2);border-radius:8px;padding:14px 18px;margin-top:10px;color:#cbd5e1;font-style:italic}
+
+footer{background:#0f172a;color:#94a3b8;text-align:center;padding:28px 20px;margin-top:50px;font-size:.86rem}
+footer strong{color:#cbd5e1}
+
+@media(max-width:760px){
+  .facts{grid-template-columns:1fr 1fr}
+  .hero h1{font-size:1.85rem}
+  .q-body,.q-head{padding-left:18px;padding-right:18px}
+}
+</style>
+</head>
+<body>
+
+<!-- HERO -->
+<header class="hero">
+  <div class="wrap">
+    <div class="kicker">מטלת סיום · חלף בחינה</div>
+    <h1>פרויקט גמר חלף בחינה - ויזואליזציה של מידע</h1>
+    <div class="course">קורס: ויזואליזציה של מידע · בינה עסקית ומערכות מידע</div>
+    <div class="teacher">מרצה: ד״ר שי צבאן · שנה״ל תשפ״ו · 2026</div>
+  </div>
+</header>
+
+<div class="wrap">
+
+  <!-- FACTS -->
+  <div class="facts">
+    <div class="fact"><div class="ico">🗓️</div><div class="lbl">מועד הגשה אחרון</div><div class="val">1.8.2026</div></div>
+    <div class="fact"><div class="ico">📊</div><div class="lbl">מועד פרסום ציונים</div><div class="val">1.9.2026</div></div>
+    <div class="fact"><div class="ico">📄</div><div class="lbl">פורמט הגשה</div><div class="val">PDF בלבד</div></div>
+    <div class="fact"><div class="ico">💯</div><div class="lbl">מבנה הציון</div><div class="val">5 × 20 נק׳</div></div>
+  </div>
+
+  <!-- TOP POLICY STRIP -->
+  <div class="policy-strip">
+    <div class="ico">⚠️</div>
+    <p>
+      <strong>עקרונות מחייבים לאורך כל הפרויקט:</strong> מותר להסתמך על <strong>חומרי הקורס בלבד</strong>.
+      שימוש בכלי <strong>AI מותר ככלי עזר בלבד</strong>, ורק לאחר טעינה או הטמעה של חומרי הקורס לתוך הכלי, ובכפוף ל<strong>גילוי נאות מלא בנספח</strong>.
+      אי גילוי <strong>יגרור הפחתת ניקוד</strong>. תתבצע <strong>בקרת AI</strong>, ולא יתקבלו ערעורים על חשד לשימוש בכלי AI או על תוכן שגוי שהתקבל מכלי AI.
+    </p>
+  </div>
+
+  <!-- 1. OVERVIEW -->
+  <section>
+    <div class="sec-title"><span class="num">1</span> רציונל הפרויקט ומה נדרש</div>
+    <p class="sec-sub">פרויקט זה מחליף את בחינת הגמר בקורס ומהווה את מלוא הציון (100%).</p>
+    <div class="card">
+      <p>הפרויקט בנוי מ<strong>חמש שאלות פתוחות רב תחומיות</strong>, <strong>20 נקודות לכל שאלה</strong> (סך הכל 100). השאלות נוגעות לכל רוחב הקורס: יסודות Tableau והוויזואליזציה, תיאוריית הבינה העסקית (BI), איחוד טבלאות (Joins), ניתוח קשרים בין משתנים (רגרסיה ומובהקות), וכן ארכיטקטורת מערכות מידע, Frontend ו-Backend, Google Apps Script ומודלי AI מקומיים מול ענן.</p>
+      <p>השאלות פתוחות ומזמינות חשיבה עצמאית. בחלק מהסעיפים אין תשובה אחת נכונה. עם זאת, <strong>כל טענה, ניתוח והמלצה חייבים להתבסס על חומרי הקורס בלבד</strong> ולהיתמך במושגים, בהגדרות ובדוגמאות שנלמדו. תשובה טובה אינה "מה דעתי" אלא הצגה של <em>"כיצד אני מיישם את מושגי הקורס כדי לנמק עמדה"</em>.</p>
+      <div class="callout info">
+        <div class="ico">🎯</div>
+        <div class="body">הבדיקה מתמקדת ב<strong>עומק ההבנה</strong>, ב<strong>ביסוס בחומרי הקורס</strong>, ב<strong>אינטגרציה</strong> בין נושאים, ב<strong>דיוק המקצועי</strong> במונחים (עברית ואנגלית) וב<strong>איכות הנימוק</strong>. הבדיקה היא של חשיבה, ולא של "תשובה נכונה" יחידה.</div>
+      </div>
+      <p style="margin-top:6px"><strong>היקף מומלץ:</strong> כ-500 עד 900 מילים לכל שאלה. זוהי המלצה בלבד ואינה תנאי; אורך התשובה כשלעצמו אינו מנוקד. העדיפו ניתוח ממוקד ומנומק על פני אריכות.</p>
+      <div class="callout warn">
+        <div class="ico">✍️</div>
+        <div class="body"><strong>זוהי עבודת ניתוח כתובה.</strong> אין צורך לבנות דשבורד ב-Tableau או לצרף צילומי מסך; די בתיאור מילולי מנומק של הצעדים והבחירות. כאשר שאלה מבקשת "לפרט מה לגרור", הכוונה לתיאור מילולי של התכנון.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 2. NATURE OF THE PROJECT -->
+  <section>
+    <div class="sec-title"><span class="num">2</span> אופי הפרויקט: עבודה אישית ופרשנית</div>
+    <p class="sec-sub">קראו בעיון. סעיף זה מסביר כיצד לפעול במצבי אי ודאות.</p>
+    <div class="card">
+      <p>זהו <strong>פרויקט גמר אישי</strong>. כל סטודנט מגיש עבודה עצמאית משלו. הבדיקה מתמקדת ב<strong>איכות החשיבה</strong>, בביסוס בחומרי הקורס ובאינטגרציה בין הנושאים, ולא בהכרח ב"תשובה נכונה" אחת.</p>
+      <div class="callout info">
+        <div class="ico">🧭</div>
+        <div class="body"><strong>רכיב פרשני:</strong> בחלק מהסעיפים יש מקום לפרשנות, ואין בהם תשובה אחת ויחידה. ככל שאינכם בטוחים בפרשנות מסוימת, <strong>בטאו במפורש את הפרשנות שלפיה פעלתם</strong>, לצורך התייחסות הבודק. הצגת ההנחות שלכם היא חלק מהציון ומגנה עליכם.</div>
+      </div>
+      <div class="callout danger">
+        <div class="ico">🚫</div>
+        <div class="body"><strong>לא ניתן להפנות שאלות לגבי העבודה.</strong> מסמך זה כולל את כל הנדרש כדי לפתור. אם פרט כלשהו נראה לכם לא ודאי, הכריעו לפי פרשנותכם, ציינו אותה במפורש בתשובה, והמשיכו. אי ודאות פרשנית אינה עילה לערעור.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 3. PERMITTED MATERIALS -->
+  <section>
+    <div class="sec-title"><span class="num">3</span> מקורות מותרים: חומרי הקורס בלבד</div>
+    <p class="sec-sub">זהו עקרון יסוד של הפרויקט, והוא חוזר לאורך כל הדרך.</p>
+    <div class="card">
+      <p>מותר להסתמך <strong>אך ורק על חומרי הקורס</strong>: ההרצאות, מחברת הסיכום, מסמכי המטלות, מסמכי המיקוד, הלומדות והדוגמאות שנלמדו בכיתה. <strong>אין להשתמש במקורות חיצוניים</strong> (אתרים, מאמרים, ספרים, סרטונים) כבסיס לתשובות.</p>
+      <div class="callout info">
+        <div class="ico">📚</div>
+        <div class="body"><strong>בשונה מבחינה:</strong> בבחינה נדרש שינון של כל החומר, ולכן קיים "מיקוד" המצמצם את ההיקף. בפרויקט גמר, מעצם הגדרתו, כל חומרי הקורס נגישים לכם במלואם, ולכן <strong>כל חומרי הקורס רלוונטיים, ולא רק חומרי המיקוד</strong>.</div>
+      </div>
+      <div class="callout danger">
+        <div class="ico">📌</div>
+        <div class="body"><strong>חומרי הקורס בלבד.</strong> תשובה המבוססת על ידע חיצוני שאינו נלמד בקורס, גם אם היא "נכונה" באופן כללי, לא תזכה במלוא הניקוד. עגנו כל טענה במה שנלמד.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 4. AI POLICY -->
+  <section>
+    <div class="sec-title"><span class="num">4</span> מדיניות שימוש בכלי AI וגילוי נאות</div>
+    <p class="sec-sub">הסעיף החשוב ביותר במסמך. קראו אותו במלואו.</p>
+
+    <div class="card" style="border:1.5px solid var(--danger-border)">
+      <h3 style="color:var(--danger)">🤖 כלי AI ככלי עזר בלבד, לאחר הטמעת חומרי הקורס</h3>
+      <p>עקרון היסוד הוא הסתמכות על חומרי הקורס בלבד. כדי שלא תיווצר סתירה בין עקרון זה לבין שימוש ב-AI, שימוש בכלי AI מותר <strong>אך ורק ככלי עזר</strong>, ו<strong>רק לאחר שטענתם או הטמעתם את חומרי הקורס עצמם לתוך הכלי</strong> באמצעים מקובלים (למשל העלאת מסמכי הקורס לכלי), כך שהכלי מעבד את <strong>חומרי הקורס שלכם</strong> ואינו מסתמך על ידע חיצוני. כך נשמר העיקרון של חומרי הקורס בלבד.</p>
+      <div class="callout warn">
+        <div class="ico">⚖️</div>
+        <div class="body">אם אינכם יכולים לוודא שהכלי מסתמך על חומרי הקורס בלבד, <strong>עדיף לפתור ללא כלי AI</strong>. האחריות לנכונות התוכן ולהתאמתו לחומרי הקורס היא עליכם בלבד.</div>
+      </div>
+
+      <h3 style="margin-top:18px">📝 חובת גילוי נאות מלא (בנספח בלבד)</h3>
+      <p>אם נעזרתם ב-AI, עבור כל שימוש יש לפרט בנספח את כל הרכיבים הבאים:</p>
+      <ul>
+        <li><strong>הכלי והגרסה</strong> ששימשו, ולאיזו שאלה או סעיף.</li>
+        <li><strong>כל הפרומפטים שיושמו</strong>, בנוסח המלא והמדויק (מילה במילה).</li>
+        <li><strong>התוצר שהתקבל</strong> מהכלי (העתק או תמצית).</li>
+        <li><strong>העדכון או השינוי שביצעתם</strong> על התוצר, ומה הסיבה.</li>
+        <li><strong>הבקרה שביצעתם</strong>, כלומר כיצד אימתתם את נכונות התוצר ואת התאמתו לחומרי הקורס.</li>
+      </ul>
+      <div class="callout danger">
+        <div class="ico">⛔</div>
+        <div class="body"><strong>אי מתן גילוי נאות מלא יגרור הפחתת ניקוד.</strong> הגילוי הנאות, על כל רכיביו, מצוי <strong>בנספח בלבד</strong>, ולא בגוף התשובות.</div>
+      </div>
+      <div class="callout danger">
+        <div class="ico">🔍</div>
+        <div class="body"><strong>תתבצע בקרת AI על כל ההגשות.</strong> <strong>לא יתקבלו ערעורים בשום מקרה</strong> על: (1) חשד לשימוש בכלי AI; (2) "הזיות" של הכלי או אי תאימות לכלי AI. תוכן שגוי שהתקבל מכלי AI הוא באחריותכם המלאה.</div>
+      </div>
+      <div class="callout ok">
+        <div class="ico">✅</div>
+        <div class="body"><strong>הכלל הפשוט:</strong> נעזרתם ב-AI? גלו זאת בפירוט מלא בנספח. לא נעזרתם? הצהירו על כך מפורשות. בכל ספק, הרחיבו את הגילוי בנספחים, שכן הם נקראים. שקיפות מלאה אינה פוגעת בציון; היעדר גילוי כן.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 5. SUBMISSION RULES -->
+  <section>
+    <div class="sec-title"><span class="num">5</span> כללי הגשה</div>
+    <p class="sec-sub">קראו בעיון. הגשה שאינה עומדת בכללים עלולה שלא להיקלט.</p>
+    <div class="card">
+      <ul>
+        <li><strong>היכן מגישים:</strong> ההגשה מתבצעת ב<strong>מערכת הידיעון, בתיבת ההגשה שבאתר הקורס בלבד</strong>. לא תתקבל הגשה במייל, בצ׳אט או בכל ערוץ אחר.</li>
+        <li><strong>פורמט:</strong> קובץ <strong>PDF בלבד</strong>. ודאו שהקובץ נפתח תקין ושכל הטקסט והנספחים מוטמעים בו.</li>
+        <li><strong>מועד הגשה אחרון:</strong> <strong>1.8.2026</strong>. <strong>מועד פרסום ציונים:</strong> <strong>1.9.2026</strong>.</li>
+        <li><strong>שם הקובץ המומלץ:</strong> <code>פרויקט_גמר_שם_משפחה_תז.pdf</code>.</li>
+      </ul>
+      <div class="callout warn">
+        <div class="ico">📄</div>
+        <div class="body"><strong>הגשה במערכת הידיעון, בתיבת ההגשה באתר בלבד, ובפורמט PDF בלבד.</strong> באחריות הסטודנט לוודא שההעלאה הושלמה ושהקובץ תקין לפני המועד האחרון.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 6. REQUIRED STRUCTURE -->
+  <section>
+    <div class="sec-title"><span class="num">6</span> מבנה ההגשה הנדרש</div>
+    <p class="sec-sub">כך יש להפיק ולבנות את ההגשה.</p>
+    <div class="card">
+      <div class="callout danger">
+        <div class="ico">🖋️</div>
+        <div class="body"><strong>אופן הכתיבה:</strong> יש לכתוב את העבודה <strong>בעברית</strong>, בקובץ <strong>DOCX</strong> (מעבד תמלילים), ולשמור אותו כקובץ <strong>PDF</strong> להגשה. <strong>לא יתקבלו הגשות בכתב יד או באמצעים יצירתיים אחרים.</strong> ככל שיתקבלו בכל זאת, <strong>יופחת ניקוד ללא יכולת ערר</strong>.</div>
+      </div>
+      <p style="margin-top:4px"><strong>בנו את הקובץ במבנה הבא, לפי הסדר:</strong></p>
+    </div>
+    <ol class="struct">
+      <li><strong>עמוד שער:</strong> שם מלא, תעודת זהות, מסלול (חד חוגי או דו חוגי), שם הקורס ומועד ההגשה.</li>
+      <li><strong>גוף ההגשה:</strong> חמש התשובות לפי הסדר, כל אחת תחת כותרת ברורה ("שאלה 1", "שאלה 2" וכן הלאה). סמנו את חלקי המשנה (א, ב, ג, ד).</li>
+      <li><strong>נספח א׳, גילוי נאות לשימוש ב-AI</strong> (חובה, לפי התבנית בסעיף 8). אם לא נעשה שימוש, יש לכתוב הצהרה מפורשת על כך.</li>
+      <li><strong>נספח ב׳, מקורות מתוך חומרי הקורס</strong> שעליהם הסתמכתם (אילו הרצאות, מסמכים או לומדות).</li>
+      <li><strong>הצהרת יושרה אקדמית</strong> חתומה (הנוסח בסעיף 9).</li>
+    </ol>
+  </section>
+
+  <!-- ===================== QUESTIONS ===================== -->
+  <section>
+    <div class="sec-title"><span class="num">7</span> השאלות (5 שאלות, 20 נק׳ לכל אחת)</div>
+    <p class="sec-sub">כל שאלה רב תחומית ופתוחה לפרשנות, אך כל נימוק חייב להישען על חומרי הקורס בלבד.</p>
+
+    <div class="callout info">
+      <div class="ico">🧭</div>
+      <div class="body">תזכורת: במקומות שבהם הניסוח פתוח לפרשנות, <strong>הציגו במפורש את ההנחה או הפרשנות שלפיה פעלתם</strong>, ואז נמקו. כך אתם מבססים את חשיבתכם ומונעים אי הבנה בבדיקה.</div>
+    </div>
+
+    <!-- Q1 -->
+    <div class="q">
+      <div class="q-head">
+        <div class="left"><div class="q-badge">1</div><div class="q-title">מהנתון לתובנה: ארכיטקטורת BI ומסע הנתונים</div></div>
+        <div class="q-pts">20 נק׳</div>
+      </div>
+      <div class="q-mini">⚠️ מותר: חומרי הקורס בלבד · AI ככלי עזר עם גילוי נאות מלא בנספח</div>
+      <div class="q-body">
+        <div class="scenario">
+          <div class="tag">תרחיש</div>
+          <p>רשת קמעונאית בינונית, "שׁוּק-טוב", מפעילה 60 סניפים, אתר מסחר ומועדון לקוחות. ההנהלה מעוניינת לעבור מקבלת החלטות "מהבטן" למערכת בינה עסקית (BI) מסודרת, ולקבל "גרסת אמת אחת" לכל ההנהלה.</p>
+        </div>
+        <ul class="parts">
+          <li><span class="pk">א</span><span class="ptxt"><strong>פירמידת DIKW.</strong> מיינו את ארבעת הביטויים הבאים לרמות DIKW ונמקו כל סיווג: <em>(1)</em> "₪312,540"; <em>(2)</em> "פדיון סניף רעננה ב-12.4.2026: ₪312,540"; <em>(3)</em> "סניפי הפריפריה מציגים פדיון נמוך ב-19% מסניפי המרכז ב-12 החודשים האחרונים"; <em>(4)</em> "מומלץ להסיט ₪150K מתקציב הקידום לסניפי הפריפריה ברבעון הבא, בכפוף למדידת ההשפעה". הסבירו מה מבדיל בין כל רמה לזו שמעליה.</span></li>
+          <li><span class="pk">ב</span><span class="ptxt"><strong>ארכיטקטורה.</strong> תארו במילים את שרשרת ה-BI מהמקור ועד הדשבורד (מקורות, ETL או ELT, אחסון, שכבה סמנטית, Dashboard). עבור הרשת הזו, בחרו <strong>ETL או ELT</strong> ונמקו, ובחרו בין <strong>DWH, Data Lake או Data Lakehouse</strong> ונמקו לאור סוגי הנתונים הצפויים.</span></li>
+          <li><span class="pk">ג</span><span class="ptxt"><strong>OLTP מול OLAP.</strong> הסבירו מי במערך הוא OLTP ומי OLAP, והדגימו על המערכות ברשת (ERP מול מערכת ה-BI). מדוע OLAP הוא התשתית ל-BI?</span></li>
+          <li><span class="pk">ד</span><span class="open">פתוח לפרשנות</span><span class="ptxt"><strong>תובנה מניעת פעולה.</strong> גזרו תובנה אחת מניעת פעולה (Actionable Insight) מהתרחיש, והראו כיצד היא עומדת בשלושת המאפיינים (ספציפיות, ברת ביצוע, מבוססת ראיות). הסבירו מהי "גרסת אמת אחת" ומדוע היא קריטית כאן.</span></li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Q2 -->
+    <div class="q">
+      <div class="q-head">
+        <div class="left"><div class="q-badge">2</div><div class="q-title">תכנון ויזואלי ב-Tableau: מהשאלה העסקית לתרשים</div></div>
+        <div class="q-pts">20 נק׳</div>
+      </div>
+      <div class="q-mini">⚠️ מותר: חומרי הקורס בלבד · AI ככלי עזר עם גילוי נאות מלא בנספח</div>
+      <div class="q-body">
+        <div class="scenario">
+          <div class="tag">תרחיש</div>
+          <p>מאפיית "בית-בצק" מספקת קובץ Excel רב גיליונות (מכירות, מוצרים, לקוחות, ערוצי הפצה). שדות לדוגמה: <em>תאריך, שם מוצר, קטגוריה (לחמים, עוגות, מאפים), כמות שנמכרה, מחיר כולל, סוג לקוח (קמעונאי, סיטונאי, מוסדי), ערוץ הפצה (חנות, אתר, אפליקציה), שנה</em>.</p>
+        </div>
+        <ul class="parts">
+          <li><span class="pk">א</span><span class="ptxt"><strong>ממד מול מדד.</strong> סווגו <strong>לפחות חמישה שדות</strong> לממדים (Dimensions) ולמדדים (Measures), ונמקו לפי הכלל "מי קובע בסופו של דבר את קיום הערך".</span></li>
+          <li><span class="pk">ב</span><span class="ptxt"><strong>תכנון תרשימים.</strong> עבור שתי השאלות העסקיות, <em>(1) "כיצד התפתח הפדיון לאורך השנים?"</em> ו-<em>(2) "מהו תמהיל הפדיון לפי קטגוריה, בפילוח לפי ערוץ הפצה?"</em>, פרטו בדיוק: מה לגרור ל-<strong>Columns, Rows, Marks, Pages, Filters</strong>, איזה סוג תרשים, והאם המשתנה <strong>Continuous או Discrete</strong>, ונמקו כל בחירה.</span></li>
+          <li><span class="pk">ג</span><span class="open">פתוח לפרשנות</span><span class="ptxt"><strong>חשיבה ביקורתית.</strong> מנהל מבקש "להוסיף עוד גרפים לדשבורד כדי שיהיה מקיף יותר". נתחו מדוע זו עלולה להיות טעות, וקשרו את עמדתכם לעקרון ה-<strong>Top-Down</strong> ולמסמך ה-<strong>BRD</strong>.</span></li>
+          <li><span class="pk">ד</span><span class="ptxt"><strong>פרסום ושיתוף.</strong> תארו ברמת העיקרון את נתיב הפרסום (Tableau Public, יצירת קישור, הטמעה ב-GitHub Pages), ומהו תפקיד ה-Dashboard כ"תוצר ללקוח".</span></li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Q3 -->
+    <div class="q">
+      <div class="q-head">
+        <div class="left"><div class="q-badge">3</div><div class="q-title">איחוד טבלאות (Joins): לוגיקה, חישוב והשלכות</div></div>
+        <div class="q-pts">20 נק׳</div>
+      </div>
+      <div class="q-mini">⚠️ מותר: חומרי הקורס בלבד · AI ככלי עזר עם גילוי נאות מלא בנספח</div>
+      <div class="q-body">
+        <div class="scenario">
+          <div class="tag">תרחיש: שתי טבלאות בקובץ Excel המקושר ל-Tableau</div>
+          <p>בוצע איחוד לפי השדה המזהה <strong>מס׳ עובד</strong>. שימו לב לכפילויות, לאי התאמות ולערכי Null:</p>
+          <div class="tbl-wrap">
+            <div>
+              <div class="tbl-cap">טבלה שמאלית: עובדים</div>
+              <table class="dtable">
+                <tr><th>מס׳ עובד</th><th>שם</th></tr>
+                <tr><td>101</td><td>אבי</td></tr>
+                <tr><td>102</td><td>בני</td></tr>
+                <tr><td>103</td><td>גדי</td></tr>
+              </table>
+            </div>
+            <div>
+              <div class="tbl-cap">טבלה ימנית: נסיעות עבודה</div>
+              <table class="dtable">
+                <tr><th>מס׳ נסיעה</th><th>מס׳ עובד</th><th>עלות</th></tr>
+                <tr><td>N1</td><td>101</td><td>₪200</td></tr>
+                <tr><td>N2</td><td>101</td><td>₪90</td></tr>
+                <tr><td>N3</td><td>102</td><td>₪150</td></tr>
+                <tr><td>N4</td><td>555</td><td>₪300</td></tr>
+                <tr><td>N5</td><td class="nul">Null</td><td>₪75</td></tr>
+              </table>
+            </div>
+          </div>
+        </div>
+        <ul class="parts">
+          <li><span class="pk">א</span><span class="ptxt"><strong>חישוב שורות.</strong> חשבו כמה שורות יתקבלו (ללא כותרות) בכל אחד מסוגי ה-Join: <strong>Inner, Left, Right, Full Outer</strong>. <strong>הציגו את דרך החישוב</strong> לכל סוג.</span></li>
+          <li><span class="pk">ב</span><span class="ptxt"><strong>Null ושכפול.</strong> הסבירו את התנהגות ה-<strong>Null</strong> ואת תופעת <strong>שכפול השורות</strong> ביחס של אחד לרבים (One to Many), ומהו הסיכון שלה כאשר מבצעים סכימה (SUM) ב-Tableau.</span></li>
+          <li><span class="pk">ג</span><span class="open">פתוח לפרשנות</span><span class="ptxt"><strong>בחירה עסקית.</strong> עבור <strong>כל אחד</strong> מארבעת סוגי ה-Join, תארו תרחיש עסקי שבו דווקא הוא הבחירה הנכונה, ונמקו.</span></li>
+          <li><span class="pk">ד</span><span class="ptxt"><strong>עקרונות.</strong> הסבירו את התנאי ההכרחי ל-Join (שדה מזהה אחיד), מדוע עדיף ב-Tableau לעבוד עם טבלה אחת "שטוחה", ומהו ההבדל העקרוני בין Join לבין גישת הקשרים ("הדרך ה-SQL-ית").</span></li>
+        </ul>
+        <div class="callout info"><div class="ico">🧮</div><div class="body"><strong>הבהרה לחישוב:</strong> ערך Null אינו מתאים לערך Null, ומפתח כפול בצד אחד "מכפיל" שורות מול ההתאמות בצד השני.</div></div>
+      </div>
+    </div>
+
+    <!-- Q4 -->
+    <div class="q">
+      <div class="q-head">
+        <div class="left"><div class="q-badge">4</div><div class="q-title">ניתוח קשרים בין משתנים: רגרסיה, מובהקות וסיבתיות</div></div>
+        <div class="q-pts">20 נק׳</div>
+      </div>
+      <div class="q-mini">⚠️ מותר: חומרי הקורס בלבד · AI ככלי עזר עם גילוי נאות מלא בנספח</div>
+      <div class="q-body">
+        <div class="scenario">
+          <div class="tag">תרחיש</div>
+          <p>אנליסט בחברת SaaS בוחן קשרים בנתונים: (1) הקשר בין זמן שימוש שבועי באפליקציה לבין נטישת לקוחות (Churn); (2) רגרסיה רב משתנית של ערך הלקוח על פני כמה משתני רקע. החברה רוצה החלטות "מבוססות ראיות".</p>
+        </div>
+        <ul class="parts">
+          <li><span class="pk">א</span><span class="ptxt"><strong>רגרסיה ומובהקות.</strong> הסבירו את ההבדל בין רגרסיה פשוטה למרובה, את תפקיד ה-<strong>P-Value</strong> (סף 0.05) ואת משמעות ה-<strong>Equation</strong>. היעזרו בהיגיון של דוגמת <strong>AAPL מול S&amp;P 500</strong> כדי להמחיש כיצד קוראים תוצאה.</span></li>
+          <li><span class="pk">ב</span><span class="ptxt"><strong>עיבוד מקדים.</strong> כיצד ממירים משתנים טקסטואליים למספריים? מתי משתמשים ב<strong>סדר מספרי עולה (ordinal)</strong> ומתי ב<strong>משתני דמה (0 או 1)</strong>? ואיזו פעולה ב-Tableau נדרשת כדי לקבל <strong>תרשים פיזור</strong> אמיתי במקום נקודה מצרפית אחת (המרת Measure ל-Dimension)?</span></li>
+          <li><span class="pk">ג</span><span class="ptxt"><strong>מתאם מול סיבתיות.</strong> הסבירו את ההבדל בין מתאם (Correlation) לסיבתיות (Causation), וכיצד <strong>A/B Testing</strong> (קבוצת ביקורת) מבודד סיבתיות.</span></li>
+          <li><span class="pk">ד</span><span class="open">פתוח לפרשנות</span><span class="ptxt"><strong>יושרה בדיווח.</strong> התקבלה תוצאה <strong>לא מובהקת</strong>. כיצד תדווחו עליה ביושרה ומה תכתבו ללקוח? דונו בהשפעת <strong>איכות הנתונים</strong> ("Garbage in, garbage out") על מהימנות התובנה ועל האמון במערכת ה-BI.</span></li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Q5 -->
+    <div class="q">
+      <div class="q-head">
+        <div class="left"><div class="q-badge">5</div><div class="q-title">מערכת מקצה לקצה: Frontend, Backend, GAS ו-AI מקומי מול ענן</div></div>
+        <div class="q-pts">20 נק׳</div>
+      </div>
+      <div class="q-mini">⚠️ מותר: חומרי הקורס בלבד · AI ככלי עזר עם גילוי נאות מלא בנספח</div>
+      <div class="q-body">
+        <div class="scenario">
+          <div class="tag">תרחיש</div>
+          <p>צוות בונה מערכת לאיסוף נתונים פיננסיים (מחירי מניות): ממשק משתמש (Frontend), שרת מבוסס <strong>Google Apps Script (GAS)</strong> ומקורות נתונים חיצוניים. במקביל נשקל שילוב מודל שפה (LLM) לניתוח טקסט פיננסי, תוך התלבטות בין מודל בענן למודל מקומי.</p>
+        </div>
+        <ul class="parts">
+          <li><span class="pk">א</span><span class="ptxt"><strong>ארכיטקטורת רשת.</strong> הסבירו <strong>Frontend מול Backend מול API</strong> (היעזרו בדוגמת הבנק או בארגון אחר). כיצד GAS "מדמה" Backend? מנו <strong>שני יתרונות ושתי מגבלות</strong> של GAS.</span></li>
+          <li><span class="pk">ב</span><span class="ptxt"><strong>ולידציה ו-Fallback.</strong> מדוע חשובה <strong>ולידציית קלט בצד הלקוח</strong>, ומדוע מנגנון <strong>Fallback</strong> (מקור גיבוי) קריטי דווקא במערכת נתונים פיננסית?</span></li>
+          <li><span class="pk">ג</span><span class="ptxt"><strong>AI מקומי מול ענן.</strong> דונו ביתרונות ובחסרונות: <strong>פרטיות נתונים, עלות, tok/sec, QAT, פורמטים (GGUF מול MLX), חומרה</strong>. מתי שימוש ב-LLM <strong>מקומי</strong> מוצדק (מגזר פיננסי או רגולטורי)?</span></li>
+          <li><span class="pk">ד</span><span class="open">פתוח לפרשנות</span><span class="ptxt"><strong>שיפוט הנדסי.</strong> האם GAS מתאים לתרחיש <strong>Production</strong> עתיר עומס? הציגו עמדה ונמקו אותה, ופרטו מה היה מציע Backend "אמיתי" שאין ב-GAS.</span></li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- 8. AI DISCLOSURE TEMPLATE -->
+  <section>
+    <div class="sec-title"><span class="num">8</span> נספח חובה: תבנית גילוי נאות לשימוש ב-AI</div>
+    <p class="sec-sub">העתיקו תבנית זו לנספח א׳ ומלאו עבור <strong>כל</strong> שימוש בכלי AI. בכל ספק, הרחיבו.</p>
+    <div class="card">
+      <p style="margin-bottom:14px"><strong>אם נעזרתם ב-AI</strong>, עבור כל שימוש פרטו את כל הרכיבים:</p>
+      <ul class="parts">
+        <li><span class="pk">1</span><span class="ptxt"><strong>הכלי והגרסה</strong> ששימשו, ולאיזו שאלה או סעיף.</span></li>
+        <li><span class="pk">2</span><span class="ptxt"><strong>אופן הטמעת חומרי הקורס</strong> בכלי (כיצד ודאתם שהכלי עובד על חומרי הקורס ולא על ידע חיצוני).</span></li>
+        <li><span class="pk">3</span><span class="ptxt"><strong>כל הפרומפטים שיושמו</strong>, בנוסח המלא והמדויק (מילה במילה), אחד אחד.</span></li>
+        <li><span class="pk">4</span><span class="ptxt"><strong>התוצר שהתקבל</strong> מהכלי (העתק או תמצית).</span></li>
+        <li><span class="pk">5</span><span class="ptxt"><strong>העדכון או השינוי שביצעתם</strong> על התוצר, ומה הסיבה.</span></li>
+        <li><span class="pk">6</span><span class="ptxt"><strong>הבקרה שביצעתם</strong>, כלומר כיצד אימתתם נכונות והתאמה לחומרי הקורס.</span></li>
+      </ul>
+      <div class="callout ok" style="margin-top:14px">
+        <div class="ico">📝</div>
+        <div class="body"><strong>אם לא נעשה שימוש ב-AI</strong> כלל, כתבו במפורש בנספח א׳: "מצהיר/ה כי לא נעשה כל שימוש בכלי AI בהכנת הפרויקט."</div>
+      </div>
+      <div class="callout danger">
+        <div class="ico">🔍</div>
+        <div class="body">תזכורת: תתבצע <strong>בקרת AI</strong>, ו<strong>לא יתקבלו ערעורים</strong> על חשד לשימוש בכלי AI או על תוכן שגוי שהתקבל מהכלי. הנספחים נקראים. גילוי מפורט ושקוף הוא ההגנה הטובה ביותר; חוסר גילוי גורר הפחתת ניקוד.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 9. INTEGRITY DECLARATION -->
+  <section>
+    <div class="sec-title"><span class="num">9</span> הצהרת יושרה אקדמית</div>
+    <p class="sec-sub">כללו את ההצהרה הבאה בסוף ההגשה, עם שם ותאריך.</p>
+    <div class="declare">
+      <h3>📜 נוסח ההצהרה (להעתקה)</h3>
+      <div class="quote">
+        "אני, ______________ (שם מלא), תעודת זהות ____________, מצהיר/ה כי פרויקט גמר זה נכתב על ידי באופן עצמאי ואישי, בהתבסס על חומרי הקורס בלבד. כל שימוש שנעשה בכלי AI היה ככלי עזר לאחר הטמעת חומרי הקורס, ודווח במלואו בנספח א׳ (כולל כל הפרומפטים, התוצר, העדכון שבוצע והבקרה). ידוע לי כי תתבצע בקרת AI, וכי לא יתקבלו ערעורים על חשד לשימוש בכלי AI או על תוכן שגוי שהתקבל מהכלי. תאריך: __________ · חתימה: __________"
+      </div>
+    </div>
+  </section>
+
+  <!-- 10. CHECKLIST -->
+  <section>
+    <div class="sec-title"><span class="num">10</span> רשימת בדיקה לפני הגשה</div>
+    <div class="card">
+      <ul class="check">
+        <li><span class="box"></span> עניתי על כל <strong>5 השאלות</strong>, כולל כל חלקי המשנה (א, ב, ג, ד).</li>
+        <li><span class="box"></span> כל טענה מבוססת על <strong>חומרי הקורס בלבד</strong> (כל חומרי הקורס, ולא רק המיקוד).</li>
+        <li><span class="box"></span> במקומות הפתוחים לפרשנות <strong>ציינתי במפורש את הפרשנות שלפיה פעלתי</strong>.</li>
+        <li><span class="box"></span> צירפתי <strong>נספח א׳, גילוי נאות AI</strong> מלא (או הצהרה שלא נעשה שימוש).</li>
+        <li><span class="box"></span> כל <strong>הפרומפטים, התוצר, העדכון והבקרה</strong> מופיעים <strong>בנספח בלבד</strong>.</li>
+        <li><span class="box"></span> צירפתי <strong>נספח ב׳, מקורות</strong> מתוך חומרי הקורס.</li>
+        <li><span class="box"></span> צירפתי <strong>הצהרת יושרה</strong> חתומה.</li>
+        <li><span class="box"></span> כתבתי ב<strong>DOCX</strong> ושמרתי כ<strong>PDF</strong> (לא כתב יד ולא פורמט אחר), והעליתי ל<strong>תיבת ההגשה במערכת הידיעון</strong>.</li>
+        <li><span class="box"></span> ההעלאה הושלמה <strong>לפני 1.8.2026</strong>.</li>
+      </ul>
+    </div>
+    <div class="policy-strip" style="margin-top:18px">
+      <div class="ico">⚠️</div>
+      <p><strong>תזכורת אחרונה:</strong> חומרי הקורס בלבד · AI ככלי עזר בלבד לאחר הטמעת חומרי הקורס, עם גילוי נאות מלא בנספח (פרומפטים, תוצר, עדכון, בקרה) · תתבצע בקרת AI ללא אפשרות ערעור על חשד שימוש או על תוכן שגוי מהכלי · בכל ספק, גלו בפירוט רב בנספחים, הם נקראים.</p>
+    </div>
+  </section>
+
+</div>
+
+<footer>
+  <p><strong>פרויקט גמר חלף בחינה - ויזואליזציה של מידע</strong> · ד״ר שי צבאן · תשפ״ו 2026</p>
+  <p style="margin-top:6px">מועד הגשה אחרון: 1.8.2026 · מועד פרסום ציונים: 1.9.2026 · הגשה ב-PDF בלבד בתיבת ההגשה במערכת הידיעון</p>
+</footer>
+
+</body>
+</html>
